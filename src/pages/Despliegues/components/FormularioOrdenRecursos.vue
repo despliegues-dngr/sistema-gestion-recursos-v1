@@ -1,30 +1,7 @@
 <template>
   <div class="formulario-secciones">
-    <!-- Selector de Tipo de Operativo -->
-    <div class="tipo-operativo-selector" style="margin-bottom: var(--space-4);">
-      <div class="ficha-dato">
-        <span class="ficha-dato-label ficha-dato-label--required">Tipo de Operativo</span>
-        <Select
-          v-model="formData.tipoDespliegue"
-          :options="tipoDespliegueOptions"
-          size="sm"
-        />
-      </div>
-      
-      <!-- Selector secundario solo si es "Sin efecto" -->
-      <div v-if="formData.tipoDespliegue === 'Sin efecto'" class="ficha-dato" style="margin-top: var(--space-3);">
-        <span class="ficha-dato-label ficha-dato-label--required">Motivo</span>
-        <Select
-          v-model="formData.motivoSinEfecto"
-          :options="motivoSinEfectoOptions"
-          :error="errors.motivoSinEfecto"
-          size="sm"
-        />
-      </div>
-    </div>
-
     <!-- Sección Única: Recursos del Operativo -->
-    <InlineForm v-if="formData.tipoDespliegue === 'Despliegue'">
+    <InlineForm>
       <FichaFormulario :columns="3">
         <!-- Recursos Móviles -->
         <div class="ficha-dato">
@@ -180,22 +157,20 @@
         
         <div class="ficha-dato">
           <span class="ficha-dato-label">Total Efectivos</span>
-          <div class="campo-calculado">
-            <div class="campo-calculado-icon">
+          <Input 
+            :model-value="totalEfectivosCalculado" 
+            type="text"
+            size="sm"
+            disabled
+            class="input-cantidad input-total-efectivos"
+          >
+            <template #icon>
               <img src="@/assets/images/ppssTotal.svg" alt="Total Efectivos" style="width: 16px; height: 16px;" />
-            </div>
-            <div class="campo-calculado-valor">{{ totalEfectivosCalculado }}</div>
-          </div>
+            </template>
+          </Input>
         </div>
       </FichaFormulario>
     </InlineForm>
-
-    <!-- Mensaje informativo para Franco/Sin efecto -->
-    <div v-else class="info-message" style="padding: var(--space-4); background-color: var(--color-gray-50); border: 2px solid var(--border-color-strong); border-radius: var(--radius-md);">
-      <p style="margin: 0; color: var(--color-text-secondary);">
-        {{ formData.tipoDespliegue === 'Franco' ? 'Personal en franco. No se requiere registro de recursos.' : 'Operativo sin efecto. No se requiere registro de recursos.' }}
-      </p>
-    </div>
   </div>
 </template>
 
@@ -248,28 +223,13 @@ watch(totalEfectivosCalculado, (newValue) => {
   padding-left: 0;
 }
 
-/* Campo calculado (solo lectura) */
-.campo-calculado {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0 var(--space-3);
+/* ✅ ÉNFASIS SUTIL PARA CAMPO CALCULADO (Consistencia con Direcciones) */
+.input-total-efectivos :deep(.input-container) {
+  border-color: var(--color-primary);
   background-color: var(--color-gray-100);
-  border: 2px solid var(--border-color-strong);
-  border-radius: var(--radius-md);
-  min-height: 32px;
-  width: 100%;
-  flex: 1;
 }
 
-.campo-calculado-icon {
-  display: flex;
-  align-items: center;
-  opacity: 0.7;
-}
-
-.campo-calculado-valor {
-  font-size: var(--font-size-sm);
+.input-total-efectivos :deep(.input-field) {
   font-weight: var(--font-weight-bold);
   color: var(--color-primary);
 }

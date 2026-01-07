@@ -36,9 +36,7 @@ const formData = ref<any>({
   planChoqueApost: '0',
   planChoqueAlerta: '0',
   planTotalPersonal: '0',
-  estado: 'Pendiente',
-  tipoDespliegue: 'Despliegue',
-  motivoSinEfecto: undefined
+  estado: 'Pendiente'
 })
 
 const errors = ref<Record<string, string>>({})
@@ -101,22 +99,7 @@ export function useFormularioOrden(props: { mode?: 'create' | 'edit', ordenId?: 
     { value: '10ma', label: '10ma' }, { value: '11ra', label: '11ra' }, { value: '12da', label: '12da' },
     { value: '13ra', label: '13ra' }, { value: '14ta', label: '14ta' }, { value: '15ta', label: '15ta' },
     { value: '16ta', label: '16ta' }, { value: '17ma', label: '17ma' }, { value: '18va', label: '18va' },
-    { value: '19na', label: '19na' }, { value: '20ma', label: '20ma' }
-  ]
-
-  const tipoDespliegueOptions = [
-    { value: 'Despliegue', label: 'Despliegue' },
-    { value: 'Franco', label: 'Franco' },
-    { value: 'Sin efecto', label: 'Sin efecto' }
-  ]
-
-  const motivoSinEfectoOptions = [
-    { value: 'Por orden de superior', label: 'Por orden de superior' },
-    { value: 'Por falta de personal', label: 'Por falta de personal' },
-    { value: 'Por cubrir otro Operativo', label: 'Por cubrir otro Operativo' },
-    { value: 'Por cubrir espectaculo publico', label: 'Por cubrir espectáculo público' },
-    { value: 'Por inclemencias del tiempo', label: 'Por inclemencias del tiempo' },
-    { value: 'Otro motivo', label: 'Otro motivo' }
+    { value: '19na', label: '19na' },     { value: '20ma', label: '20ma' }
   ]
 
   const unidadOptions = [
@@ -162,9 +145,7 @@ export function useFormularioOrden(props: { mode?: 'create' | 'edit', ordenId?: 
       planChoqueApost: '0',
       planChoqueAlerta: '0',
       planTotalPersonal: '0',
-      estado: 'Pendiente',
-      tipoDespliegue: 'Despliegue',
-      motivoSinEfecto: undefined
+      estado: 'Pendiente'
     }
     errors.value = {}
     ordenOriginal.value = null
@@ -218,9 +199,7 @@ export function useFormularioOrden(props: { mode?: 'create' | 'edit', ordenId?: 
         planChoqueApost: String(orden.planChoqueApost || 0),
         planChoqueAlerta: String(orden.planChoqueAlerta || 0),
         planTotalPersonal: String(orden.planTotalPersonal || 0),
-        estado: orden.estado || 'Pendiente',
-        tipoDespliegue: 'Despliegue',
-        motivoSinEfecto: undefined
+        estado: orden.estado || 'Pendiente'
       }
     } catch (error) {
       console.error('Error al cargar orden:', error)
@@ -239,10 +218,6 @@ export function useFormularioOrden(props: { mode?: 'create' | 'edit', ordenId?: 
     if (!formData.value.horaInicio) errors.value.horaInicio = 'Requerido'
     if (!formData.value.horaFin) errors.value.horaFin = 'Requerido'
 
-    if (formData.value.tipoDespliegue === 'Sin efecto' && !formData.value.motivoSinEfecto) {
-      errors.value.motivoSinEfecto = 'Requerido'
-    }
-    
     return Object.keys(errors.value).length === 0
   }
 
@@ -328,8 +303,6 @@ export function useFormularioOrden(props: { mode?: 'create' | 'edit', ordenId?: 
     tiempoServicioOptions,
     departamentoOptions,
     seccionalOptions,
-    tipoDespliegueOptions,
-    motivoSinEfectoOptions,
     unidadOptions,
     handleSubmit,
     resetForm

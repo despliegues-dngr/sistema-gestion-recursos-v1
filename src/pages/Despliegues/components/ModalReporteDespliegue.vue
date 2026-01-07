@@ -1,26 +1,47 @@
 <template>
   <ModalFormularioOrden
     :model-value="modelValue"
-    title="Reporte de Despliegue Real"
+    :title="esEditable ? 'Reporte de Despliegue Real' : 'Detalle de Reporte'"
     :subtitle="`${displayData.unidad} - ${displayData.orden}`"
-    :tabs="reporteTabs"
-    submit-text="Guardar Reporte"
-    :submit-disabled="!esEditable"
+    :tabs="esEditable ? reporteTabs : []"
+    :submit-text="esEditable ? 'Guardar Reporte' : 'Cerrar'"
+    :submit-disabled="false"
+    :hide-cancel="!esEditable"
     default-tab="recursos"
     @update:model-value="$emit('update:modelValue', $event)"
     @submit="handleGuardar"
   >
-    <!-- Tab: Recursos Desplegados (Formulario) -->
-    <template #recursos>
-      <!-- Banner Informativo Estilo Badge -->
-      <div v-if="!esEditable" class="info-banner info-banner--danger" style="background-color: var(--color-danger-light); border-color: var(--color-danger);">
-        <p class="info-banner-text" style="color: var(--color-danger-dark);">
-          <strong>ATENCIÓN:</strong> El período de gracia para editar este reporte ha expirado. 
-          Solo se pueden editar reportes el mismo día de su creación.
-        </p>
-      </div>
+    <!-- Contenido Directo (Modo Lectura) -->
+    <template #content v-if="!esEditable">
+      <ReporteDocumento
+        :orden="displayData.orden"
+        :operativo="displayData.nombreServicio"
+        :unidad="displayData.unidad"
+        :fecha="displayData.fechaReporte"
+        :horario="displayData.horario"
+        :tipo="formData.tipoDespliegue"
+        :motivo="formData.motivoSinEfecto"
+        :recursos="{
+          moviles: formData.realMoviles,
+          motos: formData.realMotos,
+          motosBiTri: formData.realMotosBiTripuladas,
+          hidro: formData.realHidro,
+          hipos: formData.realHipos,
+          ssoo: formData.realSsoo,
+          ppssMovil: formData.realPpssMovil,
+          pieTierra: formData.realPieTierra,
+          choqueApost: formData.realChoqueApost,
+          choqueAlerta: formData.realChoqueAlerta,
+          totalEfectivos: totalEfectivosCalculado
+        }"
+        :plan-total-personal="refPlanTotalPersonal"
+        :fecha-carga="formatearFechaHora(reporteFechaHoraCarga)"
+      />
+    </template>
 
-      <div v-else class="info-banner">
+    <!-- Tab: Recursos Desplegados (Modo Edición) -->
+    <template #recursos v-if="esEditable">
+      <div class="info-banner">
         <p class="info-banner-text">
           Complete la información referente al despliegue del 
           <strong>"{{ displayData.nombreServicio }}"</strong> 
@@ -30,192 +51,214 @@
         </p>
       </div>
 
-      <!-- Selector de Tipo -->
+      <!-- Selectores en línea: Tipo + Motivo condicional -->
       <div style="margin-bottom: var(--space-3);">
-        <div class="ficha-dato">
-          <span class="ficha-dato-label ficha-dato-label--required">Tipo de Despliegue</span>
-          <Select
-            v-model="formData.tipoDespliegue"
-            :options="tipoDespliegueOptions"
-            size="sm"
-          />
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+          <!-- Tipo de Despliegue -->
+          <div class="ficha-dato">
+            <span class="ficha-dato-label ficha-dato-label--required">Tipo de Despliegue</span>
+            <Select
+              v-model="formData.tipoDespliegue"
+              :options="tipoDespliegueOptions"
+              size="sm"
+            />
+          </div>
+          
+          <!-- Motivo (condicional) -->
+          <div v-if="formData.tipoDespliegue === 'Sin efecto'" class="ficha-dato">
+            <span class="ficha-dato-label ficha-dato-label--required">Motivo</span>
+            <Select
+              v-model="formData.motivoSinEfecto"
+              :options="motivoSinEfectoOptions"
+              size="sm"
+            />
+          </div>
         </div>
       </div>
 
       <!-- Formulario de recursos -->
-      <InlineForm v-if="formData.tipoDespliegue === 'Despliegue'">
-        <FichaFormulario :columns="3">
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">Móviles</span>
-            <Input 
-              v-model="formData.realMoviles" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/movil.svg" alt="Móviles" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-          
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">Motos</span>
-            <Input 
-              v-model="formData.realMotos" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/motos.svg" alt="Motos" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-          
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">Motos Bi/Tripuladas</span>
-            <Input 
-              v-model="formData.realMotosBiTripuladas" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/motosBitripuladas.svg" alt="Motos Bi/Tripuladas" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-          
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">Hidrantes</span>
-            <Input 
-              v-model="formData.realHidro" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/hidro.png" alt="Hidrantes" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-          
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">Hipos</span>
-            <Input 
-              v-model="formData.realHipos" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/hipos.svg" alt="Hipos" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-          
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">SSOO</span>
-            <Input 
-              v-model="formData.realSsoo" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/ssoo.svg" alt="SSOO" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-          
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">P.P.S.S. en Móvil</span>
-            <Input 
-              v-model="formData.realPpssMovil" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/ppssEnMovil.svg" alt="P.P.S.S. en Móvil" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-          
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">Pie a Tierra</span>
-            <Input 
-              v-model="formData.realPieTierra" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/pieTierra.svg" alt="Pie a Tierra" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-          
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">Choque Apostado</span>
-            <Input 
-              v-model="formData.realChoqueApost" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/choqueApostado.svg" alt="Choque Apostado" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-          
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">Choque en Alerta</span>
-            <Input 
-              v-model="formData.realChoqueAlerta" 
-              type="number" 
-              :min="0" 
-              size="sm"
-              class="input-cantidad"
-            >
-              <template #icon>
-                <img src="@/assets/images/choqueEnAlerta.svg" alt="Choque en Alerta" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
+      <template v-if="formData.tipoDespliegue === 'Despliegue'">
+        <InlineForm>
+          <FichaFormulario :columns="3">
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">Móviles</span>
+              <Input 
+                v-model="formData.realMoviles" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/movil.svg" alt="Móviles" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+            
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">Motos</span>
+              <Input 
+                v-model="formData.realMotos" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/motos.svg" alt="Motos" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+            
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">Motos Bi/Tripuladas</span>
+              <Input 
+                v-model="formData.realMotosBiTripuladas" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/motosBitripuladas.svg" alt="Motos Bi/Tripuladas" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+            
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">Hidrantes</span>
+              <Input 
+                v-model="formData.realHidro" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/hidro.png" alt="Hidrantes" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+            
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">Hipos</span>
+              <Input 
+                v-model="formData.realHipos" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/hipos.svg" alt="Hipos" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+            
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">SSOO</span>
+              <Input 
+                v-model="formData.realSsoo" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/ssoo.svg" alt="SSOO" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+            
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">P.P.S.S. en Móvil</span>
+              <Input 
+                v-model="formData.realPpssMovil" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/ppssEnMovil.svg" alt="P.P.S.S. en Móvil" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+            
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">Pie a Tierra</span>
+              <Input 
+                v-model="formData.realPieTierra" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/pieTierra.svg" alt="Pie a Tierra" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+            
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">Choque Apostado</span>
+              <Input 
+                v-model="formData.realChoqueApost" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/choqueApostado.svg" alt="Choque Apostado" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+            
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">Choque en Alerta</span>
+              <Input 
+                v-model="formData.realChoqueAlerta" 
+                type="number" 
+                :min="0" 
+                size="sm"
+                class="input-cantidad"
+              >
+                <template #icon>
+                  <img src="@/assets/images/choqueEnAlerta.svg" alt="Choque en Alerta" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+  
+            <div class="ficha-dato">
+              <span class="ficha-dato-label">Total Efectivos</span>
+              <Input 
+                :model-value="totalEfectivosCalculado" 
+                type="text"
+                size="sm"
+                disabled
+                class="input-cantidad input-total-efectivos"
+              >
+                <template #icon>
+                  <img src="@/assets/images/ppssTotal.svg" alt="Total Efectivos" style="width: 16px; height: 16px;" />
+                </template>
+              </Input>
+            </div>
+          </FichaFormulario>
+        </InlineForm>
+      </template>
 
-          <div class="ficha-dato">
-            <span class="ficha-dato-label">Total Efectivos</span>
-            <Input 
-              :model-value="totalEfectivosCalculado" 
-              type="text"
-              size="sm"
-              disabled
-              class="input-cantidad input-total-efectivos"
-            >
-              <template #icon>
-                <img src="@/assets/images/ppssTotal.svg" alt="Total Efectivos" style="width: 16px; height: 16px;" />
-              </template>
-            </Input>
-          </div>
-        </FichaFormulario>
-      </InlineForm>
-
-      <!-- Mensaje informativo -->
+      <!-- Mensaje informativo para otros tipos (Franco/Sin Efecto) -->
       <div v-else class="info-message">
         <p>{{ mensajeInformativo }}</p>
       </div>
+    </template>
+
+    <!-- Footer: Responsable -->
+    <template #footer-info>
+      <span style="font-size: var(--font-size-sm); color: var(--color-gray-600);">
+        <strong>Responsable:</strong> Tte. Juan Pérez
+      </span>
     </template>
   </ModalFormularioOrden>
 
@@ -228,6 +271,8 @@
     :hora-fin="displayData.horaFin"
     :recursos="{ ...formData, realTotalPersonal: totalEfectivosCalculado }"
     :plan-total-personal="planTotalPersonal"
+    :tipo-despliegue="formData.tipoDespliegue"
+    :motivo-sin-efecto="formData.motivoSinEfecto"
     @confirm="handleConfirmarReporte"
     @cancel="showConfirmacionModal = false"
   />
@@ -235,7 +280,15 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
-import { ModalFormularioOrden, Select, FichaFormulario, Input, InlineForm, ConfirmacionReporteModal } from '@components'
+import { 
+  ModalFormularioOrden, 
+  Select, 
+  FichaFormulario, 
+  Input, 
+  InlineForm, 
+  ConfirmacionReporteModal,
+  ReporteDocumento
+} from '@components'
 import { db } from '@lib/db'
 import { desplieguesService } from '@services'
 import { useToast } from '@hooks'
@@ -258,6 +311,7 @@ const toast = useToast()
 const showConfirmacionModal = ref(false)
 const esEditable = ref(true)
 const reporteExistenteId = ref<number | null>(null)
+const reporteFechaHoraCarga = ref<Date | null>(null)
 const refPlanTotalPersonal = ref<number>(0)
 
 const planTotalPersonal = computed(() => refPlanTotalPersonal.value)
@@ -276,6 +330,7 @@ const displayData = ref({
 
 const formData = ref({
   tipoDespliegue: 'Despliegue' as 'Despliegue' | 'Franco' | 'Sin efecto',
+  motivoSinEfecto: '',
   realMoviles: 0,
   realMotos: 0,
   realMotosBiTripuladas: 0,
@@ -310,10 +365,37 @@ const tipoDespliegueOptions = [
   { value: 'Sin efecto', label: 'Sin efecto' }
 ]
 
+const motivoSinEfectoOptions = [
+  { value: 'Por falta de personal', label: 'Por falta de personal' },
+  { value: 'Por orden de superior', label: 'Por orden de superior' },
+  { value: 'Por cubrir otro Operativo', label: 'Por cubrir otro Operativo' },
+  { value: 'Por cubrir Espectáculo público', label: 'Por cubrir Espectáculo público' },
+  { value: 'Por inclemencias de tiempo', label: 'Por inclemencias de tiempo' },
+  { value: 'Otro motivo', label: 'Otro motivo' }
+]
+
 const mensajeInformativo = computed(() => {
   return formData.value.tipoDespliegue === 'Franco'
     ? 'Personal en franco. No se requiere registro de recursos.'
     : 'Operativo sin efecto. No se requiere registro de recursos.'
+})
+
+const formatearFechaHora = (fecha: Date | null) => {
+  if (!fecha) return '-'
+  return new Date(fecha).toLocaleString('es-UY', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+// Limpiar motivo si se cambia a otro tipo que no sea "Sin efecto"
+watch(() => formData.value.tipoDespliegue, (newValue) => {
+  if (newValue !== 'Sin efecto') {
+    formData.value.motivoSinEfecto = ''
+  }
 })
 
 // Cargar datos al abrir
@@ -345,13 +427,29 @@ async function cargarDatos() {
         ordenId = reporte.ordenId
         fechaUnix = new Date(reporte.fechaDespliegue).getTime()
         reporteExistenteId.value = reporte.id || null
+        reporteFechaHoraCarga.value = reporte.fechaHoraCarga || null
         refPlanTotalPersonal.value = reporte.refPlanTotalPersonal || 0
         
-        // Verificar período de gracia
-        esEditable.value = desplieguesService.puedeEditarReporte(reporte)
+        // AI-Hint: Lógica de seguridad según plan ARCH-20260107
+        const usuarioActualId = 1 // TODO: Obtener de sistema de autenticación real
+        const usuarioTieneRolEspecial = (id: number) => false // TODO: Implementar check de roles
+        
+        const esDuenio = reporte.usuarioReportaId === usuarioActualId
+        const esAdmin = usuarioTieneRolEspecial(usuarioActualId)
+        const estaEnPeriodoGracia = desplieguesService.puedeEditarReporte(reporte)
+
+        // ✅ FIX ARCH-20260107-012: Reportes históricos (fechaDespliegue < hoy) SIEMPRE en modo solo lectura
+        const hoy = new Date()
+        hoy.setHours(0, 0, 0, 0)
+        const fechaDespliegue = new Date(reporte.fechaDespliegue)
+        fechaDespliegue.setHours(0, 0, 0, 0)
+        const esHistorico = fechaDespliegue.getTime() < hoy.getTime()
+
+        esEditable.value = (esDuenio || esAdmin) && estaEnPeriodoGracia && !esHistorico
         
         formData.value = {
-          tipoDespliegue: 'Despliegue',
+          tipoDespliegue: reporte.tipoDespliegue || 'Despliegue',
+          motivoSinEfecto: reporte.motivoSinEfecto || '',
           realMoviles: reporte.realMoviles || 0,
           realMotos: reporte.realMotos || 0,
           realMotosBiTripuladas: reporte.realMotosBiTripuladas || 0,
@@ -403,6 +501,7 @@ async function cargarDatos() {
 function resetForm() {
   formData.value = {
     tipoDespliegue: 'Despliegue',
+    motivoSinEfecto: '',
     realMoviles: 0,
     realMotos: 0,
     realMotosBiTripuladas: 0,
@@ -418,7 +517,15 @@ function resetForm() {
 }
 
 function handleGuardar() {
-  if (!esEditable.value) return
+  if (!esEditable.value) {
+    emit('update:modelValue', false)
+    return
+  }
+  
+  if (formData.value.tipoDespliegue === 'Sin efecto' && !formData.value.motivoSinEfecto) {
+    toast.error('Debe seleccionar un motivo para "Sin efecto"')
+    return
+  }
   
   showConfirmacionModal.value = true
 }
@@ -471,26 +578,13 @@ async function handleConfirmarReporte() {
 </script>
 
 <style scoped>
-/* Banner Informativo - Estilo Badge Warning */
+/* Banner Informativo */
 .info-banner {
   background-color: var(--color-warning-light);
-  border: 1px solid var(--color-warning);
+  border: 2px solid var(--color-warning);
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-4);
-}
-
-.info-banner-text {
-  margin: 0;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-normal);
-  color: var(--color-gray-900); /* Color de texto estándar de la app */
-}
-
-.info-banner-text strong {
-  font-weight: var(--font-weight-bold);
-  color: var(--color-gray-900);
 }
 
 /* Inputs de Cantidad - Ancho Limitado */

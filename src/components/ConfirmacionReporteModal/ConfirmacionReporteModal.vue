@@ -5,30 +5,28 @@
     @update:model-value="$emit('cancel')"
   >
     <div class="confirmacion-reporte">
-      <p class="confirmacion-text">
-        Se informará que el Servicio <strong>"{{ ordenNombre }}"</strong> 
-        del día <strong>{{ fechaFormateada }}</strong>
-        en el horario de <strong>{{ horaInicio }}</strong> a <strong>{{ horaFin }}</strong> 
-        se ha desplegado con los siguientes recursos:
-      </p>
+      <p class="confirmacion-text" v-html="mensajeConfirmacion"></p>
       
-      <p class="recursos-texto">
-        {{ textoRecursos }}
-      </p>
-      
-      <p class="total-texto">
-        Sumando un total de <strong>{{ recursos.realTotalPersonal }}</strong> efectivos.
-      </p>
+      <!-- Solo mostrar recursos si es tipo "Despliegue" -->
+      <template v-if="tipoDespliegue === 'Despliegue' || !tipoDespliegue">
+        <p class="recursos-texto">
+          {{ textoRecursos }}
+        </p>
+        
+        <p class="total-texto">
+          Sumando un total de <strong>{{ recursos.realTotalPersonal }}</strong> efectivos.
+        </p>
 
-      <div class="cumplimiento-section">
-        <ProgressBar
-          :current="recursos.realTotalPersonal"
-          :total="planTotalPersonal"
-          label="efectivos"
-          :show-percentage="true"
-          :show-values="true"
-        />
-      </div>
+        <div class="cumplimiento-section">
+          <ProgressBar
+            :current="recursos.realTotalPersonal"
+            :total="planTotalPersonal"
+            label="efectivos"
+            :show-percentage="true"
+            :show-values="true"
+          />
+        </div>
+      </template>
 
       <div class="confirmacion-actions">
         <Button variant="secondary" @click="$emit('cancel')">
@@ -56,6 +54,8 @@ interface Props {
   fechaDespliegue: Date | string
   recursos: RecursosReporte
   planTotalPersonal: number
+  tipoDespliegue?: 'Despliegue' | 'Franco' | 'Sin efecto'
+  motivoSinEfecto?: string
 }
 
 const props = defineProps<Props>()
@@ -72,6 +72,21 @@ const fechaFormateada = computed(() => {
     month: '2-digit',
     year: 'numeric'
   })
+})
+
+const mensajeConfirmacion = computed(() => {
+  const base = `Se informará que el Servicio <strong>"${props.ordenNombre}"</strong> del día <strong>${fechaFormateada.value}</strong> en el horario de <strong>${props.horaInicio}</strong> a <strong>${props.horaFin}</strong>`
+  
+  if (props.tipoDespliegue === 'Sin efecto') {
+    return `${base} ha quedado sin efecto, motivo: <strong>${props.motivoSinEfecto || 'no especificado'}</strong>.`
+  }
+  
+  if (props.tipoDespliegue === 'Franco') {
+    return `${base} efectuará el día <strong>franco</strong>.`
+  }
+  
+  // Default: Despliegue
+  return `${base} se ha desplegado con los siguientes recursos:`
 })
 
 const textoRecursos = computed(() => {

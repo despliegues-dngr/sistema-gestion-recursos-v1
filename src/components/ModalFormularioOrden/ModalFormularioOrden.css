@@ -179,3 +179,22 @@
   background: var(--color-gray-400);
 }
 
+/* ========================================
+   FOOTER CON INFORMACIÓN (DNGR)
+   ======================================== */
+.modal-footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.modal-footer-info {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+}
+
+.modal-footer-actions {
+  display: flex;
+  gap: var(--space-2);
+}

@@ -38,18 +38,30 @@
     </div>
     <!-- Footer compacto -->
     <template #footer>
-      <Button variant="secondary" size="sm" @click="$emit('update:modelValue', false)">
-        {{ cancelText }}
-      </Button>
-      <Button 
-        variant="primary" 
-        size="sm"
-        @click="$emit('submit')"
-        :loading="loading"
-        :disabled="submitDisabled"
-      >
-        {{ submitText }}
-      </Button>
+      <div class="modal-footer-content">
+        <div class="modal-footer-info">
+          <slot name="footer-info" />
+        </div>
+        <div class="modal-footer-actions">
+          <Button 
+            v-if="!hideCancel"
+            variant="secondary" 
+            size="sm" 
+            @click="$emit('update:modelValue', false)"
+          >
+            {{ cancelText }}
+          </Button>
+          <Button 
+            variant="primary" 
+            size="sm"
+            @click="$emit('submit')"
+            :loading="loading"
+            :disabled="submitDisabled"
+          >
+            {{ submitText }}
+          </Button>
+        </div>
+      </div>
     </template>
   </Modal>
 </template>
@@ -78,6 +90,7 @@ interface Props {
   cancelText?: string
   loading?: boolean
   submitDisabled?: boolean
+  hideCancel?: boolean
   defaultTab?: string
 }
 
@@ -87,6 +100,7 @@ const props = withDefaults(defineProps<Props>(), {
   cancelText: 'Cancelar',
   loading: false,
   submitDisabled: false,
+  hideCancel: false,
   defaultTab: ''
 })
 

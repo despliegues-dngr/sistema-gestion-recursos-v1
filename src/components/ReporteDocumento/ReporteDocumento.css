@@ -1,0 +1,89 @@
+.reporte-documento {
+  font-family: var(--font-family-base);
+  background-color: var(--color-white);
+  padding: var(--space-4);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-gray-900);
+}
+
+/* Narrativa */
+.reporte-narrativo {
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-800);
+}
+
+.reporte-narrativo strong {
+  color: var(--color-gray-900);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Tabla de Recursos */
+.reporte-recursos-container {
+  margin-bottom: var(--space-5);
+  display: flex;
+  justify-content: center;
+}
+
+.reporte-tabla-compacta {
+  width: 100%;
+  max-width: 400px;
+  border-collapse: collapse;
+  border: 2px solid var(--border-color-strong);
+  font-size: var(--font-size-sm);
+}
+
+.reporte-tabla-compacta th,
+.reporte-tabla-compacta td {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-color-strong);
+}
+
+.reporte-tabla-compacta th {
+  background-color: var(--color-gray-50);
+  text-align: left;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-700);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.reporte-tabla-total {
+  background-color: var(--color-gray-50);
+  font-weight: var(--font-weight-bold);
+}
+
+.reporte-tabla-total td {
+  border-top: 2px solid var(--border-color-strong);
+  color: var(--color-primary);
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Cumplimiento */
+.reporte-cumplimiento {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 2px solid var(--border-color-strong);
+}
+
+/* Footer */
+.reporte-footer {
+  margin-top: var(--space-6);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-color);
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+}
+
+.reporte-metadatos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.reporte-metadatos strong {
+  color: var(--color-gray-700);
+}

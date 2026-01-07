@@ -354,6 +354,21 @@ class SistemaGestionDB extends Dexie {
         }
       });
     });
+
+    // AI-Hint: Migración a version(15) para agregar campos tipoDespliegue y motivoSinEfecto en reportes
+    this.version(15).stores({
+      reportes_despliegue: '++id, ordenId, unidadReportanteId, fechaDespliegue, fechaHoraCarga, usuarioReportaId, departamento, seccional'
+    }).upgrade(tx => {
+      // Migración v15: Agregar campos tipoDespliegue y motivoSinEfecto
+      return tx.table('reportes_despliegue').toCollection().modify(reporte => {
+        if (!reporte.tipoDespliegue) {
+          reporte.tipoDespliegue = 'Despliegue';  // Default para registros existentes
+        }
+        if (reporte.motivoSinEfecto === undefined) {
+          reporte.motivoSinEfecto = null;
+        }
+      });
+    });
   }
 }
 

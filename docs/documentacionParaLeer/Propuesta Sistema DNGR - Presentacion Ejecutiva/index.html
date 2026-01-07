@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Propuesta de Implementación del Sistema Integral de Gestión de Recursos (DNGR) - Ministerio del Interior">
+    <meta name="author" content="DNGR - Ministerio del Interior">
+    <title>Propuesta Sistema DNGR | Presentación Ejecutiva</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="portada-container">
+      <div class="portada-instituciones">
+        <p class="portada-inst">Ministerio del Interior | DNGR</p>
+      </div>
+      <h1 class="portada-titulo">Sistema DNGR</h1>
+      <p class="portada-subtitulo">Digitalización y Gestión de Recursos</p>
+      <p class="portada-subtitulo">Propuesta de Implementación Estratégica</p>
+      <p class="portada-version">Memorándum de Propuesta | 7 de Enero de 2026</p>
+      <p class="portada-clasificacion">Documento Interno</p>
+    </div>
+
+    <div class="contenido-container">
+      <div class="modulo-header">
+        <h1>Memorándum de Propuesta Estratégica</h1>
+      </div>
+
+      <div class="memo-header">
+        <p><strong>PARA:</strong> Dirección General / Gabinete Ministerial</p>
+        <p><strong>DE:</strong> Dirección Nacional de la Guardia Republicana</p>
+        <p><strong>FECHA:</strong> 7 de Enero de 2026</p>
+        <p><strong>ASUNTO:</strong> Propuesta de Implementación del Sistema Integral de Gestión de Recursos (DNGR) como respuesta a las brechas detectadas en el PNSP 2025.</p>
+      </div>
+
+      <h1 id="resumen-ejecutivo">1. Resumen Ejecutivo</h1>
+      
+      <p>El presente documento detalla la propuesta técnica y operativa para el desarrollo del <strong>Sistema DNGR (Digitalización y Gestión de Recursos)</strong>. Esta iniciativa surge como respuesta directa a las debilidades estructurales identificadas en el Plan Nacional de Seguridad Pública (2025-2035) y su Complemento del Diagnóstico, específicamente en lo relativo a:</p>
+
+      <ul>
+        <li><strong>Dispersión de datos</strong> entre múltiples sistemas y formatos.</li>
+        <li><strong>Incertidumbre sobre el pie de fuerza operativo real</strong>.</li>
+        <li><strong>Incapacidad actual para medir objetivamente</strong> el cumplimiento de las misiones asignadas.</li>
+      </ul>
+
+      <div class="caja-info">
+        <p><strong>Visión del Sistema:</strong> El Sistema DNGR no es solo una modernización tecnológica; es el instrumento de gestión necesario para centralizar la información dispersa y transformar la toma de decisiones basada en intuición a una <strong>basada en evidencia</strong>.</p>
+      </div>
+
+      <h1 id="el-problema">2. El Problema: La "Caja Negra" Operativa</h1>
+
+      <p>Según el análisis desprendido del <em>"Complemento del Diagnóstico general de la criminalidad y la violencia en Uruguay (PNSP 2025-2035)"</em>, el Ministerio enfrenta un desafío crítico en la gestión de sus recursos.</p>
+
+      <h2>2.1 Diagnóstico Institucional</h2>
+
+      <p>El documento ministerial señala explícitamente las limitaciones actuales en la calidad y disponibilidad de la información.</p>
+
+      <div class="caja-alerta">
+        <p><strong>Referencia Clave:</strong> Se dirige la atención a las <em>Limitaciones Metodológicas y oportunidades de mejora</em> (ver Sección 2.1.4, pág. 18 del documento adjunto y secciones transversales de diagnóstico).</p>
+      </div>
+
+      <p><strong>El Hallazgo:</strong> El Ministerio ha detectado que, si bien existen registros, estos se encuentran <strong>dispersos, fragmentados o desactualizados</strong>. Esto genera una incapacidad para responder preguntas básicas de gestión:</p>
+
+      <div class="pregunta-critica">¿Cuántos efectivos operativos reales tenemos disponibles en este momento?</div>
+      
+      <div class="pregunta-critica">¿Cuál es la brecha entre el personal asignado y el personal efectivamente desplegado?</div>
+      
+      <div class="pregunta-critica">¿Se están cumpliendo los operativos planificados en tiempo y forma?</div>
+
+      <div class="caja-alerta">
+        <p><strong>Situación Actual:</strong> El sistema carece de una herramienta unificada para medir el cumplimiento operativo y las brechas de personal con precisión, lo que dificulta la ejecución eficiente de las estrategias de seguridad planteadas para la década 2025-2035.</p>
+      </div>
+
+      <h1 id="la-solucion">3. La Solución: Sistema DNGR</h1>
+
+      <p>Nuestra propuesta, el <strong>Sistema DNGR</strong>, se diseña específicamente para cerrar estas brechas de información. Su objetivo principal es <strong>centralizar todos los datos operativos y administrativos dispersos</strong> en un único ecosistema digital auditable.</p>
+
+      <div class="caja-info">
+        <p><strong>Enfoque Inicial:</strong> Buscamos una <strong>trazabilidad del cumplimiento</strong>. El sistema permitirá contrastar lo planificado contra lo ejecutado.</p>
+      </div>
+
+      <h2>3.1 Objetivos Estratégicos del Sistema</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Objetivo</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Centralización de Información</strong></td>
+            <td>Reunir todos los datos dispersos (planillas, cuadernos, sistemas separados) en un solo lugar accesible para el Mando.</td>
+          </tr>
+          <tr>
+            <td><strong>Medición de Brechas</strong></td>
+            <td>Calcular automáticamente la diferencia entre la fuerza teórica y la fuerza operativa real.</td>
+          </tr>
+          <tr>
+            <td><strong>Auditoría de Gestión</strong></td>
+            <td>Garantizar que cada orden, misión y recurso tenga un historial inmutable.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h1 id="arquitectura">4. Arquitectura Funcional y Módulos</h1>
+
+      <p>El sistema se estructura en <strong>tres pilares fundamentales</strong>, alineados con el Mapa Estratégico de Desarrollo (v1.7):</p>
+
+      <div class="modulo-card">
+        <h3><span class="icono">📋</span> Módulo 1: Gestión de Personal</h3>
+        <p><em>Recursos Humanos Operativos</em></p>
+        
+        <div class="modulo-resuelve">
+          <strong>Lo que resuelve:</strong> Pasa de un registro estático a uno dinámico.
+        </div>
+
+        <p><strong>Funcionalidades Clave:</strong></p>
+        <ul>
+          <li><strong>Legajo Digital Unificado:</strong> Centraliza datos personales, jerarquía y estado actual.</li>
+          <li><strong>Matriz de Habilidades (Skills):</strong> Permite asignar personal basado en capacidades reales (chofer, tirador, negociador), optimizando la distribución.</li>
+          <li><strong>Control de Disponibilidad:</strong> Identifica quién está realmente operativo versus quién está en licencia, pase en comisión o baja médica.</li>
+        </ul>
+      </div>
+
+      <div class="modulo-card">
+        <h3><span class="icono">📦</span> Módulo 2: Gestión Operativa</h3>
+        <p><em>Misiones y Cumplimiento</em></p>
+        
+        <div class="modulo-resuelve">
+          <strong>Lo que resuelve:</strong> La incapacidad de medir si lo ordenado se cumplió y la alta carga de tareas administrativas que detrae personal de la calle.
+        </div>
+
+        <p><strong>Funcionalidades Clave:</strong></p>
+        <ul>
+          <li><strong>Planificación vs. Ejecución:</strong> Permite cargar órdenes de operaciones y luego registrar su resultado de forma digital y simplificada.</li>
+          <li><strong>Automatización de Reportes:</strong> Elimina la carga manual de informes, reduciendo el tiempo administrativo de cada jefe de unidad.</li>
+          <li><strong>Medición de Cumplimiento:</strong> Genera métricas claras sobre el porcentaje de efectividad de los operativos.</li>
+        </ul>
+      </div>
+
+      <div class="modulo-card">
+        <h3><span class="icono">🔐</span> Módulo 3: Control y Seguridad</h3>
+        <p><em>Asuntos Internos y Auditoría</em></p>
+        
+        <div class="modulo-resuelve">
+          <strong>Lo que resuelve:</strong> La falta de transparencia en la modificación de datos.
+        </div>
+
+        <p><strong>Funcionalidades Clave:</strong></p>
+        <ul>
+          <li><strong>Trazabilidad Total (Soft Delete & Versioning):</strong> Nada se borra permanentemente. El sistema guarda un historial de quién modificó qué dato y cuándo (implementación técnica de tablas históricas y snapshots).</li>
+          <li><strong>Logs de Auditoría:</strong> Seguridad robusta para proteger la integridad de la información sensible del Ministerio.</li>
+        </ul>
+      </div>
+
+      <h1 id="preguntas-criticas">5. Preguntas Críticas que el Sistema Responderá</h1>
+
+      <p>Con la implementación del DNGR, la Dirección podrá responder con <strong>datos duros</strong> a las siguientes interrogantes:</p>
+
+      <div class="pregunta-critica">"¿Qué porcentaje de la fuerza policial estuvo efectivamente en la calle el mes pasado?"</div>
+
+      <div class="pregunta-critica">"¿En qué zonas tenemos mayor brecha entre los delitos reportados y la presencia policial asignada?"</div>
+
+      <div class="pregunta-critica">"¿Cuántos operativos fallaron por falta de recursos humanos calificados?"</div>
+
+      <div class="pregunta-critica">"¿Quién autorizó el cambio de estado de este operativo crítico?"</div>
+
+      <h1 id="conclusion">6. Conclusión y Relación con el Plan de Seguridad</h1>
+
+      <p>El Plan Nacional de Seguridad Pública 2025-2035 exige una <strong>política criminal basada en evidencia</strong>. Sin embargo, no puede haber evidencia sin datos de calidad.</p>
+
+      <div class="caja-exito">
+        <p><strong>Propuesta de Valor:</strong> El Sistema DNGR es el <strong>habilitador tecnológico</strong> para cumplir con los objetivos del Plan. Al solucionar el problema de la dispersión de datos y la falta de métricas de personal, transformamos la administración del Ministerio: <strong>pasamos de administrar la incertidumbre a gestionar la capacidad operativa</strong>.</p>
+      </div>
+
+      <div class="caja-info">
+        <p><strong>Solicitud:</strong> Se solicita autorización para proceder con la fase de desarrollo del <strong>prototipo funcional (MVP)</strong> detallado en el Mapa Estratégico adjunto.</p>
+      </div>
+
+      <h1 id="anexo-i">ANEXO I: DIAGNÓSTICO DE ALINEACIÓN ESTRATÉGICA</h1>
+      <p><strong>Respuesta Técnica a las Limitaciones del PNSP 2025-2035</strong></p>
+      
+      <div class="memo-header" style="border-left-color: #1565c0; background: #f9f9f9;">
+        <p><strong>DOCUMENTO DE REFERENCIA:</strong> Complemento del Diagnóstico General de la Criminalidad y la Violencia en Uruguay (PNSP 2025)</p>
+        <p><strong>REFERENCIA ESPECÍFICA:</strong> Página 18, Ítem 2.1.4 "Limitaciones metodológicas y oportunidades de mejora"</p>
+      </div>
+
+      <h2>1. EL MANDATO INSTITUCIONAL</h2>
+      <p>El Complemento del Diagnóstico General del Plan Nacional de Seguridad Pública (PNSP 2025-2035) marca un hito en la gestión ministerial al identificar explícitamente "limitaciones metodológicas" críticas y "oportunidades de mejora" en la calidad de la información base.</p>
+      <p>El informe subraya una realidad operativa ineludible: la gestión eficiente de la seguridad se ve obstaculizada no necesariamente por falta de voluntad política o escasez de recursos humanos, sino por la ausencia de datos estructurales fiables que sustenten la toma de decisiones basada en evidencia.</p>
+      <p>Nuestra propuesta (Sistema DNGR) no es una adquisición de software aislada; es la respuesta técnica directa a tres nudos críticos identificados en dicha planificación estratégica, transformando debilidades históricas en fortalezas de gestión.</p>
+
+      <h2>2. SOLUCIÓN A LOS NUDOS CRÍTICOS IDENTIFICADOS</h2>
+
+      <h3>2.1. La "Cifra Negra" de la Fuerza Efectiva</h3>
+      <p><em>Resolución de la Incertidumbre en Recursos Humanos</em></p>
+      <p>El diagnóstico institucional revela implícitamente una brecha alarmante entre la planilla presupuestal (lo que el Estado paga) y la presencia real en el territorio (el servicio que el ciudadano recibe). Actualmente, el Ministerio carece de un mecanismo unificado para descontar, en tiempo real, el ausentismo por certificaciones médicas, licencias prolongadas, comisiones de servicio, sumarios o tareas pasivas.</p>
+
+      <div class="caja-alerta">
+        <p><strong>El Problema (Impacto Financiero y Operativo):</strong> Esto genera el fenómeno de la "Fuerza Fantasma". Las Jefaturas planifican operativos contando con recursos teóricos que no existen en la práctica.</p>
+        <p><strong>Consecuencia:</strong> Servicios descubiertos, sobrecarga del personal activo (lo que genera un ciclo vicioso de más certificaciones por estrés) y una ineficiencia masiva en el gasto de horas extras (Art. 222) para cubrir huecos que no deberían existir.</p>
+      </div>
+
+      <div class="caja-exito">
+        <p><strong>La Solución DNGR:</strong> El sistema registra diariamente quién está disponible y quién no (por licencia, certificación médica, etc.). Así el Mando conoce exactamente con cuántos efectivos cuenta hoy para planificar operativos.</p>
+      </div>
+
+      <h3>2.2. Eliminación de Silos y Fragmentación Burocrática</h3>
+      <p><em>Integración de Inteligencia Logística</em></p>
+      <p>El PNSP 2025 advierte sobre la dificultad de correlacionar variables (crimen vs. respuesta policial) debido a la dispersión de datos. Hoy, la Dirección de Logística no "habla" con la Dirección de Operaciones, y Operaciones no "habla" con Recursos Humanos en tiempo real. Los datos fluyen lentamente a través de memorándums burocráticos y correos electrónicos no estructurados.</p>
+
+      <div class="caja-alerta">
+        <p><strong>El Problema (Ceguera Estratégica):</strong> La información crítica queda atrapada en cuadernos de guardia físicos, planillas de cálculo locales ("Excel") o sistemas legados inconexos. Esto impide realizar análisis de inteligencia logística o prever crisis.</p>
+        <p><strong>Ejemplo:</strong> Es difícil determinar si una zona sufre un aumento del delito debido a una falla en la estrategia o simplemente porque el 30% de la flota vehicular de esa zona está en taller sin reemplazo.</p>
+      </div>
+
+      <div class="caja-exito">
+        <p><strong>La Solución DNGR:</strong> El sistema reúne toda la información de personal, vehículos y recursos en un solo lugar. Todas las Direcciones ven la misma información actualizada, eliminando confusiones y duplicaciones.</p>
+      </div>
+
+      <h3>2.3. Auditoría de Cumplimiento y Medición de Impacto</h3>
+      <p><em>Gobernanza y Rendición de Cuentas</em></p>
+      <p>Uno de los pilares del PNSP es la evaluación de resultados y la rendición de cuentas ante la ciudadanía. Sin embargo, es metodológicamente imposible medir la eficacia de una estrategia de seguridad si no podemos certificar su ejecución con rigor forense.</p>
+
+      <div class="caja-alerta">
+        <p><strong>El Problema (Falta de Control):</strong> Actualmente, la institución depende de reportes verbales o transcripciones manuales para confirmar si un operativo se realizó. No existe trazabilidad digital inmutable que asegure que los recursos asignados estuvieron en el lugar y hora ordenados. Esto abre la puerta a la simulación de cumplimiento y debilita la cadena de mando.</p>
+      </div>
+
+      <div class="caja-exito">
+        <p><strong>La Solución DNGR:</strong> El sistema introduce el concepto de Trazabilidad Operativa. Cada Orden de Servicio (O.S.) nace digitalmente y se cierra con la carga de resultados en el sistema.</p>
+        <p><strong>Resultado:</strong> Esto permite calcular KPIs de cumplimiento (Planificado vs. Ejecutado), fundamentales para justificar la inversión presupuestal ante el Parlamento y ajustar las estrategias de seguridad con datos duros, cerrando la brecha entre la política de seguridad diseñada en el escritorio y la realidad ejecutada en la calle.</p>
+      </div>
+
+      <h2>3. RESPUESTA A LOS DESAFÍOS IDENTIFICADOS POR EL MINISTERIO</h2>
+      <p>En diciembre de 2025, el Ministerio instaló una Mesa de Estrategia Policial que identificó cuatro áreas prioritarias para modernizar la fuerza policial. El Sistema DNGR responde directamente a tres de esas prioridades:</p>
+      <div class="caja-info">
+        <p><strong>¿Qué dijo el Ministerio?</strong></p>
+        <p>"Se propone trabajar en la elaboración de insumos para el Plan Nacional de Seguridad Pública enfocados en la modernización de la policía, construyendo mecanismos efectivos de análisis y utilización de la información."</p>
+        <p style="text-align: right; font-style: italic;">— Dr. Federico del Castillo, Consultor PNSP</p>
+      </div>
+      <h3>3.1. Información e Investigación Criminal</h3>
+      <p><strong>El desafío del Ministerio:</strong> Construir mecanismos para analizar y usar mejor la información policial, garantizando que los datos orienten el trabajo operativo.</p>
+      <p><strong>Cómo DNGR lo resuelve:</strong> El sistema centraliza toda la información dispersa (planillas, cuadernos, memorándums) en una base de datos única. Así, el Mando puede consultar en segundos datos que antes tardaban días en recopilar.</p>
+      <h3>3.2. Operativa Policial</h3>
+      <p><strong>El desafío del Ministerio:</strong> Reducir el tiempo que los oficiales dedican a tareas administrativas para que puedan enfocarse en el trabajo de campo.</p>
+      <p><strong>Cómo DNGR lo resuelve:</strong> Automatiza la generación de informes y reportes. Un jefe de unidad que antes tardaba 2 horas llenando formularios en papel, ahora completa el reporte digital en 15 minutos.</p>
+      <h3>3.3. Gobernanza Institucional</h3>
+      <p><strong>El desafío del Ministerio:</strong> Mejorar la toma de decisiones y garantizar que los procesos sean eficientes y transparentes.</p>
+      <p><strong>Cómo DNGR lo resuelve:</strong> Cada cambio en el sistema queda registrado: quién lo hizo, cuándo y qué modificó. Esto permite auditar cualquier decisión y tomar acciones basadas en datos reales, no en estimaciones.</p>
+
+      <h2>4. ALINEACIÓN CON LOS EJES DE LA MESA DE ESTRATEGIA POLICIAL (DIC 2025)</h2>
+      <p>El Sistema DNGR se posiciona como la herramienta de ejecución para los cuatro ejes estratégicos definidos por la Mesa de Estrategia Policial en el marco de la modernización de la fuerza:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Eje Estratégico (Mesa)</th>
+            <th>Aporte del Sistema DNGR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Formación Policial</strong></td>
+            <td>Garantiza la viabilidad del plan de estudios 2026-2030 al mapear competencias reales (Skills) contra necesidades operativas detectadas.</td>
+          </tr>
+          <tr>
+            <td><strong>Información e Investigación Criminal</strong></td>
+            <td>Proporciona información centralizada y actualizada para que las decisiones operativas se basen en datos reales.</td>
+          </tr>
+          <tr>
+            <td><strong>Operativa Policial</strong></td>
+            <td>Elimina la carga manual de datos, permitiendo que el Mando cuente con reportes de cumplimiento en tiempo real.</td>
+          </tr>
+          <tr>
+            <td><strong>Gobernanza Institucional</strong></td>
+            <td>Optimiza procesos de toma de decisiones y garantiza la eficiencia de todas las facetas del trabajo policial con datos auditables.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="anexos">
+        <h2>Anexos</h2>
+        <ul>
+          <li><strong>Anexo A:</strong> Mapa Estratégico de Desarrollo v1.7 (Detalle técnico).</li>
+          <li><strong>Anexo B:</strong> Referencias al Complemento del Diagnóstico PNSP 2025 (Secciones de Limitaciones y Recursos).</li>
+        </ul>
+      </div>
+
+      <hr class="separador">
+
+      <div class="footer">
+        <p><strong>Sistema DNGR</strong> — Digitalización y Gestión de Recursos</p>
+        <p>Ministerio del Interior | Dirección Nacional de la Guardia Republicana</p>
+        <p><em>Documento de uso interno — Enero 2026</em></p>
+      </div>
+      <div class="page-footer-print"></div>
+    </div>
+</body>
+</html>
+

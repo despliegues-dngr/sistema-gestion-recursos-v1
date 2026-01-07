@@ -7,7 +7,11 @@
         <Card v-if="isESMAPO" class="despliegues-card card--table">
           <template #header>
             <div class="card-header-with-search">
-              <span>Órdenes Operativas - Todas las Unidades ({{ ordenesFormateadas.length }})</span>
+              <span
+                >Órdenes Operativas - Todas las Unidades ({{
+                  ordenesFormateadas.length
+                }})</span
+              >
               <div class="card-header-actions">
                 <Input
                   v-model="searchQuery"
@@ -15,11 +19,7 @@
                   size="sm"
                   class="search-input"
                 />
-                <Button
-                  variant="primary"
-                  size="sm"
-                  @click="handleCreate"
-                >
+                <Button variant="primary" size="sm" @click="handleCreate">
                   + Agregar Despliegue
                 </Button>
                 <FileUpload
@@ -46,14 +46,24 @@
             <Pagination
               v-if="ordenesFormateadas.length > 0"
               :current-page="currentPage"
-              :total-pages="Math.ceil(ordenesFormateadas.length / pageSize) || 1"
+              :total-pages="
+                Math.ceil(ordenesFormateadas.length / pageSize) || 1
+              "
               :total-items="ordenesFormateadas.length"
               :page-size="pageSize"
               :page-size-options="[10, 25, 50, 100]"
               @first="currentPage = 1"
               @previous="currentPage = Math.max(1, currentPage - 1)"
-              @next="currentPage = Math.min(Math.ceil(ordenesFormateadas.length / pageSize) || 1, currentPage + 1)"
-              @last="currentPage = Math.ceil(ordenesFormateadas.length / pageSize) || 1"
+              @next="
+                currentPage = Math.min(
+                  Math.ceil(ordenesFormateadas.length / pageSize) || 1,
+                  currentPage + 1
+                )
+              "
+              @last="
+                currentPage =
+                  Math.ceil(ordenesFormateadas.length / pageSize) || 1
+              "
               @update:pageSize="handlePageSizeChange"
             />
           </template>
@@ -67,14 +77,23 @@
                 <button
                   v-for="tab in tabs"
                   :key="tab.id"
-                  :class="['tab-button-inline', { 'tab-button-inline--active': activeTab === tab.id }]"
+                  :class="[
+                    'tab-button-inline',
+                    { 'tab-button-inline--active': activeTab === tab.id },
+                  ]"
                   @click="activeTab = tab.id"
                 >
-                  <template v-if="tab.icon && (typeof tab.icon === 'object' || typeof tab.icon === 'function')">
+                  <template
+                    v-if="
+                      tab.icon &&
+                      (typeof tab.icon === 'object' ||
+                        typeof tab.icon === 'function')
+                    "
+                  >
                     <component :is="tab.icon" :size="16" class="tab-icon" />
                   </template>
                   <span>{{ tab.label }}</span>
-                  
+
                   <!-- Badge de contador -->
                   <Badge
                     v-if="getTabCount(tab.id) > 0"
@@ -86,7 +105,7 @@
                   </Badge>
                 </button>
               </div>
-              
+
               <!-- Búsqueda -->
               <div class="header-search-inline">
                 <Input
@@ -170,14 +189,24 @@
             <Pagination
               v-if="datosSeccionActual.length > 0"
               :current-page="currentPage"
-              :total-pages="Math.ceil(datosSeccionActual.length / pageSize) || 1"
+              :total-pages="
+                Math.ceil(datosSeccionActual.length / pageSize) || 1
+              "
               :total-items="datosSeccionActual.length"
               :page-size="pageSize"
               :page-size-options="[10, 25, 50, 100]"
               @first="currentPage = 1"
               @previous="currentPage = Math.max(1, currentPage - 1)"
-              @next="currentPage = Math.min(Math.ceil(datosSeccionActual.length / pageSize) || 1, currentPage + 1)"
-              @last="currentPage = Math.ceil(datosSeccionActual.length / pageSize) || 1"
+              @next="
+                currentPage = Math.min(
+                  Math.ceil(datosSeccionActual.length / pageSize) || 1,
+                  currentPage + 1
+                )
+              "
+              @last="
+                currentPage =
+                  Math.ceil(datosSeccionActual.length / pageSize) || 1
+              "
               @update:pageSize="handlePageSizeChange"
             />
           </template>
@@ -206,7 +235,11 @@
     <!-- Modal Formulario Orden (ESMAPO) -->
     <ModalFormularioOrden
       v-model="showFormularioModal"
-      :title="modalMode === 'edit' ? 'Editar Orden Operativa' : 'Nueva Orden Operativa'"
+      :title="
+        modalMode === 'edit'
+          ? 'Editar Orden Operativa'
+          : 'Nueva Orden Operativa'
+      "
       subtitle="ESMAPO - Estado Mayor Policial"
       :tabs="formularioOrdenTabs"
       :submit-text="modalMode === 'edit' ? 'Actualizar Orden' : 'Crear Orden'"
@@ -258,33 +291,35 @@ import {
   Modal,
   ModalFormularioOrden,
   Tabs,
-  Badge
+  Badge,
 } from "@components";
-import { 
-  AlertCircle as AlertCircleIcon, 
-  Calendar as CalendarIcon, 
-  CheckCircle as CheckCircleIcon, 
-  History as HistoryIcon, 
-  FileText as FileTextIcon 
-} from 'lucide-vue-next';
+import {
+  AlertCircle as AlertCircleIcon,
+  Calendar as CalendarIcon,
+  CheckCircle as CheckCircleIcon,
+  History as HistoryIcon,
+  FileText as FileTextIcon,
+} from "lucide-vue-next";
 import type { TableColumn, TableAction } from "@components/Table/Table.vue";
 import { esmapoService, desplieguesService } from "@services";
-import type { DiaDespliegue, ReporteDespliegueConRelaciones } from '@services';
+import type { DiaDespliegue, ReporteDespliegueConRelaciones } from "@services";
 import { useToast } from "@hooks";
 import type { OrdenOperativaConRelaciones } from "@services/esmapoService";
-import { db } from '@lib/db'
+import { db } from "@lib/db";
 import FormularioOrdenGeneral from "./components/FormularioOrdenGeneral.vue";
 import FormularioOrdenRecursos from "./components/FormularioOrdenRecursos.vue";
 import ModalReporteDespliegue from "./components/ModalReporteDespliegue.vue";
-import '@components/FichaModalHeader/FichaModalHeader.css';
-import './DesplieguesPage.css';
+import "@components/FichaModalHeader/FichaModalHeader.css";
+import "./DesplieguesPage.css";
 
 const route = useRoute();
 const toast = useToast();
 
 // ✅ Identificar unidad actual
-const currentUnit = computed(() => route.params.unidad as string || "direccion");
-const isESMAPO = computed(() => currentUnit.value === 'esmapo');
+const currentUnit = computed(
+  () => (route.params.unidad as string) || "direccion"
+);
+const isESMAPO = computed(() => currentUnit.value === "esmapo");
 const unidadNombre = computed(() => {
   return currentUnit.value.charAt(0).toUpperCase() + currentUnit.value.slice(1);
 });
@@ -297,73 +332,73 @@ const pageSize = ref(10);
 const ordenes = ref<OrdenOperativaConRelaciones[]>([]);
 const showFormularioModal = ref(false);
 const formRef = ref<any>(null);
-const modalMode = ref<'create' | 'edit'>('create');
+const modalMode = ref<"create" | "edit">("create");
 const selectedOrdenId = ref<number | undefined>(undefined);
 
 // Tabs para modal de orden operativa (ESMAPO)
 const formularioOrdenTabs = [
-  { id: 'general', label: 'Datos Generales', icon: FileTextIcon },
-  { id: 'recursos', label: 'Recursos Planificados', icon: FileTextIcon }
-]
+  { id: "general", label: "Datos Generales", icon: FileTextIcon },
+  { id: "recursos", label: "Recursos Planificados", icon: FileTextIcon },
+];
 
 // ✅ Estado reactivo para Modal de Reporte
-const showReporteModal = ref(false)
-const selectedDiaDespliegueId = ref<string | number | undefined>(undefined)
+const showReporteModal = ref(false);
+const selectedDiaDespliegueId = ref<string | number | undefined>(undefined);
 
 // ✅ Sistema de Tabs para secciones
-const activeTab = ref<string>('para-hoy')
-const isLoadingSecciones = ref(false)
+const activeTab = ref<string>("para-hoy");
+const isLoadingSecciones = ref(false);
 // ✅ Datos de cada sección
-const sinCargar = ref<DiaDespliegue[]>([])
-const paraHoy = ref<DiaDespliegue[]>([])
-const cargadosHoy = ref<ReporteDespliegueConRelaciones[]>([])
-const historial = ref<ReporteDespliegueConRelaciones[]>([])
+const sinCargar = ref<DiaDespliegue[]>([]);
+const paraHoy = ref<DiaDespliegue[]>([]);
+const cargadosHoy = ref<ReporteDespliegueConRelaciones[]>([]);
+const historial = ref<ReporteDespliegueConRelaciones[]>([]);
 // ✅ Configuración de tabs
 const tabs = [
-  { id: 'sin-cargar', label: 'Sin Cargar', icon: AlertCircleIcon },
-  { id: 'para-hoy', label: 'Para Hoy', icon: CalendarIcon },
-  { id: 'cargados-hoy', label: 'Cargados Hoy', icon: CheckCircleIcon },
-  { id: 'historial', label: 'Historial', icon: HistoryIcon }
-]
+  { id: "sin-cargar", label: "Sin Cargar", icon: AlertCircleIcon },
+  { id: "para-hoy", label: "Para Hoy", icon: CalendarIcon },
+  { id: "cargados-hoy", label: "Cargados Hoy", icon: CheckCircleIcon },
+  { id: "historial", label: "Historial", icon: HistoryIcon },
+];
 
 // Función para obtener el contador de cada tab
 function getTabCount(tabId: string): number {
   switch (tabId) {
-    case 'sin-cargar':
-      return sinCargar.value.length
-    case 'para-hoy':
-      return paraHoy.value.length
-    case 'cargados-hoy':
-      return cargadosHoy.value.length
-    case 'historial':
-      return historial.value.length
+    case "sin-cargar":
+      return sinCargar.value.length;
+    case "para-hoy":
+      return paraHoy.value.length;
+    case "cargados-hoy":
+      return cargadosHoy.value.length;
+    case "historial":
+      return historial.value.length;
     default:
-      return 0
+      return 0;
   }
 }
 
 // Función para obtener la variante del badge según el tab
-function getTabBadgeVariant(tabId: string): 'warning' {
-  return 'warning'  // Diseño único amarillo para todos los tabs
+function getTabBadgeVariant(tabId: string): "warning" {
+  return "warning"; // Diseño único amarillo para todos los tabs
 }
 
 // ✅ Cargar datos al montar
 onMounted(async () => {
-  await loadOrdenes()
+  await loadOrdenes();
 });
 
 async function loadOrdenes() {
   try {
     if (isESMAPO.value) {
       // ESMAPO: Vista administrativa completa
-      ordenes.value = await esmapoService.getAll()
+      ordenes.value = await esmapoService.getAll();
     } else {
       // Direcciones: Cargar datos de las 4 secciones
-      await loadSeccionesDespliegue()
+      await loadSeccionesDespliegue();
     }
   } catch (error) {
-    console.error("Error al cargar órdenes:", error)
-    toast.error("Error al cargar órdenes operativas")
+    console.error("Error al cargar órdenes:", error);
+    toast.error("Error al cargar órdenes operativas");
   }
 }
 
@@ -372,22 +407,23 @@ async function loadSeccionesDespliegue() {
   try {
     // Obtener ID de la unidad actual desde el usuario logueado o ruta
     // AI-Hint: Usamos el slug de la ruta para obtener el ID de la unidad para facilitar pruebas
-    const unidadId = await obtenerUnidadId(currentUnit.value) || 1
-    
-    const [sinCargarData, paraHoyData, cargadosHoyData, historialData] = await Promise.all([
-      desplieguesService.getSinCargar(unidadId),
-      desplieguesService.getParaHoy(unidadId),
-      desplieguesService.getCargadosHoy(unidadId),
-      desplieguesService.getHistorial(unidadId)
-    ])
-    
-    sinCargar.value = sinCargarData
-    paraHoy.value = paraHoyData
-    cargadosHoy.value = cargadosHoyData
-    historial.value = historialData
+    const unidadId = (await obtenerUnidadId(currentUnit.value)) || 1;
+
+    const [sinCargarData, paraHoyData, cargadosHoyData, historialData] =
+      await Promise.all([
+        desplieguesService.getSinCargar(unidadId),
+        desplieguesService.getParaHoy(unidadId),
+        desplieguesService.getCargadosHoy(unidadId),
+        desplieguesService.getHistorial(unidadId),
+      ]);
+
+    sinCargar.value = sinCargarData;
+    paraHoy.value = paraHoyData;
+    cargadosHoy.value = cargadosHoyData;
+    historial.value = historialData;
   } catch (error) {
-    console.error("Error al cargar secciones de despliegue:", error)
-    toast.error("Error al cargar reportes de despliegue")
+    console.error("Error al cargar secciones de despliegue:", error);
+    toast.error("Error al cargar reportes de despliegue");
   } finally {
     isLoadingSecciones.value = false;
   }
@@ -395,43 +431,98 @@ async function loadSeccionesDespliegue() {
 
 // ✅ Helper para obtener ID de unidad desde slug
 async function obtenerUnidadId(slug: string): Promise<number | undefined> {
-  const nombreUnidad = getUnidadNameFromSlug(slug)
-  
+  const nombreUnidad = getUnidadNameFromSlug(slug);
+
   // AI-Hint: Como 'nombre' no está indexado en IndexedDB, filtramos en memoria para evitar SchemaError
-  const unidades = await db.unidades.toArray()
-  const unidad = unidades.find(u => u.nombre === nombreUnidad)
-  
-  return unidad?.id
+  const unidades = await db.unidades.toArray();
+  const unidad = unidades.find((u) => u.nombre === nombreUnidad);
+
+  return unidad?.id;
 }
 
 // ✅ Mapeo de slug de unidad a nombre en BD
 function getUnidadNameFromSlug(slug: string): string {
   const mapping: Record<string, string> = {
-    'direccion-i': 'Dirección I',
-    'direccion-ii': 'Dirección II',
-    'regional-norte': 'Regional Norte',
-    'regional-este': 'Regional Este',
-    'geo': 'GEO',
-    'direccion-iv': 'Dirección IV'
+    "direccion-i": "Dirección I",
+    "direccion-ii": "Dirección II",
+    "regional-norte": "Regional Norte",
+    "regional-este": "Regional Este",
+    geo: "GEO",
+    "direccion-iv": "Dirección IV",
   };
-  return mapping[slug] || '';
+  return mapping[slug] || "";
 }
 
 // ✅ Datos formateados según la sección activa
 const datosSeccionActual = computed(() => {
   switch (activeTab.value) {
-    case 'sin-cargar':
-      return sinCargar.value.map(d => formatearDiaDespliegue(d))
-    case 'para-hoy':
-      return paraHoy.value.map(d => formatearDiaDespliegue(d))
-    case 'cargados-hoy':
-      return cargadosHoy.value.map(r => formatearReporte(r))
-    case 'historial':
-      return historial.value.map(r => formatearReporte(r))
+    case "sin-cargar":
+      return sinCargar.value.map((d) => formatearDiaDespliegue(d));
+    case "para-hoy":
+      return paraHoy.value.map((d) => formatearDiaDespliegue(d));
+    case "cargados-hoy":
+      return cargadosHoy.value.map((r) => formatearReporte(r));
+    case "historial":
+      return historial.value.map((r) => formatearReporte(r));
     default:
-      return []
+      return [];
   }
-})
+});
+
+// ✅ Helper: Normalizar hora a string "HH:MM"
+function normalizarHora(hora?: string | Date | null): string | null {
+  if (!hora) return null;
+
+  if (typeof hora === "string") return hora;
+
+  // Convertir Date a "HH:MM"
+  return new Date(hora).toLocaleTimeString("es-UY", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+}
+
+// ✅ Helper: Formatear horario según especificación DNGR
+function formatearHorario(
+  horaInicio?: string | Date | null,
+  horaFin?: string | Date | null
+): string {
+  const inicio = normalizarHora(horaInicio);
+  const fin = normalizarHora(horaFin);
+
+  // Regla 1: Sin hora inicio
+  if (!inicio) return "A coordinar";
+
+  // Regla 2: Con inicio, sin fin
+  if (!fin) return `${inicio} a fin`;
+
+  // Regla 3: Ambas definidas
+  return `${inicio} a ${fin}`;
+}
+
+// ✅ Helper: Formatear rango de fechas según especificación DNGR
+function formatearFecha(fechaInicio?: Date | null, fechaFin?: Date | null): string {
+  if (!fechaInicio) return "-";
+
+  const inicio = new Date(fechaInicio).toLocaleDateString("es-UY", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
+  // Regla 1: Sin fecha fin
+  if (!fechaFin) return `${inicio} a hasta nueva orden`;
+
+  const fin = new Date(fechaFin).toLocaleDateString("es-UY", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
+  // Regla 2: Ambas definidas
+  return `${inicio} a ${fin}`;
+}
 
 // ✅ Formatear DiaDespliegue para la tabla
 function formatearDiaDespliegue(dia: DiaDespliegue) {
@@ -439,74 +530,107 @@ function formatearDiaDespliegue(dia: DiaDespliegue) {
     id: `${dia.ordenId}-${dia.fecha.getTime()}`,
     ordenId: dia.ordenId,
     fechaDespliegue: dia.fecha,
-    fecha: new Date(dia.fecha).toLocaleDateString('es-UY', { day: '2-digit', month: '2-digit', year: 'numeric' }),
-    orden: dia.orden ? `${dia.orden.tipoDocumento || ''} ${dia.orden.nroDocumento || ''}`.trim() : '-',
-    nombre: dia.orden 
+    fecha: new Date(dia.fecha).toLocaleDateString("es-UY", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }),
+    orden: dia.orden
+      ? `${dia.orden.tipoDocumento || ""} ${
+          dia.orden.nroDocumento || ""
+        }`.trim()
+      : "-",
+    nombre: dia.orden
       ? [
-          `${dia.orden.tipoServicio || ''} ${dia.orden.nombreDocumento || ''}`.trim(),
-          dia.orden.nombreServicio
-        ].filter(Boolean).join(' - ') || '-'
-      : '-',
-    horaInicio: dia.orden?.horaInicioPlan || '-',
-    horaFin: dia.orden?.horaFinPlan || '-'
-  }
+          `${dia.orden.tipoServicio || ""} ${
+            dia.orden.nombreDocumento || ""
+          }`.trim(),
+          dia.orden.nombreServicio,
+        ]
+          .filter(Boolean)
+          .join(" - ") || "-"
+      : "-",
+    horario: formatearHorario(
+      dia.orden?.horaInicioPlan,
+      dia.orden?.horaFinPlan
+    ),
+  };
 }
 
 // ✅ Formatear ReporteDespliegue para la tabla
 function formatearReporte(reporte: ReporteDespliegueConRelaciones) {
+  // Priorizar horas reales, fallback a planificadas
+  const horaInicio = reporte.realHoraInicio || reporte.orden?.horaInicioPlan;
+  const horaFin = reporte.realHoraFin || reporte.orden?.horaFinPlan;
+
   return {
     id: reporte.id,
     ordenId: reporte.ordenId,
     fechaDespliegue: reporte.fechaDespliegue,
-    fecha: new Date(reporte.fechaDespliegue).toLocaleDateString('es-UY', { day: '2-digit', month: '2-digit', year: 'numeric' }),
-    orden: reporte.orden ? `${reporte.orden.tipoDocumento || ''} ${reporte.orden.nroDocumento || ''}`.trim() : '-',
-    nombre: reporte.orden 
+    fecha: new Date(reporte.fechaDespliegue).toLocaleDateString("es-UY", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }),
+    orden: reporte.orden
+      ? `${reporte.orden.tipoDocumento || ""} ${
+          reporte.orden.nroDocumento || ""
+        }`.trim()
+      : "-",
+    nombre: reporte.orden
       ? [
-          `${reporte.orden.tipoServicio || ''} ${reporte.orden.nombreDocumento || ''}`.trim(),
-          reporte.orden.nombreServicio
-        ].filter(Boolean).join(' - ') || '-'
-      : '-',
-    horaInicio: reporte.realHoraInicio 
-      ? new Date(reporte.realHoraInicio).toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit', hour12: false })
-      : reporte.orden?.horaInicioPlan || '-',
-    horaFin: reporte.realHoraFin 
-      ? new Date(reporte.realHoraFin).toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit', hour12: false })
-      : reporte.orden?.horaFinPlan || '-'
-  }
+          `${reporte.orden.tipoServicio || ""} ${
+            reporte.orden.nombreDocumento || ""
+          }`.trim(),
+          reporte.orden.nombreServicio,
+        ]
+          .filter(Boolean)
+          .join(" - ") || "-"
+      : "-",
+    horario: formatearHorario(horaInicio, horaFin),
+  };
 }
 
 // ✅ Paginación sobre datos de la sección actual
 const datosPaginadosSeccion = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value
-  const end = start + pageSize.value
-  return datosSeccionActual.value.slice(start, end)
-})
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return datosSeccionActual.value.slice(start, end);
+});
 
 // ✅ Formatear datos para la tabla con soporte de búsqueda (ESMAPO)
 const ordenesFormateadas = computed(() => {
   let filtered = ordenes.value;
-  
+
   // ✅ Filtro de búsqueda
   if (searchQuery.value) {
-    filtered = filtered.filter(o => 
-      o.nroDocumento?.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      (o.unidad?.nombre || "").toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      (o.nombreServicio || "").toLowerCase().includes(searchQuery.value.toLowerCase())
+    filtered = filtered.filter(
+      (o) =>
+        o.nroDocumento
+          ?.toLowerCase()
+          .includes(searchQuery.value.toLowerCase()) ||
+        (o.unidad?.nombre || "")
+          .toLowerCase()
+          .includes(searchQuery.value.toLowerCase()) ||
+        (o.nombreServicio || "")
+          .toLowerCase()
+          .includes(searchQuery.value.toLowerCase())
     );
   }
 
-  return filtered.map(o => ({
+  return filtered.map((o) => ({
     id: o.id,
     unidad: o.unidad?.nombre || "Sin Unidad",
-    orden: `${o.tipoDocumento || ''} ${o.nroDocumento || ''}`.trim() || "-",
-    nombre: [
-      `${o.tipoServicio || ''} ${o.nombreDocumento || ''}`.trim(),
-      o.nombreServicio
-    ].filter(Boolean).join(' - ') || "-",
-    fechaInicio: o.fechaInicioPlan ? new Date(o.fechaInicioPlan).toLocaleDateString() : "-",
-    horaInicio: o.horaInicioPlan || "-",
-    fechaFin: o.fechaFinPlan ? new Date(o.fechaFinPlan).toLocaleDateString() : "-",
-    horaFin: o.horaFinPlan || "-",
+    orden: `${o.tipoDocumento || ""} ${o.nroDocumento || ""}`.trim() || "-",
+    nombre:
+      [
+        `${o.tipoServicio || ""} ${o.nombreDocumento || ""}`.trim(),
+        o.nombreServicio,
+      ]
+        .filter(Boolean)
+        .join(" - ") || "-",
+    fecha: formatearFecha(o.fechaInicioPlan, o.fechaFinPlan),
+    horario: formatearHorario(o.horaInicioPlan, o.horaFinPlan),
     moviles: o.planMoviles,
     ssoo: o.planSsoo,
     ppss: o.planPpssMovil,
@@ -517,7 +641,7 @@ const ordenesFormateadas = computed(() => {
     choqueApost: o.planChoqueApost,
     choqueAlert: o.planChoqueAlerta,
     hidro: o.planHidro,
-    efectivos: o.planTotalPersonal
+    efectivos: o.planTotalPersonal,
   }));
 });
 
@@ -536,50 +660,89 @@ const tableColumns = computed<TableColumn[]>(() => {
       { field: "unidad", label: "Unidad", sortable: true, width: "150px" },
       { field: "orden", label: "Orden", sortable: true, width: "220px" },
       { field: "nombre", label: "Nombre", sortable: true, width: "280px" },
-      { field: "fechaInicio", label: "Fecha Inicio", sortable: true, width: "110px" },
-      { field: "horaInicio", label: "Hora Inicio", width: "100px" },
-      { field: "fechaFin", label: "Fecha Fin", sortable: true, width: "110px" },
-      { field: "horaFin", label: "Hora Fin", width: "100px" },
+      { field: "fecha", label: "Fecha", sortable: true, width: "220px" },
+      { field: "horario", label: "Horario", width: "150px" },
       { field: "moviles", label: "Móviles", width: "60px", icon: "movil" },
       { field: "ssoo", label: "SSOO", width: "60px", icon: "ssoo" },
-      { field: "ppss", label: "P.P.S.S. en Movil", width: "60px", icon: "ppssEnMovil" },
+      {
+        field: "ppss",
+        label: "P.P.S.S. en Movil",
+        width: "60px",
+        icon: "ppssEnMovil",
+      },
       { field: "motos", label: "Motos", width: "60px", icon: "motos" },
       { field: "hipos", label: "Hipos", width: "60px", icon: "hipos" },
-      { field: "pieTierra", label: "Pie a Tierra", width: "60px", icon: "pieTierra" },
-      { field: "motosBiTrip", label: "Motos BiTripuladas", width: "60px", icon: "motosBitripuladas" },
-      { field: "choqueApost", label: "Choque Apostado", width: "60px", icon: "choqueApostado" },
-      { field: "choqueAlert", label: "Choque en Alerta", width: "60px", icon: "choqueEnAlerta" },
+      {
+        field: "pieTierra",
+        label: "Pie a Tierra",
+        width: "60px",
+        icon: "pieTierra",
+      },
+      {
+        field: "motosBiTrip",
+        label: "Motos BiTripuladas",
+        width: "60px",
+        icon: "motosBitripuladas",
+      },
+      {
+        field: "choqueApost",
+        label: "Choque Apostado",
+        width: "60px",
+        icon: "choqueApostado",
+      },
+      {
+        field: "choqueAlert",
+        label: "Choque en Alerta",
+        width: "60px",
+        icon: "choqueEnAlerta",
+      },
       { field: "hidro", label: "Hidro", width: "60px", icon: "hidro" },
-      { field: "efectivos", label: "Total Efectivos", width: "60px", icon: "ppssTotal" }
-    ]
+      {
+        field: "efectivos",
+        label: "Total Efectivos",
+        width: "60px",
+        icon: "ppssTotal",
+      },
+    ];
   }
-  
+
   // Columnas para Direcciones - SIMPLIFICADAS
   return [
     { field: "fecha", label: "Fecha", sortable: true, width: "110px" },
     { field: "orden", label: "Orden", sortable: true, width: "200px" },
-    { field: "nombre", label: "Nombre Operativo", sortable: true, width: "250px" },
-    { field: "horaInicio", label: "Hora Inicio", width: "100px" },
-    { field: "horaFin", label: "Hora Fin", width: "100px" }
-  ]
-})
+    {
+      field: "nombre",
+      label: "Nombre Operativo",
+      sortable: true,
+      width: "250px",
+    },
+    { field: "horario", label: "Horario", width: "150px" },
+  ];
+});
 
 // ✅ Acciones dinámicas
 const tableActions = computed<TableAction[]>(() => {
   if (isESMAPO.value) {
     return [
       { name: "view", icon: "view", label: "Ver detalles" },
-      { name: "delete", icon: "delete", label: "Eliminar" }
+      { name: "delete", icon: "delete", label: "Eliminar" },
     ];
   }
-  
-  if (activeTab.value === 'sin-cargar' || activeTab.value === 'para-hoy') {
-    return [{ name: 'edit', icon: 'edit', label: 'Reportar Despliegue' }];
-  } else {
-    return [
-      { name: 'view', icon: 'view', label: 'Ver Detalles' },
-      { name: 'edit', icon: 'edit', label: 'Editar' }
-    ];
+
+  // Direcciones: Acciones dinámicas según sección
+  switch (activeTab.value) {
+    case "sin-cargar":
+    case "para-hoy":
+      return [{ name: "edit", icon: "edit", label: "Reportar Despliegue" }];
+
+    case "cargados-hoy":
+      return [{ name: "edit", icon: "edit", label: "Editar Reporte" }];
+
+    case "historial":
+      return [{ name: "view", icon: "view", label: "Ver Reporte" }];
+
+    default:
+      return [];
   }
 });
 
@@ -588,7 +751,7 @@ async function handleCSVImport(file: File) {
   try {
     const text = await file.text();
     const result = await esmapoService.importFromCSV(text);
-    
+
     if (result.errores.length > 0) {
       toast.warning(
         `Importados: ${result.importados}/${result.total}. ${result.errores.length} errores`
@@ -596,7 +759,7 @@ async function handleCSVImport(file: File) {
     } else {
       toast.success(`${result.importados} órdenes importadas exitosamente`);
     }
-    
+
     await loadOrdenes();
   } catch (error) {
     console.error("Error al importar CSV:", error);
@@ -607,7 +770,7 @@ async function handleCSVImport(file: File) {
 }
 
 function handleCreate() {
-  modalMode.value = 'create';
+  modalMode.value = "create";
   selectedOrdenId.value = undefined;
   showFormularioModal.value = true;
 }
@@ -620,15 +783,15 @@ async function handleFormularioSuccess() {
 
 // ✅ Handlers para Reporte de Despliegue
 function handleReportarDespliegue(row: any) {
-  selectedDiaDespliegueId.value = row.id
-  showReporteModal.value = true
+  selectedDiaDespliegueId.value = row.id;
+  showReporteModal.value = true;
 }
 
 function handleReporteSuccess() {
-  showReporteModal.value = false
+  showReporteModal.value = false;
   // TODO Fase 2: Recargar secciones
-  console.log('Reporte guardado - TODO: recargar datos')
-  loadSeccionesDespliegue()
+  console.log("Reporte guardado - TODO: recargar datos");
+  loadSeccionesDespliegue();
 }
 
 function handlePageSizeChange(size: number) {
@@ -638,43 +801,50 @@ function handlePageSizeChange(size: number) {
 
 async function handleTableAction(payload: { action: string; row: any }) {
   switch (payload.action) {
-    case 'view':
-      modalMode.value = 'edit';
-      selectedOrdenId.value = payload.row.id;
-      showFormularioModal.value = true;
+    case "view":
+      if (isESMAPO.value) {
+        // Vista de Orden Operativa (ESMAPO)
+        modalMode.value = "edit";
+        selectedOrdenId.value = payload.row.id;
+        showFormularioModal.value = true;
+      } else {
+        // Vista de Reporte (Direcciones - Historial)
+        selectedDiaDespliegueId.value = payload.row.id;
+        showReporteModal.value = true;
+      }
       break;
-      
-    case 'delete':
+
+    case "delete":
       if (confirm(`¿Está seguro de eliminar la orden ${payload.row.orden}?`)) {
         try {
-          await esmapoService.softDelete(payload.row.id, 1) // AI-Hint: Usar ID de usuario logueado en prod
-          toast.success("Orden eliminada exitosamente")
-          await loadOrdenes()
+          await esmapoService.softDelete(payload.row.id, 1); // AI-Hint: Usar ID de usuario logueado en prod
+          toast.success("Orden eliminada exitosamente");
+          await loadOrdenes();
         } catch (error) {
-          toast.error("Error al eliminar la orden")
+          toast.error("Error al eliminar la orden");
         }
       }
       break;
-    
-    case 'edit':
-      if (activeTab.value === 'sin-cargar' || activeTab.value === 'para-hoy') {
-        handleReportarDespliegue(payload.row)
+
+    case "edit":
+      if (activeTab.value === "sin-cargar" || activeTab.value === "para-hoy") {
+        handleReportarDespliegue(payload.row);
       } else {
         // Editar reporte existente
-        selectedDiaDespliegueId.value = payload.row.id
-        showReporteModal.value = true
+        selectedDiaDespliegueId.value = payload.row.id;
+        showReporteModal.value = true;
       }
       break;
-    
+
     default:
-      toast.info(`Acción ${payload.action} no reconocida`)
+      toast.info(`Acción ${payload.action} no reconocida`);
   }
 }
 
 // ✅ Resetear paginación al cambiar de tab
 watch(activeTab, () => {
-  currentPage.value = 1
-})
+  currentPage.value = 1;
+});
 
 // ✅ Garantizar que los datos se muestren cuando estén disponibles
 // AI-Hint: watchEffect crea una dependencia reactiva con los arrays de datos para forzar la re-evaluación del computed
@@ -685,10 +855,10 @@ watchEffect(() => {
       sinCargar.value.length,
       paraHoy.value.length,
       cargadosHoy.value.length,
-      historial.value.length
-    ]
+      historial.value.length,
+    ];
   }
-})
+});
 
 // ✅ Recargar datos cuando cambia la unidad en la ruta
 // AI-Hint: Vue Router reutiliza el componente, por lo que onMounted no se ejecuta al cambiar de parámetro
@@ -697,27 +867,29 @@ watch(
   async (newUnidad, oldUnidad) => {
     // Solo recargar si realmente cambió la unidad (no en carga inicial)
     if (newUnidad && oldUnidad && newUnidad !== oldUnidad) {
-      console.log(`[DesplieguesPage] Cambio de unidad: ${oldUnidad} → ${newUnidad}`)
-      
+      console.log(
+        `[DesplieguesPage] Cambio de unidad: ${oldUnidad} → ${newUnidad}`
+      );
+
       // Limpiar datos anteriores para evitar mostrar datos de otra unidad mientras carga
       if (!isESMAPO.value) {
-        sinCargar.value = []
-        paraHoy.value = []
-        cargadosHoy.value = []
-        historial.value = []
+        sinCargar.value = [];
+        paraHoy.value = [];
+        cargadosHoy.value = [];
+        historial.value = [];
       } else {
-        ordenes.value = []
+        ordenes.value = [];
       }
-      
+
       // Resetear estado de UI
-      currentPage.value = 1
-      activeTab.value = 'para-hoy'
-      
+      currentPage.value = 1;
+      activeTab.value = "para-hoy";
+
       // Recargar datos
-      await loadOrdenes()
+      await loadOrdenes();
     }
   }
-)
+);
 </script>
 
 <style scoped>
@@ -816,16 +988,16 @@ watch(
     align-items: stretch;
     gap: var(--space-2);
   }
-  
+
   .card-header-with-search > span {
     order: 1;
   }
-  
+
   .card-header-actions {
     order: 2;
     flex-wrap: wrap;
   }
-  
+
   .card-header-with-search .search-input {
     width: 100%;
     order: 1;
@@ -881,12 +1053,9 @@ watch(
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: 
-    color var(--transition-fast),
-    background-color var(--transition-fast),
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform 0.15s ease;
+  transition: color var(--transition-fast),
+    background-color var(--transition-fast), border-color var(--transition-fast),
+    box-shadow var(--transition-fast), transform 0.15s ease;
   white-space: nowrap;
   flex-shrink: 0;
   position: relative;
@@ -940,7 +1109,9 @@ watch(
 }
 
 /* Ícono se agranda levemente en hover */
-.direcciones-view .tab-button-inline:hover:not(.tab-button-inline--active) .tab-icon {
+.direcciones-view
+  .tab-button-inline:hover:not(.tab-button-inline--active)
+  .tab-icon {
   transform: scale(1.1);
 }
 
@@ -962,7 +1133,9 @@ watch(
 }
 
 /* Badge en hover tiene efecto sutil */
-.direcciones-view .tab-button-inline:hover:not(.tab-button-inline--active) .tab-badge {
+.direcciones-view
+  .tab-button-inline:hover:not(.tab-button-inline--active)
+  .tab-badge {
   transform: scale(1.05);
 }
 
@@ -988,15 +1161,15 @@ watch(
     align-items: stretch;
     gap: var(--space-2);
   }
-  
+
   .direcciones-view .tabs-header-inline {
     order: 1;
   }
-  
+
   .direcciones-view .header-search-inline {
     order: 2;
   }
-  
+
   .direcciones-view .header-search-inline .search-input {
     width: 100%;
   }

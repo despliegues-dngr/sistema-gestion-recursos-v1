@@ -330,6 +330,10 @@ export interface ReporteDespliegue {
   refPlanChoqueApost?: number;
   refPlanChoqueAlerta?: number;
   refPlanTotalPersonal?: number;
+
+  // ✅ NUEVOS CAMPOS v15: Tipo de Despliegue
+  tipoDespliegue?: 'Despliegue' | 'Franco' | 'Sin efecto';
+  motivoSinEfecto?: string;  // Requerido solo si tipoDespliegue === 'Sin efecto'
 }
 
 export interface RecursosReporte {

@@ -34,6 +34,16 @@ Auditoría arquitectónica completada. Todos los servicios y flujos de datos han
 
 📅 Historial de Versiones y Cambios
 
+7 Ene 2026, 12:00
+**Rediseño Modal Historial v18 - Estilo Narrativo y Cumplimiento:** Transformación total del modo solo lectura para reportes históricos. **Diseño Narrativo:** Implementación de un formato de "informe oficial" que describe el despliegue en lenguaje natural, eliminando la rigidez de las cajas de texto y grillas. **Filtrado Inteligente:** Visualización exclusiva de recursos desplegados (cantidad > 0), optimizando el espacio vertical y eliminando ruido visual. **Métricas de Cumplimiento:** Integración de barra de progreso con cálculo automático de porcentaje basado en el snapshot de planificación (`refPlanTotalPersonal`). **Lógica de Permisos Estricta:** Forzado de modo solo lectura para cualquier reporte con `fechaDespliegue < hoy`, independientemente de su fecha de carga, garantizando la integridad de la sección Historial. **Refinamiento UI:** Eliminación de botones redundantes ("Cancelar") y pestañas innecesarias en modo consulta, dejando un botón único de "Cerrar". Limpieza de componentes obsoletos (`FichaVisualizacion`, `DatoReadonly`) reemplazados por el nuevo componente `ReporteDocumento`.
+
+7 Ene 2026, 23:00
+**UX Mejorada v16 - Unificación de Columnas y Modo Lectura:** Implementación de mejoras significativas en la interfaz de despliegues. **Unificación de columnas:** Consolidación de "Hora Inicio" y "Hora Fin" en columna única "Horario" con formato inteligente ("HH:MM a HH:MM", "A coordinar", "HH:MM a fin"). Consolidación de "Fecha Inicio" y "Fecha Fin" en columna única "Fecha" para ESMAPO con formato "DD/MM/YYYY a DD/MM/YYYY" o "DD/MM/YYYY a hasta nueva orden". Reducción de columnas ESMAPO de 18 a 16, mejorando legibilidad sin pérdida de información. **Acciones contextuales:** Implementación de botones dinámicos por sección en módulo Direcciones (Editar en Sin Cargar/Para Hoy/Cargados Hoy, Ver en Historial). **Modo solo lectura:** Implementación completa de visualización de reportes históricos con inputs deshabilitados, título dinámico ("Detalle de Reporte"), y botón contextual ("Cerrar"). **Componente reutilizable:** Extensión de `ModalFormularioOrden` con slot `footer-info` para contenido personalizado. **Trazabilidad:** Agregado campo "Responsable" en footer de modal de reporte (hardcoded "Tte. Juan Pérez" para demo, preparado para integración con sistema de autenticación en producción). Corrección de bug crítico en handler de acción "view" que abría modal incorrecto en sección Historial.
+
+7 Ene 2026, 21:00
+
+**Migración v15 - Tipo de Despliegue y UX Mejorada:** Implementación completa de campos `tipoDespliegue` y `motivoSinEfecto` en ReporteDespliegue. Permite a las Direcciones clasificar despliegues como "Despliegue", "Franco" o "Sin efecto" con motivo obligatorio para este último. Eliminación del campo del módulo ESMAPO (solo aplica a reportes de campo). Mejoras UX: layout inline para selectores (grid 2 columnas), mensajes dinámicos contextuales en modal de confirmación ("efectuará el día franco" / "ha quedado sin efecto, motivo: X"), unificación de componente "Total Efectivos" entre módulos ESMAPO y Direcciones. Ocultación condicional de sección de recursos en modal para Franco/Sin efecto. Migración automática con valor por defecto "Despliegue" para reportes existentes.
+
 7 Ene 2026, 18:00
 
 **Snapshot de Planificación v14:** Implementación de campos de referencia (`refPlan*`) en [ReporteDespliegue](cci:2://file:///c:/Proyectos/sistema-gestion-recursos-v1/src/lib/types/index.ts:286:0-332:1) para congelar valores planificados al momento del reporte. Garantiza integridad histórica: los porcentajes de cumplimiento son inmutables incluso si ESMAPO modifica la orden posteriormente. Nuevo componente `ProgressBar` para visualización de cumplimiento en modal de confirmación. Migración v14 con snapshot automático de reportes existentes.
@@ -263,6 +273,95 @@ Visualizar en un mapa la ubicación de los equipos y verificar si el despliegue 
 Documentación Oficial en PDF
 
 Generación automática de informes listos para imprimir o archivar como constancia del trabajo realizado.
+
+## 🔮 Funcionalidades Futuras Identificadas (Demo → Producción)
+Esta sección documenta funcionalidades y mejoras identificadas durante el desarrollo de la demo que deben implementarse en el sistema de producción real.
+
+### 🔐 Seguridad y Control de Acceso
+
+#### Propiedad de Reportes
+**Contexto:** Actualmente la demo no implementa autenticación ni gestión de usuarios.
+**Funcionalidad requerida en producción:**
+- Solo el usuario que creó un reporte puede editarlo
+- Campo `usuarioReportaId` en [ReporteDespliegue](cci:2://file:///c:/Proyectos/sistema-gestion-recursos-v1/src/lib/types/index.ts:286:0-336:1) ya existe en el modelo
+- Implementar validación: `if (reporte.usuarioReportaId !== usuarioActualId) → Solo lectura`
+- Excepción: Roles con permisos especiales (Jefe de Unidad, ESMAPO) pueden editar cualquier reporte
+**Impacto de seguridad:** ALTO - Previene modificación no autorizada de reportes oficiales
+**Referencia técnica:** 
+- Tabla: `reportes_despliegue.usuarioReportaId`
+- Tipo: `INTEGER` (FK a `personal.id`)
+
+---
+
+#### Ventana de Edición Temporal
+**Contexto:** En la demo, los reportes en "Cargados Hoy" son editables sin límite de tiempo.
+**Funcionalidad requerida en producción:**
+- Definir ventana de edición (ej: 2 horas desde `fechaHoraCarga`)
+- Después de la ventana → Reporte pasa automáticamente a solo lectura
+- Excepción: Roles administrativos pueden extender la ventana con justificación auditada
+**Impacto operativo:** MEDIO - Balance entre flexibilidad operativa y trazabilidad
+**Referencia técnica:**
+- Campo: `reportes_despliegue.fechaHoraCarga`
+- Lógica: `if (now() - fechaHoraCarga > VENTANA_EDICION) → readOnly = true`
+
+---
+
+### 📊 Lógica de Secciones de Despliegue
+
+#### Definición de "Historial"
+**Implementación actual (demo):**
+```typescript
+// Reportes pasan a Historial cuando:
+// 1. fechaDespliegue < hoy (despliegues de días anteriores)
+// 2. fechaHoraCarga < hoy (reportes cargados en días anteriores)
+```
+Consideraciones para producción:
+- Evaluar si usar fechaDespliegue o fechaHoraCarga como criterio principal
+- Impacto en reportes tardíos (ej: reporte cargado hoy de despliegue de ayer)
+- Definir política institucional para reportes extemporáneos
+**Referencia técnica:**
+- Servicio: `desplieguesService.getHistorial()`
+- Filtros: `fechaDespliegue`, `fechaHoraCarga`
+
+---
+
+### 🔄 Auditoría y Trazabilidad
+
+#### Registro de Modificaciones de Reportes
+**Funcionalidad requerida en producción:**
+- Tabla `historial_reportes_despliegue` (similar a `historial_ordenes_operativas`)
+- Snapshot completo del reporte antes de cada modificación
+- Campos: `reporteId`, `usuarioModificaId`, `fechaHoraModificacion`, `datosAnteriores` (JSON)
+- Permite comparar versiones y auditar cambios
+**Impacto de auditoría:** CRÍTICO - Cumplimiento normativo gubernamental
+
+---
+
+### 🎨 Mejoras de UX Identificadas
+
+#### Modal de Reporte en Modo Lectura (v18)
+**Estado:** ✅ COMPLETADO (07/01/2026)
+**Implementación:**
+- Diseño narrativo dinámico que describe el despliegue en lenguaje natural.
+- Filtrado automático de recursos (solo muestra los desplegados).
+- Barra de progreso de cumplimiento integrada.
+- Unificación de botones: botón único "Cerrar" en modo consulta.
+- Eliminación de redundancias visuales (pestañas y etiquetas duplicadas).
+
+---
+
+### 📌 Notas de Migración Demo → Producción
+**Stack Tecnológico:**
+- Demo: Vue 3 + TypeScript + IndexedDB
+- Producción (estimado): .NET + PostgreSQL + Vue 3
+
+**Consideraciones:**
+- Todos los modelos de datos documentados en este mapa son transferibles
+- La lógica de negocio (validaciones, cálculos) debe replicarse en backend .NET
+- Implementar tests unitarios y de integración (no presentes en demo)
+- Agregar capa de seguridad: JWT, HTTPS, cifrado de datos sensibles
+- Cumplir normativas del Ministerio del Interior (Uruguay)
+**Referencia obligatoria:** `docs/REGLAS-DE-ORO.md` - Patrones arquitectónicos a mantener
 
 🏗️ Estructura y Organización del Sistema Organización de Archivos
 
@@ -600,6 +699,10 @@ motivoCambios            Motivo
 
 observaciones            Observaciones
 
+tipoDespliegue           Tipo Despliegue
+
+motivoSinEfecto          Motivo (condicional)
+
 🆕 refPlanMoviles        Snapshot Plan Móviles
 
 🆕 refPlanMotos          Snapshot Plan Motos
@@ -869,6 +972,36 @@ Estado del ciclo de vida de la orden
 • Cerrada
 
 4 estados Requerido
+
+tipoDespliegue (Select)
+
+Clasificación del estado del despliegue reportado (solo Direcciones)
+
+• Despliegue
+
+• Franco
+
+• Sin efecto
+
+3 opciones Requerido Solo en reportes de campo
+
+motivoSinEfecto (Select)
+
+Motivo específico cuando el despliegue queda sin efecto
+
+• Por falta de personal
+
+• Por orden de superior
+
+• Por cubrir otro Operativo
+
+• Por cubrir Espectáculo público
+
+• Por inclemencias de tiempo
+
+• Otro motivo
+
+6 opciones Requerido si tipoDespliegue === 'Sin efecto'
 
 ℹ️
 
