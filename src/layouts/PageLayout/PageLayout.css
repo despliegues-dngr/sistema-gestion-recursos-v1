@@ -1,0 +1,23 @@
+/**
+ * PageLayout Component Styles
+ * 
+ * Layout reutilizable de dos columnas para páginas del sistema.
+ * Columna principal (contenido) + Panel lateral opcional (filtros).
+ */
+
+.page-layout {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  height: calc(100vh - var(--topbar-height));
+}
+
+.page-layout-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.page-layout-sidebar {
+  flex-shrink: 0;
+}
+

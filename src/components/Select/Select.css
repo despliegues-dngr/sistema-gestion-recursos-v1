@@ -1,0 +1,112 @@
+/**
+ * Select Component Styles
+ */
+
+.select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.select-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+}
+
+.select-required {
+  color: var(--color-error);
+  margin-left: var(--space-1);
+}
+
+.select-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: var(--input-bg);
+  border: 2px solid var(--border-color-strong);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+}
+
+.select-container:hover:not(.select-container--disabled):not(.select-container--error) {
+  border-color: var(--input-border-hover);
+}
+
+.select-container:focus-within {
+  border-color: var(--color-primary);
+}
+
+.select-container--error {
+  border-color: var(--color-error);
+}
+
+.select-container--error:focus-within {
+  border-color: var(--color-error);
+}
+
+.select-container--disabled {
+  background-color: var(--color-gray-50);
+  border-color: var(--color-gray-200);
+  cursor: not-allowed;
+}
+
+.select-container--sm {
+  height: var(--input-height-sm);
+}
+
+.select-container--md {
+  height: var(--input-height-md);
+}
+
+.select-container--lg {
+  height: var(--input-height-lg);
+}
+
+.select-field {
+  flex: 1;
+  height: 100%;
+  padding: 0 var(--space-8) 0 var(--space-3);
+  background: transparent;
+  border: none;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--input-text);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.select-field:focus {
+  outline: none;
+}
+
+.select-field:disabled {
+  cursor: not-allowed;
+  color: var(--color-gray-400);
+}
+
+.select-field option {
+  color: var(--color-gray-900);
+  background-color: var(--color-white);
+}
+
+.select-icon {
+  position: absolute;
+  right: var(--space-3);
+  color: var(--color-gray-400);
+  pointer-events: none;
+}
+
+.select-error {
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+}
+
+.select-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+}

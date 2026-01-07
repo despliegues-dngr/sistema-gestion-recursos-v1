@@ -1,0 +1,92 @@
+---
+description: Patrones y buenas prácticas para bases de datos cliente y seguridad
+globs:
+  - "**/*database*.ts"
+  - "**/*db*.ts"
+  - "**/*storage*.ts"
+  - "src/services/**/*.ts"
+  - "src/stores/**/*.ts"
+  - "src/composables/**/*.ts"
+  - "src/hooks/**/*.ts"
+  - "**/*auth*.ts"
+  - "**/*security*.ts"
+alwaysApply: false
+---
+
+# 🗄️🔒 Patrones y Buenas Prácticas
+
+## Base de Datos del Cliente
+
+### DatabaseService
+
+- ✅ **SIEMPRE** usar servicio centralizado para operaciones DB
+- ✅ Cifrar datos sensibles antes de almacenar cuando sea necesario
+- ✅ Usar transacciones para operaciones atómicas
+- ✅ Manejar errores de DB apropiadamente
+
+### Operaciones CRUD
+
+```typescript
+// ✅ Patrón correcto
+const record = await databaseService.create('table', {
+  field1: 'value1',
+  field2: 'value2',
+  timestamp: Date.now()
+})
+
+// Cifrado automático si está configurado
+```
+
+### Stores y Base de Datos
+
+- ✅ Coordinar entre stores y servicio de base de datos
+- ✅ No acceder directamente a IndexedDB/localStorage desde componentes
+- ✅ Usar stores para estado reactivo, services para persistencia
+
+### Consultas
+
+- ✅ Usar índices apropiados para consultas frecuentes
+- ✅ Consultar schema del proyecto para estructura de datos
+- ✅ Optimizar queries para performance offline
+
+### Migraciones
+
+- ✅ Documentar cambios de schema
+- ✅ Implementar versionado de DB apropiadamente
+- ✅ Mantener historial de cambios de base de datos
+
+---
+
+## Seguridad
+
+### Cifrado y Datos Sensibles
+
+- ✅ **SIEMPRE** cifrar datos sensibles con `encryptionService` antes de almacenar
+- ✅ **NUNCA** almacenar contraseñas en texto plano
+- ✅ Usar PBKDF2 (100K iteraciones) para derivación de claves
+- ✅ Usar AES-256-GCM para cifrado de datos
+
+### Autenticación
+
+- ✅ Implementar RBAC (Role-Based Access Control) apropiado
+- ✅ Validar permisos en cada operación crítica
+- ✅ Usar sesiones persistentes seguras (IndexedDB cifrado cuando aplique)
+
+### Validación de Entrada
+
+- ✅ **SIEMPRE** validar y sanitizar input del usuario
+- ✅ Usar validaciones del lado del cliente Y del servidor cuando aplique
+- ✅ Prevenir inyección SQL/NoSQL (aunque usemos IndexedDB, aplicar principios)
+
+### Auditoría
+
+- ✅ Registrar todos los eventos críticos en sistema de auditoría
+- ✅ Tipos de eventos comunes: auth, user_management, data_operation, backup, system_error
+- ✅ Logs inmutables (no modificar después de crear)
+
+### Referencias de Seguridad
+
+- Consultar documentación de seguridad del proyecto
+- Seguir OWASP Top 10:2021
+- Cumplir regulaciones locales de protección de datos
+- Aplicar principios de seguridad por defecto

@@ -1,0 +1,73 @@
+/**
+ * FichaModalHeader Styles - Diseño Card Compacto
+ */
+.ficha-modal-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.ficha-modal-info {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.ficha-avatar {
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-gray-50);
+  border: var(--border-normal) solid var(--border-color-strong);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.ficha-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.ficha-modal-grado-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.ficha-modal-title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  line-height: var(--line-height-tight);
+}
+
+.ficha-modal-meta {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ficha-modal-unidad {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  font-weight: var(--font-weight-medium);
+}
+
+.ficha-modal-edit-btn {
+  flex-shrink: 0;
+}
+

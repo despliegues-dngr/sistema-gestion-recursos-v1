@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema DNGR - Mapa de Desarrollo v1.6</title>
+    <link rel="stylesheet" href="MAPA-ESTRATEGICO.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- SIDEBAR DE NAVEGACIÓN -->
+    <nav class="sidebar">
+        <div class="sidebar-header">Mapa del Proyecto</div>
+        <a href="#progreso" class="sidebar-link active">📊 Estado General</a>
+        <a href="#modulo-1" class="sidebar-link">📋 Gestión de Personal</a>
+        <a href="#modulo-2" class="sidebar-link">📦 Gestión Operativa</a>
+        <a href="#modulo-3" class="sidebar-link">🔐 Control y Seguridad</a>
+        <a href="#ideas-proyecto" class="sidebar-link">💡 Visión y Futuro</a>
+        <a href="#arquitectura" class="sidebar-link">🏗️ Estructura del Sistema</a>
+        <a href="#modelo-datos" class="sidebar-link">🗄️ Base de Datos</a>
+        <a href="#config-agentes" class="sidebar-link">⚙️ Configuración AI</a>
+    </nav>
+
+    <div class="container">
+    <header class="header">
+        <span class="version">Versión 1.6</span>
+        <h1>Mapa Estratégico de Recursos (DNGR)</h1>
+        <p class="subtitle">Hoja de ruta y seguimiento de implementación para el Comando</p>
+    </header>
+
+        <!-- RESUMEN DE PROGRESO FORMAL -->
+        <section id="progreso" class="progress-summary">
+            <h2>📊 Resumen Ejecutivo de Progreso</h2>
+            
+            <div class="progress-bar-outer">
+                <div class="progress-bar-inner" style="width: 80%;"></div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">20</div>
+                    <div class="stat-label">Hitos Completados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Tareas Pendientes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">80%</div>
+                    <div class="stat-label">Carga de Proyecto</div>
+                </div>
+            </div>
+
+            <div class="next-task-highlight">
+                <span>🎯</span>
+                <div>
+                    <strong>Próximo Objetivo:</strong> Dashboard de Capacidad Operativa (Tarea 2.5)
+                    <p style="margin: 0; font-size: 0.85rem; opacity: 0.8;">Implementación de algoritmos para el cálculo de personal disponible en tiempo real.</p>
+                </div>
+            </div>
+
+            <details class="updates-section">
+                <summary>📅 Historial de Versiones y Cambios</summary>
+                <div class="update-item">
+                    <div class="update-date">5 Ene 2026, 16:30</div>
+                    <div class="update-desc"><strong>Refactorización de Modelo de Datos v3.0:</strong> Renombramiento completo de campos en OrdenOperativa para alineación con nomenclatura de servicios: tipoOperativo→tipoServicio, nombreOperativo→nombreServicio, tiempoDespliegue→tiempoServicio. Implementación de campos de hora planificada independientes (horaInicioPlan, horaFinPlan) como strings para facilitar visualización directa. Corrección crítica del mapeo CSV para reconocer nuevos nombres de columnas (fechaInicioPlan, fechaFinPlan, horaInicioPlan, horaFinPlan). Simplificación de lógica de generación de días de despliegue (v7.0 KISS) eliminando cálculos innecesarios. Sistema ahora genera correctamente múltiples días para operativos vigentes sin fecha fin.</div>
+                </div>
+                <div class="update-item">
+                    <div class="update-date">1 Ene 2026, 12:30</div>
+                    <div class="update-desc"><strong>Sistema de Reportes por Secciones v2.0:</strong> Implementación completa del módulo de reportes de despliegue con clasificación temporal en 4 secciones (Sin Cargar, Para Hoy, Cargados Hoy, Historial). Migración de base de datos a v12 con campos de auditoría (fechaDespliegue, usuarioReportaId). Diferenciación de vistas: ESMAPO (administrativa con 18 columnas) vs Direcciones (operativa con 4 columnas). Corrección de diseño de scrollbars en componente Tabs para consistencia visual total.</div>
+                </div>
+                <div class="update-item">
+                    <div class="update-date">30 Dic 2025, 10:00</div>
+                    <div class="update-desc"><strong>Auditoría General v1.5:</strong> Sincronización documental completa. Rediseño de interfaz del mapa para mejor legibilidad técnica. Verificación de 20 tablas IndexedDB y stack de 14 componentes UI.</div>
+                </div>
+                <div class="update-item">
+                    <div class="update-date">29 Dic 2025, 05:15</div>
+                    <div class="update-desc"><strong>Módulo Despliegues 1.0:</strong> Finalización de CRUD avanzado para Órdenes Operativas (ESMAPO). Sistema de importación masiva CSV con validación inteligente. Vista administrativa con 18 columnas de recursos planificados.</div>
+                </div>
+            </details>
+        </section>
+
+        <div class="main-content">
+            <!-- MÓDULO 1: GESTIÓN DE PERSONAL -->
+            <div id="modulo-1" class="module">
+                <div class="module-header">
+                    <span>Módulo 1: Gestión de Personal</span>
+                    <span class="badge">Fase de Consolidación</span>
+                </div>
+                
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">1</div>
+                        <div class="phase-title">Estructura de Información de Base</div>
+                    </div>
+                    
+                    <div class="task-list">
+                        <!-- TAREA 1.1 -->
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Registro Central del Personal</div>
+                                <div class="task-desc">
+                                    Base de datos única de todos los efectivos de la DNGR. 
+                                    Incluye C.I., Grado y Unidad donde presta servicio. Es el pilar sobre el cual 
+                                    se organiza toda la disponibilidad del sistema.
+                                </div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                        
+                        <!-- TAREA 1.2 -->
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Organización de Dependencias</div>
+                                <div class="task-desc">
+                                    Define la estructura de mando y responsabilidad. Permite que cada jefe gestione 
+                                    exclusivamente a su personal, manteniendo el orden administrativo y la 
+                                    cadena de mando digital.
+                                </div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+
+                        <!-- TAREA 1.3 -->
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Planificación de Turnos y Guardia</div>
+                                <div class="task-desc">
+                                    Configuración de horarios de servicio (Mañana, Tarde, Noche). Permite al Comando 
+                                    conocer qué personal está de guardia en cualquier momento, 
+                                    asegurando la respuesta inmediata ante emergencias.
+                                </div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+
+                        <!-- TAREA 1.4 -->
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Control de Licencias y Partes Médicos</div>
+                                <div class="task-desc">
+                                    Registro de bajas médicas, licencias anuales y permisos. 
+                                    El sistema descuenta automáticamente a este personal de la "fuerza efectiva" 
+                                    para evitar errores en la planificación operativa.
+                                </div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+
+                        <!-- TAREA 1.5 -->
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Regímenes de Servicio Especiales</div>
+                                <div class="task-desc">
+                                    Define reglas de trabajo específicas (horarios fijos, Servicio 222, guardias). 
+                                    Adapta el sistema a las diferentes modalidades de servicio que cumple la DNGR.
+                                </div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">2</div>
+                        <div class="phase-title">Gestión Administrativa</div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Fichas Individuales del Personal</div>
+                                <div class="task-desc">Herramienta para el alta y modificación de datos de los funcionarios. Solo personal autorizado puede dar de baja registros, garantizando la seguridad de la información histórica.</div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Carga Masiva del Padrón (CSV)</div>
+                                <div class="task-desc">Permite ingresar todo el padrón de personal desde planillas externas. Facilita la carga inicial de miles de registros rápidamente y sin errores manuales.</div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Historial de Pases y Traslados</div>
+                                <div class="task-desc">Registra cada vez que un funcionario pasa de una unidad a otra. Mantiene la trazabilidad de la carrera del personal necesaria para auditorías y control.</div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                        <div class="task-item.pending">
+                            <div class="task-check">☐</div>
+                            <div>
+                                <div class="task-name">Panel de Fuerza Efectiva Real</div>
+                                <div class="task-desc">Muestra la cantidad de efectivos reales disponibles por cada turno, descontando automáticamente a quienes estén de licencia, parte médico o traslado.</div>
+                            </div>
+                            <div class="task-status status-pending">En Cola</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÓDULO 2: GESTIÓN OPERATIVA -->
+            <div id="modulo-2" class="module">
+                <div class="module-header">
+                    <span>Módulo 2: Gestión Operativa</span>
+                    <span class="badge">Fase de Ejecución</span>
+                </div>
+                
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">3</div>
+                        <div class="phase-title">Planificación Operativa (Estado Mayor / ESMAPO)</div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Registro de Órdenes de Servicio (O.S.)</div>
+                                <div class="task-desc">Repositorio oficial para registrar operativos, lugares, fechas y medios (móviles, motos, efectivos) solicitados para cada despliegue.</div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                        <div class="task-item.pending">
+                            <div class="task-check">☐</div>
+                            <div>
+                                <div class="task-name">Generador de Órdenes Digitales</div>
+                                <div class="task-desc">Herramienta para crear órdenes detallando los recursos necesarios por cada unidad participante en un operativo planificado.</div>
+                            </div>
+                            <div class="task-status status-pending">Pendiente</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">4</div>
+                        <div class="phase-title">Informes de Despliegue en Terreno</div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Sistema de Reporte de Despliegue Real con Clasificación Temporal</div>
+                                <div class="task-desc">Sistema avanzado de 4 secciones para unidades operativas: <strong>Sin Cargar</strong> (despliegues pendientes de días anteriores), <strong>Para Hoy</strong> (programados para hoy), <strong>Cargados Hoy</strong> (reportados hoy), e <strong>Historial</strong> (reportes pasados). Incluye generación automática de días de despliegue, auditoría por usuario y timestamp, y alertas visuales por estado. Vista simplificada con 4 columnas: Orden, Nombre, Hora Inicio, Hora Fin.</div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Carga Rápida de Informes de Campo</div>
+                                <div class="task-desc">Importación masiva de reportes. El sistema asocia automáticamente cada informe con su Orden de Servicio correspondiente.</div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÓDULO 3: CONTROL Y SEGURIDAD -->
+            <div id="modulo-3" class="module">
+                <div class="module-header">
+                    <span>Módulo 3: Control y Seguridad del Sistema</span>
+                    <span class="badge">Núcleo de Confianza</span>
+                </div>
+                
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">5</div>
+                        <div class="phase-title">Acceso y Niveles de Mando</div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Gestión de Usuarios y Perfiles de Acceso</div>
+                                <div class="task-desc">Controla quién entra al sistema. Cada usuario está vinculado a una unidad y un cargo específico (Jefe, Administrativo, Operador), viendo solo lo autorizado.</div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Ingreso Seguro con Clave Personal</div>
+                                <div class="task-desc">Sistema de acceso que protege la información y asegura que solo personal habilitado pueda consultar los datos operativos.</div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">6</div>
+                        <div class="phase-title">Auditoría y Transparencia Administrativa</div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Libro de Actas Digital (Log)</div>
+                                <div class="task-desc">Registra cada alta, modificación o baja de datos. Guarda detalle de quién hizo el cambio y qué información se alteró para control total.</div>
+                            </div>
+                            <div class="task-status status-done">Completado</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE IDEAS Y NOTAS ESTRATÉGICAS -->
+            <div id="ideas-proyecto" class="module">
+                <div class="module-header">
+                    <span>💡 Visión y Futuro (Hacia el Sistema Oficial)</span>
+                    <span class="badge">Propuestas de Mejora</span>
+                </div>
+                
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Seguridad y Responsabilidad</div>
+                    </div>
+                    <div class="strategic-section">
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Gestión de Claves</span>
+                            </div>
+                            <div class="strategic-item-desc">El Estado Mayor crea los usuarios con una clave temporal. Cada administrativo debe elegir su propia clave privada en el primer ingreso.</div>
+                        </div>
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Responsabilidad Individual</span>
+                            </div>
+                            <div class="strategic-item-desc">Cada administrativo tendrá su propio acceso personal para identificar exactamente quién realizó cada modificación.</div>
+                        </div>
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Normativas del Ministerio</span>
+                            </div>
+                            <div class="strategic-item-desc">El sistema oficial cumplirá con todos los estándares de seguridad exigidos por el Ministerio para proteger la información institucional.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Integración de Información</div>
+                    </div>
+                    <div class="strategic-section">
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Conexión con Sistemas de RRHH</span>
+                            </div>
+                            <div class="strategic-item-desc">Sincronización automática con las bases centrales para mantener actualizados los grados y destinos de todo el personal.</div>
+                        </div>
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Control de Logística y Medios</span>
+                            </div>
+                            <div class="strategic-item-desc">Registro de vehículos, armamento y equipos de comunicación asignados a cada operativo para un control integral.</div>
+                        </div>
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Trabajo en Zonas sin Cobertura</span>
+                            </div>
+                            <div class="strategic-item-desc">Capacidad de registrar datos en zonas sin señal de internet y enviarlos automáticamente al recuperar la conexión.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Información para el Comando</div>
+                    </div>
+                    <div class="strategic-section">
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Cálculo de Fuerza Efectiva Real</span>
+                            </div>
+                            <div class="strategic-item-desc">Conocer exactamente cuántos efectivos hay disponibles hoy, descontando automáticamente licencias o descansos.</div>
+                        </div>
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Control de Despliegue en Terreno</span>
+                            </div>
+                            <div class="strategic-item-desc">Visualizar en un mapa la ubicación de los equipos y verificar si el despliegue real coincide con la planificación.</div>
+                        </div>
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Documentación Oficial en PDF</span>
+                            </div>
+                            <div class="strategic-item-desc">Generación automática de informes listos para imprimir o archivar como constancia del trabajo realizado.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ESTRUCTURA DEL SISTEMA -->
+            <section id="arquitectura" class="module">
+                <div class="module-header">
+                    <span>🏗️ Estructura y Organización del Sistema</span>
+                    <span class="badge">Organización de Archivos</span>
+                </div>
+                
+                <div class="architecture-grid">
+                    <div class="arch-card" style="grid-column: span 2;">
+                        <div class="arch-card-header">Guía de Organización del Proyecto</div>
+                        <div class="arch-card-content">
+                            <p>Detalle de cómo se organiza el código del sistema para asegurar que sea fácil de mantener y actualizar a futuro.</p>
+                            
+                            <div class="tree-container">
+                                <div class="tree-item folder">
+                                    <span class="tree-label">📁 src/</span>
+                                    <div class="tree-children">
+                                        <!-- ASSETS -->
+                                        <div class="tree-item folder">
+                                            <span class="tree-label">📁 assets/</span>
+                                            <div class="tree-children">
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 images/</span>
+                                                    <span class="tree-desc">Recursos gráficos. Incluye logos institucionales y la librería completa de iconos SVG para el sistema de KPIs.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- COMPONENTS -->
+                                        <div class="tree-item folder">
+                                            <span class="tree-label">📁 components/</span>
+                                            <div class="tree-children">
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 [NombreComponente]/</span>
+                                                    <div class="tree-children">
+                                                        <div class="tree-item file"><span class="tree-label">📄 Componente.vue</span><span class="tree-desc">Lógica y template del componente.</span></div>
+                                                        <div class="tree-item file"><span class="tree-label">📄 Componente.css</span><span class="tree-desc">Estilos encapsulados.</span></div>
+                                                        <div class="tree-item file"><span class="tree-label">📄 index.ts</span><span class="tree-desc">Exportación pública del componente.</span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 forms/</span>
+                                                    <span class="tree-desc">Formularios de lógica compleja (ej: FuncionarioForm.vue) para reutilizar en modales de creación y edición.</span>
+                                                </div>
+                                                <div class="tree-item file">
+                                                    <span class="tree-label">📄 MiniCalendario.vue</span>
+                                                    <span class="tree-desc">Componente especializado para la gestión visual de turnos operativos.</span>
+                                                </div>
+                                                <div class="tree-item file">
+                                                    <span class="tree-label">📄 index.ts</span>
+                                                    <span class="tree-desc">Barrel global: centraliza todas las exportaciones para importar desde '@components'.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- CONFIG -->
+                                        <div class="tree-item folder">
+                                            <span class="tree-label">📁 config/</span>
+                                            <div class="tree-children">
+                                                <div class="tree-item file">
+                                                    <span class="tree-label">📄 dashboardConfig.ts</span>
+                                                    <span class="tree-desc">Configuración por roles (Dirección VI, ESMAPO, etc). Define filtros y paneles visibles.</span>
+                                                </div>
+                                                <div class="tree-item file">
+                                                    <span class="tree-label">📄 navConfig.ts</span>
+                                                    <span class="tree-desc">Estructura dinámica de la barra de navegación basada en la unidad y permisos del usuario.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- HOOKS -->
+                                        <div class="tree-item folder">
+                                            <span class="tree-label">📁 hooks/</span>
+                                            <div class="tree-children">
+                                                <div class="tree-item file"><span class="tree-label">📄 useAuth.ts</span><span class="tree-desc">Core de seguridad: autenticación reactiva y control de sesión.</span></div>
+                                                <div class="tree-item file"><span class="tree-label">📄 useDatabase.ts</span><span class="tree-desc">Abstracción para transacciones genéricas en IndexedDB.</span></div>
+                                                <div class="tree-item file"><span class="tree-label">📄 useTableActions.ts</span><span class="tree-desc">Gestor centralizado de acciones (ver, transferir, borrar) según roles.</span></div>
+                                                <div class="tree-item file"><span class="tree-label">📄 useToast.ts</span><span class="tree-desc">Sistema global de notificaciones push de UI.</span></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- LAYOUTS -->
+                                        <div class="tree-item folder">
+                                            <span class="tree-label">📁 layouts/</span>
+                                            <div class="tree-children">
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 MainLayout/</span>
+                                                    <span class="tree-desc">Estructura envolvente global (TopBar + RouterView).</span>
+                                                </div>
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 PageLayout/</span>
+                                                    <span class="tree-desc">Esqueleto de páginas internas (Contenedor 2 columnas + Sidebar de filtros).</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- LIB -->
+                                        <div class="tree-item folder">
+                                            <span class="tree-label">📁 lib/</span>
+                                            <div class="tree-children">
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 db/</span>
+                                                    <span class="tree-desc">index.ts (Instancia Dexie y esquema de 20 tablas) y seed.ts (Carga masiva inicial).</span>
+                                                </div>
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 types/</span>
+                                                    <span class="tree-desc">index.ts: Contiene todas las Interfaces y Enums de TypeScript del dominio del sistema.</span>
+                                                </div>
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 constants/</span>
+                                                    <span class="tree-desc">Valores estáticos inmutables (ej: IDs de Roles, nombres de Unidades).</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- PAGES -->
+                                        <div class="tree-item folder">
+                                            <span class="tree-label">📁 pages/</span>
+                                            <div class="tree-children">
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 Home/</span>
+                                                    <span class="tree-desc">Página principal (Dashboard) para Dirección VI con KPIs ejecutivos.</span>
+                                                </div>
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 Personal/</span>
+                                                    <span class="tree-desc">Vista de gestión de padrón de funcionarios por unidad.</span>
+                                                </div>
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 Despliegues/</span>
+                                                    <span class="tree-desc">Core operativo: seguimiento de Órdenes de Servicio y Reportes Reales.</span>
+                                                </div>
+                                                <div class="tree-item folder">
+                                                    <span class="tree-label">📁 Login/</span>
+                                                    <span class="tree-desc">Página de acceso y recuperación de credenciales.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- SERVICES -->
+                                        <div class="tree-item folder">
+                                            <span class="tree-label">📁 services/</span>
+                                            <div class="tree-children">
+                                                <div class="tree-item file"><span class="tree-label">📄 personalService.ts</span><span class="tree-desc">CRUD de funcionarios y motor de importación masiva CSV.</span></div>
+                                                <div class="tree-item file"><span class="tree-label">📄 desplieguesService.ts</span><span class="tree-desc">Motor de clasificación temporal de reportes. Funciones: getSinCargar(), getParaHoy(), getCargadosHoy(), getHistorial(). Genera automáticamente días de despliegue (DiaDespliegue) basados en fechas de plan de órdenes operativas.</span></div>
+                                                <div class="tree-item file"><span class="tree-label">📄 licenciasService.ts</span><span class="tree-desc">Gestor de bajas, partes médicos y licencias anuales.</span></div>
+                                                <div class="tree-item file"><span class="tree-label">📄 index.ts</span><span class="tree-desc">Barrel para acceso rápido desde '@services'.</span></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- STYLES -->
+                                        <div class="tree-item folder">
+                                            <span class="tree-label">📁 styles/</span>
+                                            <div class="tree-children">
+                                                <div class="tree-item file"><span class="tree-label">📄 tokens.css</span><span class="tree-desc">Variables CSS globales (paleta de colores Slate/Blue, sombras, bordes).</span></div>
+                                                <div class="tree-item file"><span class="tree-label">📄 reset.css</span><span class="tree-desc">Normalización de estilos entre navegadores.</span></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tree-item file">
+                                            <span class="tree-label">📄 router/index.ts</span>
+                                            <span class="tree-desc">Configuración de Vue Router con Guards de protección por rol y unidad.</span>
+                                        </div>
+                                        <div class="tree-item file">
+                                            <span class="tree-label">📄 main.ts</span>
+                                            <span class="tree-desc">Bootstrapper: inicializa Vue, Router, Pinia y monta el DOM.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BASE DE DATOS -->
+            <section id="modelo-datos" class="module">
+                <div class="module-header">
+                    <span>🗄️ Base de Datos y Registros</span>
+                    <span class="badge">Registro Local de Información</span>
+                </div>
+                
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Información del Personal</div>
+                    </div>
+                    
+                    <div class="schema-grid">
+                        <!-- TABLA FUNCIONARIOS -->
+                        <div class="schema-table">
+                            <div class="schema-header">Personal (funcionarios)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">C.I.</span><span class="schema-type">Texto</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">Nombre Completo</span><span class="schema-type">Texto</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">Grado</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">Unidad</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F</span><span class="schema-name">Sub-Unidad</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F</span><span class="schema-name">Turno</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F</span><span class="schema-name">Régimen</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realiza222</span><span class="schema-type">Sí/No</span></div>
+                            </div>
+                            <div class="schema-constraints">
+                                <div class="constraint-item"><span class="constraint-icon">🔑</span> Registro único</div>
+                                <div class="constraint-item"><span class="constraint-icon">💎</span> C.I. no repetida</div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA LICENCIAS -->
+                        <div class="schema-table">
+                            <div class="schema-header">Licencias (licencias_funcionarios)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">funcionarioId</span><span class="schema-type">Personal (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">tipoLicenciaId</span><span class="schema-type">Tipo (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">fechaInicio</span><span class="schema-type">Fecha</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">fechaFin</span><span class="schema-type">Fecha</span></div>
+                            </div>
+                            <div class="schema-constraints">
+                                <div class="constraint-item"><span class="constraint-icon">🔑</span> Código único</div>
+                                <div class="constraint-item"><span class="constraint-icon">🔗</span> Vinculado al Personal</div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA HISTORIAL -->
+                        <div class="schema-table">
+                            <div class="schema-header">Historial de Pases (historial_movimientos)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">funcionarioId</span><span class="schema-type">Personal (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">unidadOrigenId</span><span class="schema-type">Origen (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">unidadDestinoId</span><span class="schema-type">Destino (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">fechaCambio</span><span class="schema-type">Fecha</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA CURSOS -->
+                        <div class="schema-table">
+                            <div class="schema-header">Capacitaciones (cursos)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">funcionarioId</span><span class="schema-type">Personal (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">tipoCursoId</span><span class="schema-type">Curso (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">fechaInicio</span><span class="schema-type">Fecha</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">fechaFin</span><span class="schema-type">Fecha</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Control de Asistencia y Servicios</div>
+                    </div>
+                    <div class="schema-grid">
+                        <!-- TABLA HORARIOS -->
+                        <div class="schema-table">
+                            <div class="schema-header">Horarios Planificados (horarios)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">funcionarioId</span><span class="schema-type">Personal (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">fecha</span><span class="schema-type">Fecha</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">turno</span><span class="schema-type">Texto</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA ASISTENCIAS -->
+                        <div class="schema-table">
+                            <div class="schema-header">Asistencia Real (asistencias)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">funcionarioId</span><span class="schema-type">Personal (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">fecha</span><span class="schema-type">Fecha</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">estado</span><span class="schema-type">Texto</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA ASIGNACIONES -->
+                        <div class="schema-table">
+                            <div class="schema-header">Asignaciones a Servicios (asignaciones)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">funcionarioId</span><span class="schema-type">Personal (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">servicioId</span><span class="schema-type">Servicio (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">estado</span><span class="schema-type">Texto</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Módulo Operativo (Planificación vs Realidad)</div>
+                    </div>
+                    <div class="schema-grid">
+                        <!-- TABLA ORDENES -->
+                        <div class="schema-table">
+                            <div class="schema-header">Órdenes de Servicio (ordenes_operativas)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nroDocumento</span><span class="schema-type">Nro. de Orden</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">tipoDocumento</span><span class="schema-type">Tipo</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">tipoOperativo</span><span class="schema-type">Naturaleza</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">nombreDocumento</span><span class="schema-type">Nombre</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">nombreOperativo</span><span class="schema-type">Operativo</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">unidadSolicitadaId</span><span class="schema-type">Unidad (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">fechaInicioPlan</span><span class="schema-type">Inicio</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">fechaFinPlan</span><span class="schema-type">Fin</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">departamento</span><span class="schema-type">Ubicación</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">seccional</span><span class="schema-type">Seccionales</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">tiempoDespliegue</span><span class="schema-type">Duración</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">planTotalPersonal</span><span class="schema-type">Efectivos Pedidos</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">estado</span><span class="schema-type">Situación</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA REPORTES -->
+                        <div class="schema-table">
+                            <div class="schema-header">Reportes de Despliegue (reportes_despliegue) - v12</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">ordenId</span><span class="schema-type">Orden (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">unidadReportanteId</span><span class="schema-type">Unidad (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">* 🆕</span><span class="schema-name">fechaDespliegue</span><span class="schema-type">Fecha del Día</span></div>
+                                <div class="schema-column"><span class="schema-key">* 🆕</span><span class="schema-name">usuarioReportaId</span><span class="schema-type">Usuario (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">fechaHoraCarga</span><span class="schema-type">Timestamp</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realHoraInicio</span><span class="schema-type">Inicio Real</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realHoraFin</span><span class="schema-type">Fin Real</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realMoviles</span><span class="schema-type">Móviles</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realSsoo</span><span class="schema-type">SSOO</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realPpssMovil</span><span class="schema-type">PPSS Móvil</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realMotos</span><span class="schema-type">Motos</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realHipos</span><span class="schema-type">Hipos</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realPieTierra</span><span class="schema-type">Pie a Tierra</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realMotosBiTripuladas</span><span class="schema-type">Motos BiTrip</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realChoqueApost</span><span class="schema-type">Choque Apost</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realChoqueAlerta</span><span class="schema-type">Choque Alerta</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realHidro</span><span class="schema-type">Hidro</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">realTotalPersonal</span><span class="schema-type">Total Efectivos</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">estadoReal</span><span class="schema-type">Estado</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">motivoCambios</span><span class="schema-type">Motivo</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">observaciones</span><span class="schema-type">Observaciones</span></div>
+                            </div>
+                            <div class="schema-constraints">
+                                <div class="constraint-item"><span class="constraint-icon">🔑</span> Registro único por día</div>
+                                <div class="constraint-item"><span class="constraint-icon">🔗</span> Vinculado a Orden Operativa</div>
+                                <div class="constraint-item"><span class="constraint-icon">👤</span> Auditoría por usuario y fecha</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Notas Técnicas de Migración</div>
+                    </div>
+                    <div class="strategic-section">
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Migración v12 - Reportes Diarios</span>
+                            </div>
+                            <div class="strategic-item-desc">
+                                <strong>Fecha:</strong> 1 Ene 2026<br>
+                                <strong>Cambio:</strong> Agregados campos <code>fechaDespliegue</code> (Date) y <code>usuarioReportaId</code> (Number) a la tabla <code>reportes_despliegue</code>.<br>
+                                <strong>Propósito:</strong> Permitir reportes diarios independientes para cada día de un operativo multi-día, con auditoría completa de quién reporta y cuándo.<br>
+                                <strong>Lógica:</strong> Un operativo de 5 días genera 5 registros potenciales (DiaDespliegue), cada uno reportable independientemente.<br>
+                                <strong>Clasificación:</strong> Los reportes se clasifican automáticamente en 4 secciones según su estado temporal.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Catálogos de Opciones (Select/MultiSelect)</div>
+                    </div>
+                    
+                    <div class="catalog-grid">
+                        <!-- TIPO DE DOCUMENTO -->
+                        <div class="catalog-card">
+                            <div class="catalog-header">tipoDocumento (Select)</div>
+                            <div class="catalog-desc">Clasificación oficial del documento operativo</div>
+                            <div class="catalog-options">
+                                <div class="catalog-option">• Orden de Operaciones</div>
+                                <div class="catalog-option">• Circular</div>
+                                <div class="catalog-option">• Orden de Servicio</div>
+                                <div class="catalog-option">• Comunicado</div>
+                                <div class="catalog-option">• Otro</div>
+                            </div>
+                            <div class="catalog-meta">
+                                <span class="catalog-badge">5 opciones</span>
+                                <span class="catalog-badge">Requerido</span>
+                            </div>
+                        </div>
+                        <!-- TIPO DE OPERATIVO -->
+                        <div class="catalog-card">
+                            <div class="catalog-header">tipoOperativo (Select)</div>
+                            <div class="catalog-desc">Naturaleza táctica del despliegue</div>
+                            <div class="catalog-options">
+                                <div class="catalog-option">• Operativo</div>
+                                <div class="catalog-option">• Patrullaje</div>
+                                <div class="catalog-option">• Apoyo</div>
+                                <div class="catalog-option">• Incursión</div>
+                                <div class="catalog-option">• Allanamiento perimetral</div>
+                            </div>
+                            <div class="catalog-meta">
+                                <span class="catalog-badge">5 opciones</span>
+                                <span class="catalog-badge">Opcional</span>
+                            </div>
+                        </div>
+                        <!-- TIEMPO DE DESPLIEGUE -->
+                        <div class="catalog-card">
+                            <div class="catalog-header">tiempoDespliegue (Select)</div>
+                            <div class="catalog-desc">Duración prevista del operativo</div>
+                            <div class="catalog-options">
+                                <div class="catalog-option">• Permanente</div>
+                                <div class="catalog-option">• Transitorio</div>
+                                <div class="catalog-option">• Estático</div>
+                            </div>
+                            <div class="catalog-meta">
+                                <span class="catalog-badge">3 opciones</span>
+                                <span class="catalog-badge">Opcional</span>
+                            </div>
+                        </div>
+                        <!-- DEPARTAMENTO -->
+                        <div class="catalog-card catalog-card--wide">
+                            <div class="catalog-header">departamento (MultiSelect)</div>
+                            <div class="catalog-desc">Departamentos de Uruguay donde se ejecuta el operativo (selección múltiple)</div>
+                            <div class="catalog-options catalog-options--compact">
+                                <div class="catalog-option">• Artigas</div>
+                                <div class="catalog-option">• Canelones</div>
+                                <div class="catalog-option">• Cerro Largo</div>
+                                <div class="catalog-option">• Colonia</div>
+                                <div class="catalog-option">• Durazno</div>
+                                <div class="catalog-option">• Flores</div>
+                                <div class="catalog-option">• Florida</div>
+                                <div class="catalog-option">• Lavalleja</div>
+                                <div class="catalog-option">• Maldonado</div>
+                                <div class="catalog-option">• Montevideo</div>
+                                <div class="catalog-option">• Paysandú</div>
+                                <div class="catalog-option">• Río Negro</div>
+                                <div class="catalog-option">• Rivera</div>
+                                <div class="catalog-option">• Rocha</div>
+                                <div class="catalog-option">• Salto</div>
+                                <div class="catalog-option">• San José</div>
+                                <div class="catalog-option">• Soriano</div>
+                                <div class="catalog-option">• Tacuarembó</div>
+                                <div class="catalog-option">• Treinta y Tres</div>
+                            </div>
+                            <div class="catalog-meta">
+                                <span class="catalog-badge">19 departamentos</span>
+                                <span class="catalog-badge">MultiSelect</span>
+                                <span class="catalog-badge">Almacenado como CSV</span>
+                            </div>
+                        </div>
+                        <!-- SECCIONAL -->
+                        <div class="catalog-card catalog-card--wide">
+                            <div class="catalog-header">seccional (MultiSelect)</div>
+                            <div class="catalog-desc">Seccionales policiales involucradas (selección múltiple)</div>
+                            <div class="catalog-options catalog-options--compact">
+                                <div class="catalog-option">• 1ra</div>
+                                <div class="catalog-option">• 2da</div>
+                                <div class="catalog-option">• 3ra</div>
+                                <div class="catalog-option">• 4ta</div>
+                                <div class="catalog-option">• 5ta</div>
+                                <div class="catalog-option">• 6ta</div>
+                                <div class="catalog-option">• 7ma</div>
+                                <div class="catalog-option">• 8va</div>
+                                <div class="catalog-option">• 9na</div>
+                                <div class="catalog-option">• 10ma</div>
+                                <div class="catalog-option">• 11ra</div>
+                                <div class="catalog-option">• 12da</div>
+                                <div class="catalog-option">• 13ra</div>
+                                <div class="catalog-option">• 14ta</div>
+                                <div class="catalog-option">• 15ta</div>
+                                <div class="catalog-option">• 16ta</div>
+                                <div class="catalog-option">• 17ma</div>
+                                <div class="catalog-option">• 18va</div>
+                                <div class="catalog-option">• 19na</div>
+                                <div class="catalog-option">• 20ma</div>
+                            </div>
+                            <div class="catalog-meta">
+                                <span class="catalog-badge">20 seccionales</span>
+                                <span class="catalog-badge">MultiSelect</span>
+                                <span class="catalog-badge">Almacenado como CSV</span>
+                            </div>
+                        </div>
+                        <!-- UNIDAD SOLICITADA -->
+                        <div class="catalog-card">
+                            <div class="catalog-header">unidadSolicitada (Select)</div>
+                            <div class="catalog-desc">Unidad operativa responsable del despliegue</div>
+                            <div class="catalog-options">
+                                <div class="catalog-option">• Dirección I</div>
+                                <div class="catalog-option">• Dirección II</div>
+                                <div class="catalog-option">• Regional Este</div>
+                                <div class="catalog-option">• Regional Norte</div>
+                                <div class="catalog-option">• GEO</div>
+                                <div class="catalog-option">• Dirección IV</div>
+                                <div class="catalog-option">• Dirección V</div>
+                            </div>
+                            <div class="catalog-meta">
+                                <span class="catalog-badge">7 unidades</span>
+                                <span class="catalog-badge">Requerido</span>
+                            </div>
+                        </div>
+                        <!-- ESTADO -->
+                        <div class="catalog-card">
+                            <div class="catalog-header">estado (Select)</div>
+                            <div class="catalog-desc">Estado del ciclo de vida de la orden</div>
+                            <div class="catalog-options">
+                                <div class="catalog-option">• Pendiente</div>
+                                <div class="catalog-option">• En Proceso</div>
+                                <div class="catalog-option">• Cumplida Parcial</div>
+                                <div class="catalog-option">• Cerrada</div>
+                            </div>
+                            <div class="catalog-meta">
+                                <span class="catalog-badge">4 estados</span>
+                                <span class="catalog-badge">Requerido</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="catalog-notes">
+                        <div class="note-item">
+                            <span class="note-icon">ℹ️</span>
+                            <div>
+                                <strong>Nota sobre MultiSelect:</strong> Los campos con selección múltiple (departamento, seccional) se almacenan en la base de datos como strings separados por comas (ej: "Montevideo, Canelones"). El componente MultiSelect gestiona la conversión array ↔ string automáticamente.
+                            </div>
+                        </div>
+                        <div class="note-item">
+                            <span class="note-icon">🔧</span>
+                            <div>
+                                <strong>Componentes UI:</strong> El sistema utiliza dos componentes: <code>Select</code> para selección única y <code>MultiSelect</code> para selección múltiple con visualización de chips.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Tablas de Referencia (Maestras)</div>
+                    </div>
+                    <div class="schema-grid">
+                        <!-- TABLA UNIDADES -->
+                        <div class="schema-table">
+                            <div class="schema-header">Unidades Policiales (unidades)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nombre</span><span class="schema-type">Nombre de Unidad</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">codigo</span><span class="schema-type">Identificador</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">tipo</span><span class="schema-type">Categoría</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA SUBUNIDADES -->
+                        <div class="schema-table">
+                            <div class="schema-header">Dependencias Internas (sub_unidades)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">unidadId</span><span class="schema-type">Unidad (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nombre</span><span class="schema-type">Dependencia</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA GRADOS -->
+                        <div class="schema-table">
+                            <div class="schema-header">Grados Policiales (grados)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nombre</span><span class="schema-type">Denominación</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nivel</span><span class="schema-type">Rango</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA TURNOS -->
+                        <div class="schema-table">
+                            <div class="schema-header">Turnos de Servicio (turnos)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nombre</span><span class="schema-type">Turno</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">horaInicio</span><span class="schema-type">Entrada</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">horaFin</span><span class="schema-type">Salida</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA ESCALAFONES -->
+                        <div class="schema-table">
+                            <div class="schema-header">escalafones</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">NUMBER</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nombre</span><span class="schema-type">VARCHAR</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nivel</span><span class="schema-type">NUMBER</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA TIPOS_REGIMEN -->
+                        <div class="schema-table">
+                            <div class="schema-header">tipos_regimen</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">NUMBER</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nombre</span><span class="schema-type">VARCHAR</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">activo</span><span class="schema-type">BOOLEAN</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA TIPOS_LICENCIA -->
+                        <div class="schema-table">
+                            <div class="schema-header">tipos_licencia</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">NUMBER</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nombre</span><span class="schema-type">VARCHAR</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">activo</span><span class="schema-type">BOOLEAN</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA TIPOS_CURSO -->
+                        <div class="schema-table">
+                            <div class="schema-header">tipos_curso</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">NUMBER</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nombre</span><span class="schema-type">VARCHAR</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">activo</span><span class="schema-type">BOOLEAN</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Seguridad y Control de Usuarios</div>
+                    </div>
+                    <div class="schema-grid">
+                        <!-- TABLA USUARIOS -->
+                        <div class="schema-table">
+                            <div class="schema-header">Usuarios del Sistema (usuarios)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">username</span><span class="schema-type">Nombre de Usuario</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">rolId</span><span class="schema-type">Cargo (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">estado</span><span class="schema-type">Habilitado (Sí/No)</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA ROLES -->
+                        <div class="schema-table">
+                            <div class="schema-header">Cargos y Permisos (roles)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">nombre</span><span class="schema-type">Denominación</span></div>
+                                <div class="schema-column"><span class="schema-key"></span><span class="schema-name">permisos</span><span class="schema-type">Lista de Accesos</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA AUDITORIA -->
+                        <div class="schema-table">
+                            <div class="schema-header">Libro de Actas Digital (log_auditoria)</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="schema-key">P *</span><span class="schema-name">id</span><span class="schema-type">Número</span></div>
+                                <div class="schema-column"><span class="schema-key">F *</span><span class="schema-name">usuarioId</span><span class="schema-type">Autor (ID)</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">accion</span><span class="schema-type">Operación</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">tablaAfectada</span><span class="schema-type">Registro</span></div>
+                                <div class="schema-column"><span class="schema-key">*</span><span class="schema-name">fechaHora</span><span class="schema-type">Fecha y Hora</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONFIGURACIÓN DE INTELIGENCIA ARTIFICIAL -->
+            <section id="config-agentes" class="module">
+                <div class="module-header">
+                    <span>⚙️ Configuración del Asistente Digital (AI)</span>
+                    <span class="badge">Sincronización de Trabajo</span>
+                </div>
+                
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Reglas de Trabajo del Asistente</div>
+                    </div>
+                    <div class="strategic-section">
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Modo de Ejecución</span>
+                            </div>
+                            <div class="strategic-item-desc">Permite que el asistente trabaje con autonomía en tareas de bajo riesgo, agilizando el desarrollo sin comprometer la seguridad institucional.</div>
+                        </div>
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Seguridad DNGR</span>
+                            </div>
+                            <div class="strategic-item-desc">Reglas estrictas para que el asistente nunca use datos reales en el código y cumpla con todas las normas de seguridad del Ministerio.</div>
+                        </div>
+                        <div class="strategic-item">
+                            <div class="strategic-item-header">
+                                <span class="strategic-item-name">Código de Identificación (Sync ID)</span>
+                            </div>
+                            <div class="strategic-item-desc">Control para asegurar que los asistentes de planificación y ejecución estén siempre alineados en la misma tarea operativa.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Hojas de Ruta de Configuración AI</div>
+                    </div>
+                    <div class="architecture-grid">
+                        <div class="arch-card">
+                            <div class="arch-card-header">Configuración del Planificador</div>
+                            <div class="arch-card-content">
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="margin-bottom: 0.5rem;">🔹 Directivas de Ejecución.</li>
+                                    <li style="margin-bottom: 0.5rem;">🔹 Reglas de Seguridad Institucional.</li>
+                                    <li style="margin-bottom: 0.5rem;">🔹 Control de Sincronización (Sync ID).</li>
+                                    <li style="margin-bottom: 0.5rem;">🔹 Gestión de Impacto y Retorno.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="arch-card">
+                            <div class="arch-card-header">Configuración del Ejecutor</div>
+                            <div class="arch-card-content">
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="margin-bottom: 0.5rem;">🔸 Validación de sincronía de tareas.</li>
+                                    <li style="margin-bottom: 0.5rem;">🔸 Protección de Datos Sensibles.</li>
+                                    <li style="margin-bottom: 0.5rem;">🔸 Auto-Evaluación de Calidad.</li>
+                                    <li style="margin-bottom: 0.5rem;">🔸 Patrones de Seguridad Aplicados.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-title">Registros de Control del Sistema</div>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Registro de Decisiones (project-decisions.md)</div>
+                                <div class="task-desc">Archivo que guarda el "por qué" de cada solución adoptada para mantener la coherencia del sistema a largo plazo.</div>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-check">☑</div>
+                            <div>
+                                <div class="task-name">Control de Errores Conocidos (known-issues.md)</div>
+                                <div class="task-desc">Listado de situaciones a corregir y soluciones temporales para agilizar el mantenimiento.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer">
+            <span>&copy; 2025 Sistema DNGR - <strong>Tecnología para la Seguridad Pública</strong></span>
+            <span>Desarrollado con Vue 3 + TS + IndexedDB</span>
+        </footer>
+    </div>
+
+    <button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        ↑ Volver arriba
+    </button>
+</body>
+</html>

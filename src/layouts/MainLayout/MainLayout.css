@@ -1,0 +1,231 @@
+/**
+ * MainLayout Styles
+ */
+
+.main-layout {
+  min-height: 100vh;
+}
+
+.main-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--topbar-height);
+  background-color: var(--topbar-bg);
+  z-index: var(--z-fixed);
+}
+
+.main-topbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: var(--color-accent);
+}
+
+.topbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 var(--space-4);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: transparent;
+  border-radius: var(--radius-md);
+}
+
+.topbar-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.topbar-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar-title-main {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  letter-spacing: 0.05em;
+}
+
+.topbar-title-sub {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 1;
+  justify-content: center;
+  margin: 0 var(--space-4);
+}
+
+.topbar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.topbar-nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+}
+
+.topbar-nav-item--active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-white);
+  font-weight: var(--font-weight-semibold);
+}
+
+.topbar-nav-icon {
+  flex-shrink: 0;
+}
+
+.topbar-nav-label {
+  line-height: 1;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.topbar-user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--font-size-sm);
+}
+
+.topbar-unit-selector {
+  min-width: 180px;
+}
+
+.topbar-unit-select :deep(.select-wrapper) {
+  margin: 0;
+}
+
+.topbar-unit-select :deep(.select-container) {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  height: 32px;
+}
+
+.topbar-unit-select :deep(.select-container:hover) {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.topbar-unit-select :deep(.select-container:focus-within) {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.topbar-unit-select :deep(.select-field) {
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  padding-right: var(--space-8);
+}
+
+.topbar-unit-select :deep(.select-field option) {
+  color: var(--color-gray-900);
+  background-color: var(--color-white);
+}
+
+.topbar-unit-select :deep(.select-icon) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.topbar-user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.topbar-user-name {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.topbar-logout-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: var(--radius-md);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.topbar-logout-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.main-content {
+  padding-top: var(--topbar-height);
+  background-color: var(--bg-page);
+}
+
+.page-wrapper {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.page-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+  margin: 0;
+}
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}

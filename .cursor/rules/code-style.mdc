@@ -1,0 +1,198 @@
+---
+description: Convenciones de estilo de código para TypeScript y frameworks frontend
+globs:
+  - "**/*.ts"
+  - "**/*.tsx"
+  - "**/*.vue"
+  - "**/*.jsx"
+  - "src/components/**/*"
+  - "src/composables/**/*"
+  - "src/hooks/**/*"
+alwaysApply: false
+---
+
+# 🎨 Guías de Estilo de Código
+
+## TypeScript
+
+### Tipos y Interfaces
+
+- ✅ **Preferir `interface`** para objetos y formas de datos
+- ✅ Usar `type` para uniones, intersecciones y alias simples
+- ✅ Definir tipos explícitos en funciones públicas
+
+```typescript
+// ✅ Bueno
+interface User {
+  id: string
+  name: string
+  role: 'admin' | 'supervisor' | 'operador'
+}
+
+type UserRole = 'admin' | 'supervisor' | 'operador'
+
+// ❌ Evitar any
+function processData(data: any) { } // ❌
+function processData(data: unknown) { } // ✅
+```
+
+### Configuración TypeScript
+
+- Seguir configuración en `tsconfig.json` y archivos relacionados
+- Mantener strict mode activado
+- Usar paths `@/` para imports absolutos cuando esté configurado
+
+### Servicios y Stores
+
+- ✅ Tipar todos los métodos de servicio
+- ✅ Usar tipos específicos para stores (Pinia, Zustand, Redux, etc.)
+- ✅ Documentar tipos complejos con JSDoc cuando sea necesario
+
+```typescript
+// ✅ Ejemplo de servicio tipado
+export interface DatabaseRecord {
+  id: string
+  createdAt: number
+  updatedAt: number
+}
+
+export class DatabaseService {
+  async create<T extends DatabaseRecord>(table: string, data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>): Promise<T> {
+    // ...
+  }
+}
+```
+
+### Manejo de Errores
+
+- ✅ Usar tipos específicos para errores cuando sea posible
+- ✅ Preferir `Result<T, E>` pattern para operaciones que pueden fallar
+- ✅ No usar `any` para errores
+
+### Imports
+
+- ✅ Organizar imports: externos primero, luego locales
+- ✅ Usar imports absolutos con `@/` para código local cuando esté configurado
+- ✅ Evitar imports circulares
+
+---
+
+## Frameworks Frontend
+
+### Composition API / Hooks Pattern
+
+- ✅ **Siempre usar Composition API** con `<script setup lang="ts">` (Vue)
+- ✅ Usar hooks personalizados (React) o composables (Vue)
+- ✅ Usar `defineProps`, `defineEmits` con TypeScript (Vue)
+- ❌ **NO usar Options API** (Vue) o class components (React) excepto migraciones existentes
+
+### Estructura de Componentes
+
+#### Vue 3 (Composition API)
+```vue
+<script setup lang="ts">
+// 1. Imports externos
+import { ref, computed } from 'vue'
+import type { ComponentType } from 'vue'
+
+// 2. Imports locales (@/)
+import { useAuth } from '@/composables/useAuth'
+
+// 3. Props y Emits
+interface Props {
+  // ...
+}
+const props = defineProps<Props>()
+const emit = defineEmits<{ event: [value: string] }>()
+
+// 4. Composables
+const { user } = useAuth()
+
+// 5. Estado reactivo
+const count = ref(0)
+
+// 6. Computed
+const doubled = computed(() => count.value * 2)
+
+// 7. Métodos
+function increment() {
+  count.value++
+}
+
+// 8. Lifecycle hooks
+onMounted(() => {
+  // ...
+})
+</script>
+
+<template>
+  <!-- Template content -->
+</template>
+
+<style scoped lang="scss">
+/* Component styles */
+</style>
+```
+
+#### React (Hooks)
+```tsx
+// 1. Imports externos
+import { useState, useEffect } from 'react'
+
+// 2. Imports locales
+import { useAuth } from '@/hooks/useAuth'
+
+// 3. Props
+interface Props {
+  // ...
+}
+
+// 4. Component
+export function Component({ ...props }: Props) {
+  // 5. Hooks
+  const { user } = useAuth()
+  const [count, setCount] = useState(0)
+
+  // 6. Computed/derived state
+  const doubled = count * 2
+
+  // 7. Effects
+  useEffect(() => {
+    // ...
+  }, [])
+
+  // 8. Handlers
+  function increment() {
+    setCount(c => c + 1)
+  }
+
+  return (
+    // JSX content
+  )
+}
+```
+
+### Convenciones de Nombrado
+
+- **Componentes:** PascalCase: `UserTable.vue`, `LoginForm.tsx`
+- **Composables/Hooks:** camelCase con prefijo `use`: `useAuth.ts`, `useDatabase.ts`
+- **Props:** camelCase: `userName`, `isLoading`
+- **Emits/Events:** kebab-case en template: `@user-updated`, `onUserUpdated`
+
+### Librerías UI
+
+- ✅ Seguir guías de la librería UI del proyecto
+- ✅ Usar componentes de la librería para consistencia UI
+- ✅ Aplicar sistema de diseño definido en el proyecto
+
+### Composable/Hook Pattern
+
+- Extraer lógica reutilizable a composables/hooks
+- Cada composable/hook debe tener una responsabilidad única
+- Usar TypeScript con tipos explícitos
+
+### Template/JSX Best Practices
+
+- ✅ Usar renderizado condicional apropiado (`v-if` / `{condition && <Component />}`)
+- ✅ Usar loops con keys siempre (`v-for :key` / `map(key)`)
+- ✅ Evitar lógica compleja en template/JSX (mover a computed/derived state o métodos)

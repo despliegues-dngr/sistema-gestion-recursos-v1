@@ -1,0 +1,181 @@
+/**
+ * ModalFormularioOrden - Diseño Compacto y Formal
+ * Optimizado para entornos gubernamentales (DNGR)
+ */
+
+/* ========================================
+   HEADER COMPACTO
+   ======================================== */
+.modal-form-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.modal-form-header-info {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-form-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-gray-50);
+  border: 2px solid var(--border-color-strong);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.modal-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-form-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  line-height: 1.2;
+}
+
+.modal-form-meta {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.modal-form-subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-600);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ========================================
+   BODY COMPACTO
+   ======================================== */
+.modal-form-body {
+  padding: 0;
+  overflow-x: hidden; /* Previene scrollbar horizontal innecesario */
+}
+
+.modal-form-section {
+  padding: var(--space-2) var(--space-3);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Reducir padding de tabs */
+.modal-form-body :deep(.tabs-content) {
+  padding: var(--space-2) 0;
+}
+
+/* ========================================
+   CAMPOS DE SOLO LECTURA
+   ======================================== */
+.ficha-dato-valor {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  padding: var(--space-2);
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  font-weight: var(--font-weight-medium);
+}
+
+/* ========================================
+   OPTIMIZACIÓN DE FORMULARIOS
+   ======================================== */
+/* Reducir gap entre campos */
+.modal-form-section :deep(.ficha-form) {
+  gap: var(--space-3);
+}
+
+.modal-form-section :deep(.ficha-dato) {
+  gap: var(--space-1);
+}
+
+/* Labels más compactos */
+.modal-form-section :deep(.ficha-dato-label) {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Inputs más compactos */
+.modal-form-section :deep(.input),
+.modal-form-section :deep(.select) {
+  min-height: 36px;
+}
+
+/* ========================================
+   MENSAJE INFORMATIVO COMPACTO
+   ======================================== */
+.info-message {
+  padding: var(--space-3);
+  background-color: var(--color-gray-50);
+  border: 2px solid var(--border-color-strong);
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-2);
+}
+
+.info-message p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ========================================
+   UTILIDADES
+   ======================================== */
+/* Inputs de número */
+:deep(input[type=number]::-webkit-inner-spin-button),
+:deep(input[type=number]::-webkit-outer-spin-button) {
+  opacity: 1;
+}
+
+/* Scrollbar para contenido largo */
+.modal-form-section {
+  /* Sin restricción de altura - el modal-body maneja el scroll */
+  overflow-y: visible;
+}
+
+/* Scrollbar personalizado (opcional, gubernamental) */
+.modal-form-section::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-form-section::-webkit-scrollbar-track {
+  background: var(--color-gray-50);
+  border-radius: var(--radius-sm);
+}
+
+.modal-form-section::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: var(--radius-sm);
+}
+
+.modal-form-section::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-400);
+}
+

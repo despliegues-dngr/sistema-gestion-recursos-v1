@@ -1,0 +1,145 @@
+/* FichaFormulario.css - Estilos compartidos para formularios de fichas */
+
+/* Grid de datos - 1 columna por defecto */
+.ficha-datos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Grid de 2 columnas - aprovecha espacio horizontal */
+.ficha-datos-grid--two-columns {
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: var(--space-6);
+  row-gap: var(--space-2);
+}
+
+/* Grid de 3 columnas - para formularios compactos */
+.ficha-datos-grid--three-columns {
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
+}
+
+/* Labels en 3 columnas - más compactos y alineados verticalmente */
+.ficha-datos-grid--three-columns .ficha-dato-label {
+  font-size: var(--font-size-xs);
+  width: 130px;      /* Ancho fijo optimizado para el label más largo */
+  min-width: 130px;
+  max-width: 130px;
+  flex-shrink: 0;
+}
+
+/* Reducir gap entre label e input en 3 columnas para mayor compacidad */
+.ficha-datos-grid--three-columns .ficha-dato {
+  gap: var(--space-1);
+}
+
+/* Modo compacto - menos espaciado */
+.ficha-datos-grid--compact {
+  gap: var(--space-1);
+}
+
+.ficha-dato {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2); /* Gap controlado entre label e input */
+  padding: 0;
+  min-height: 40px;
+}
+
+.ficha-dato-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0; /* No permitir que se comprima */
+}
+
+.ficha-dato-label::after {
+  content: ":";
+}
+
+.ficha-dato-label--required::after {
+  content: ' * :';
+  color: var(--color-danger);
+  font-weight: var(--font-weight-bold);
+}
+
+.ficha-dato-valor {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-primary);
+  flex: 1;
+}
+
+/* Permitir que un campo ocupe ambas columnas */
+.ficha-dato--full {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0;
+  align-items: center;
+}
+
+.ficha-dato--full .ficha-dato-label {
+  min-width: 180px;
+  width: 180px;
+}
+
+/* Input/Select en modo edición */
+.ficha-dato :deep(.input-wrapper),
+.ficha-dato :deep(.select-wrapper) {
+  flex: 1; /* Ocupar el espacio restante de la fila */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  position: relative;
+  min-width: 0; /* Permite que el input se comprima si es necesario */
+}
+
+/* Ocultar label interno de Input/Select */
+.ficha-dato :deep(.input-label),
+.ficha-dato :deep(.select-label) {
+  display: none;
+}
+
+/* Input/Select container */
+.ficha-dato :deep(.input-container),
+.ficha-dato :deep(.select-container) {
+  width: 100%;
+}
+
+/* Mensajes de error/hint */
+.ficha-dato :deep(.input-error-message),
+.ficha-dato :deep(.input-hint),
+.ficha-dato :deep(.select-error),
+.ficha-dato :deep(.select-hint) {
+  font-size: var(--font-size-xs);
+  margin-top: 0;
+}
+
+/* Responsive - colapsar a 1 columna en móviles */
+@media (max-width: 768px) {
+  .ficha-datos-grid--two-columns {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+  
+  .ficha-dato {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+    min-height: auto;
+    padding-bottom: var(--space-2);
+  }
+  
+  .ficha-dato-label {
+    min-width: auto;
+    padding-right: 0;
+  }
+}

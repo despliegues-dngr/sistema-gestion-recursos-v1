@@ -1,0 +1,49 @@
+---
+description: Reglas de seguridad gubernamental para datos sensibles (DNGR)
+globs:
+  - "**/*auth*.ts"
+  - "**/*security*.ts"
+  - "**/*usuario*.ts"
+  - "**/*funcionario*.ts"
+  - "**/*encryption*.ts"
+alwaysApply: false
+---
+# 🔐 Seguridad Gubernamental (DNGR)
+> **Referencia:** [docs/REGLAS-DE-ORO.md](cci:7://file:///c:/Proyectos/sistema-gestion-recursos-v1/docs/REGLAS-DE-ORO.md:0:0-0:0) | Contexto: Sistema Desktop Gubernamental
+
+## Datos Sensibles - Clasificación
+
+| Tipo de Dato | Requiere Cifrado | Requiere Auditoría |
+|--------------|------------------|-------------------|
+| DNI/CUIL/CUIT | ✅ Sí | ✅ Sí |
+| Datos biométricos | ✅ Sí | ✅ Sí |
+| Información médica | ✅ Sí | ✅ Sí |
+| Antecedentes | ✅ Sí | ✅ Sí |
+| Direcciones personales | ✅ Sí | ⚠️ Según contexto |
+
+## Patrones Obligatorios
+
+### Logging Seguro
+
+```typescript
+// ✅ Correcto - Solo ID, no datos sensibles
+logger.info('Funcionario consultado', { id: funcionario.id })
+
+// ❌ Incorrecto - Expone dato sensible
+logger.info('Funcionario consultado', { dni: funcionario.dni })
+```
+
+### Validación de Input
+
+```typescript
+// ✅ Siempre validar (siguiendo REGLAS-DE-ORO: Fail Fast)
+function validarDNI(dni: string): boolean {
+  if (!dni) throw new Error('DNI requerido')
+  if (!/^\d{7,8}$/.test(dni)) throw new Error('DNI inválido')
+  return true
+}
+```
+
+## Referencias
+- `docs/REGLAS-DE-ORO.md` - Documento principal del proyecto
+- OWASP Top 10:2021

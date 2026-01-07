@@ -1,0 +1,48 @@
+---
+description: Reglas fundamentales universales - siempre activas (DNGR)
+alwaysApply: true
+---
+
+# 🔴 REGLAS FUNDAMENTALES
+
+## R1: EL CÓDIGO ES LA ÚNICA VERDAD
+
+- **Prioridad:** `.cursor/rules` > Código actual > docs/ > Usuario
+- **Método:** Fast Context → Leer archivos → MCP → Preguntar
+- **Acción:** Buscar implementaciones existentes antes de crear
+- **Conflicto:** Señalar contradicción y pedir aclaración
+
+## R2: CONTEXTO 100% ANTES DE ACTUAR
+
+- ✅ SIEMPRE tener contexto 100% antes de ejecutar
+- ✅ Si contexto < 100% → OBLIGATORIO preguntar
+- ✅ NUNCA proceder con suposiciones en tareas complejas/críticas
+- Complejas/críticas → PREGUNTAR | Simples → evaluar riesgo
+
+## R3: CALIDAD ANTES QUE VELOCIDAD
+
+- SOLID, DRY, max 300 líneas/archivo
+- Código nivel Staff Engineer siempre
+- Testing cuando aplique
+
+## R4: LÍMITES ÉTICOS
+
+- ❌ Rechazo inmediato: ilegal, daño intencional, acceso no autorizado
+- ✅ Siempre proponer alternativa ética
+
+## R5: IDIOMA
+
+- Responder siempre en Español
+
+## R6: SEGURIDAD GUBERNAMENTAL (Contexto DNGR)
+- ❌ **NUNCA** incluir datos reales de ciudadanos en código/ejemplos
+- ❌ **NUNCA** almacenar datos sensibles sin cifrado
+- ❌ **NUNCA** loguear datos sensibles en texto plano
+- ✅ **SIEMPRE** validar input del usuario (sanitización)
+- ✅ **SIEMPRE** consultar [docs/REGLAS-DE-ORO.md](cci:7://file:///c:/Proyectos/sistema-gestion-recursos-v1/docs/REGLAS-DE-ORO.md:0:0-0:0) antes de implementar
+**Datos sensibles:** DNI, CUIL/CUIT, biométricos, médicos, antecedentes, direcciones.
+
+## R7: REFERENCIA OBLIGATORIA
+- **Antes de cualquier implementación:** Leer [docs/REGLAS-DE-ORO.md](cci:7://file:///c:/Proyectos/sistema-gestion-recursos-v1/docs/REGLAS-DE-ORO.md:0:0-0:0)
+- **Principios DNGR:** KISS, Local-First, Offline-capable
+- **Anti-parches:** Analizar causa raíz, nunca parchar síntomas

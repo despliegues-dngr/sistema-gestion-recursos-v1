@@ -1,0 +1,155 @@
+/**
+ * Input Component Styles
+ */
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.input-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+}
+
+.input-label--required::after {
+  content: ' *';
+  color: var(--color-error);
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: var(--input-bg);
+  border: 2px solid var(--border-color-strong);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+}
+
+.input-container:hover:not(.input-container--disabled):not(.input-container--error) {
+  border-color: var(--input-border-hover);
+}
+
+.input-container:focus-within {
+  border-color: var(--color-primary);
+}
+
+.input-container--error {
+  border-color: var(--color-error);
+}
+
+.input-container--error:focus-within {
+  border-color: var(--color-error);
+}
+
+.input-container--disabled {
+  background-color: var(--color-gray-50);
+  border-color: var(--color-gray-200);
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.input-container--sm {
+  height: var(--input-height-sm);
+  padding: 0 var(--space-3);
+}
+
+.input-container--md {
+  height: var(--input-height-md);
+  padding: 0 var(--space-3);
+}
+
+.input-container--lg {
+  height: var(--input-height-lg);
+  padding: 0 var(--space-4);
+}
+
+/* Input field */
+.input-field {
+  flex: 1;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--input-text);
+}
+
+.input-field::placeholder {
+  color: var(--input-placeholder);
+}
+
+.input-field:focus {
+  outline: none;
+}
+
+.input-field:disabled {
+  cursor: not-allowed;
+  color: var(--color-gray-500);
+}
+
+/* Reset autofill styles del navegador */
+.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover,
+.input-field:-webkit-autofill:focus,
+.input-field:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-white) inset;
+  -webkit-text-fill-color: var(--input-text);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Icons */
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-400);
+  padding: 0 var(--space-3);
+  flex-shrink: 0;
+}
+
+.input-icon svg {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+
+/* Toggle button (password) */
+.input-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--input-height-md);
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: var(--color-gray-400);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.input-toggle:hover {
+  color: var(--color-gray-600);
+}
+
+.input-container--lg .input-toggle {
+  width: var(--input-height-lg);
+}
+
+/* Messages */
+.input-error-message {
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  margin: 0;
+}
+
+.input-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+  margin: 0;
+}

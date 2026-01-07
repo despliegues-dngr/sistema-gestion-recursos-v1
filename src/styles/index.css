@@ -1,0 +1,50 @@
+/**
+ * ============================================================================
+ * ESTILOS GLOBALES - Punto de entrada
+ * ============================================================================
+ * 
+ * Importar SOLO este archivo en main.ts
+ * 
+ * ============================================================================
+ */
+
+@import './tokens.css';
+@import './reset.css';
+
+/* Librerías externas */
+@import 'primeicons/primeicons.css';
+
+/* ==========================================================================
+   ESTILOS GLOBALES DE LA APLICACIÓN
+   ========================================================================== */
+
+#app {
+  min-height: 100vh;
+}
+
+/* ==========================================================================
+   SCROLLBAR
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-400);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-500);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gray-400) var(--color-gray-100);
+}
