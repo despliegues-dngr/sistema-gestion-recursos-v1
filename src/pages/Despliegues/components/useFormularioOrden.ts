@@ -7,7 +7,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { esmapoService } from '@services'
 import type { OrdenOperativaConRelaciones } from '@services/esmapoService'
-import { useToast } from '@hooks'
+import { useToast, useAuth } from '@hooks'
 
 // Estado global dentro del módulo para que sea compartido entre los componentes que usen el hook
 // si se invoca en el mismo contexto de ciclo de vida (el modal)
@@ -47,6 +47,7 @@ const ordenOriginal = ref<OrdenOperativaConRelaciones | null>(null)
 
 export function useFormularioOrden(props: { mode?: 'create' | 'edit', ordenId?: number }) {
   const toast = useToast()
+  const { usuario } = useAuth()
 
   // Opciones (se pueden mover a constantes si no cambian)
   const tipoDocumentoOptions = [
@@ -292,7 +293,7 @@ export function useFormularioOrden(props: { mode?: 'create' | 'edit', ordenId?: 
       }
       
       if (props.mode === 'edit' && props.ordenId) {
-        await esmapoService.update(props.ordenId, dataToSave as any)
+        await esmapoService.update(props.ordenId, dataToSave as any, usuario.value?.id || 0)
         toast.success('Orden actualizada exitosamente')
       } else {
         await esmapoService.create(dataToSave as any)

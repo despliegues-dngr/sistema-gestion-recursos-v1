@@ -234,6 +234,54 @@ export interface OrdenOperativa {
   modificadoPor?: number;
   createdAt?: Date;
   updatedAt?: Date;
+
+  // ✅ NUEVOS CAMPOS SOFT DELETE & VERSIONADO
+  eliminada?: boolean;                 // Soft delete flag
+  eliminadaAt?: Date;                 // Timestamp de eliminación
+  eliminadaPor?: number;              // Usuario que eliminó
+  versionActual?: number;              // Versión actual (1, 2, 3...)
+}
+
+export interface HistorialOrdenOperativa {
+  id?: number;
+  ordenId: number;                    // FK a OrdenOperativa
+  version: number;                    // 1, 2, 3... (autoincremental por ordenId)
+  accion: 'CREATE' | 'UPDATE' | 'DELETE';
+  
+  // Snapshot completo del estado al momento de la acción
+  snapshot: {
+    nroDocumento: string;
+    tipoDocumento: string;
+    tipoServicio?: string;
+    nombreDocumento?: string;
+    nombreServicio?: string;
+    unidadSolicitadaId: number;
+    fechaInicioPlan: Date;
+    fechaFinPlan?: Date | null;
+    horaInicioPlan?: string;
+    horaFinPlan?: string;
+    planMoviles: number;
+    planMotos: number;
+    planSsoo: number;
+    planPpssMovil: number;
+    planPieTierra: number;
+    planMotosBiTripuladas: number;
+    planHidro?: number;
+    planHipos: number;
+    planChoqueApost: number;
+    planChoqueAlerta: number;
+    planTotalPersonal: number;
+    estado: string;
+    departamento?: string;
+    seccional?: string;
+    tiempoServicio?: string;
+    observaciones?: string;
+  };
+  
+  // Auditoría
+  usuarioId: number;
+  fechaHora: Date;
+  motivoCambio?: string;              // Opcional: razón del cambio
 }
 
 export interface ReporteDespliegue {
@@ -269,6 +317,33 @@ export interface ReporteDespliegue {
   modificadoPor?: number;
   createdAt?: Date;
   updatedAt?: Date;
+
+  // ✅ NUEVOS CAMPOS: SNAPSHOT DE PLANIFICACIÓN (v14)
+  refPlanMoviles?: number;
+  refPlanMotos?: number;
+  refPlanSsoo?: number;
+  refPlanPpssMovil?: number;
+  refPlanPieTierra?: number;
+  refPlanMotosBiTripuladas?: number;
+  refPlanHidro?: number;
+  refPlanHipos?: number;
+  refPlanChoqueApost?: number;
+  refPlanChoqueAlerta?: number;
+  refPlanTotalPersonal?: number;
+}
+
+export interface RecursosReporte {
+  realMoviles: number
+  realMotos: number
+  realSsoo: number
+  realPpssMovil: number
+  realPieTierra: number
+  realMotosBiTripuladas: number
+  realHipos: number
+  realChoqueApost: number
+  realChoqueAlerta: number
+  realHidro: number
+  realTotalPersonal: number
 }
 
 // Módulo Seguridad

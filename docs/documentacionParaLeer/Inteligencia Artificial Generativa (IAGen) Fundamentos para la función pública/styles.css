@@ -1,0 +1,497 @@
+/* ========================================
+   CURSO IAGen - ESTILOS
+   BID | Agesic | ENAP
+   ======================================== */
+
+/* --- ESTILOS PARA PORTADA --- */
+@media screen {
+  .portada-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .portada-instituciones {
+    margin-bottom: 40px;
+  }
+
+  .portada-inst {
+    font-size: 18pt;
+    font-weight: 600;
+    color: #424242;
+    letter-spacing: 0.1em;
+  }
+
+  .portada-titulo {
+    font-size: 48pt;
+    font-weight: 700;
+    color: #212121;
+    margin: 0 0 20px 0;
+  }
+
+  .portada-subtitulo {
+    font-size: 20pt;
+    font-weight: 400;
+    color: #424242;
+    margin: 0 0 15px 0;
+  }
+
+  .portada-version {
+    font-size: 14pt;
+    font-weight: 400;
+    color: #616161;
+    margin: 60px 0 0 0;
+    padding: 20px 0 0 0;
+    border-top: 2px solid #1565c0;
+  }
+}
+
+/* --- ESTILOS PARA CONTENIDO --- */
+body {
+  font-family: 'Roboto', 'Segoe UI', 'Arial', sans-serif;
+  font-size: 11pt;
+  line-height: 1.7;
+  color: #212121;
+  background: #ffffff;
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 15mm 20mm;
+  counter-reset: page; /* Inicializar contador de páginas */
+}
+
+.modulo-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: #e3f2fd;
+  border: 2px solid #1565c0;
+  border-radius: 8px;
+}
+
+.modulo-header h1 {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 22pt;
+  color: #0d47a1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.contenido-container {
+  padding: 15mm 20mm;
+}
+
+/* Índice - Obsoleto en modo estático */
+.indice-container {
+  display: none;
+}
+
+.indice-lista {
+  list-style: none;
+  margin-left: 0;
+}
+
+.indice-lista li {
+  margin-bottom: 10px;
+  border-bottom: 1px dotted #ccc;
+  display: flex;
+  justify-content: space-between;
+}
+
+.indice-lista li a {
+  text-decoration: none;
+  color: #1565c0;
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.indice-lista li a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 18pt;
+  font-weight: 700;
+  color: #0d47a1;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #1565c0;
+  page-break-after: avoid;
+}
+
+h2 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: #1565c0;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #90caf9;
+  page-break-after: avoid;
+}
+
+h3 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: #424242;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  page-break-after: avoid;
+}
+
+p,
+li {
+  font-size: 10pt;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  text-align: justify;
+}
+
+ul,
+ol {
+  margin-left: 25px;
+  margin-bottom: 12px;
+  line-height: 1.8;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+li strong {
+  color: #0d47a1;
+  font-weight: 600;
+}
+
+/* --- CAJAS DE INFORMACIÓN --- */
+.caja-info {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 12px 0;
+  border-radius: 0;
+  box-shadow: none;
+  page-break-inside: avoid;
+}
+
+.caja-info p {
+  margin-bottom: 8px;
+}
+
+/* --- TABLAS --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  font-size: 9pt;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  page-break-inside: avoid;
+}
+
+thead {
+  background: #1565c0;
+  color: #ffffff;
+}
+
+th {
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid #1976d2;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  font-size: 9pt;
+}
+
+td {
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+tbody tr:nth-child(odd) {
+  background: #fafafa;
+}
+
+tbody tr:nth-child(even) {
+  background: #ffffff;
+}
+
+/* Notas */
+.notas-container {
+  margin: 30px 0;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #eee;
+  break-inside: avoid; /* Evitar que la caja de notas se rompa feo */
+}
+
+.linea-nota {
+  border-bottom: 1px solid #eee;
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+/* Glosario */
+.glosario-contenido dt {
+  font-weight: bold;
+  color: #0d47a1;
+  font-size: 11pt;
+  margin-top: 15px;
+  break-after: avoid; /* Evitar que el término quede solo al final de una página */
+}
+
+.glosario-contenido dd {
+  margin-left: 20px;
+  margin-bottom: 15px;
+  color: #424242;
+  break-inside: avoid; /* Mantener la definición y su ejemplo juntos */
+}
+
+.ejemplo {
+  margin-top: 5px;
+  padding: 8px 12px;
+  background: #fff8e1;
+  border-left: 3px solid #ffb300;
+  font-size: 9pt;
+  font-style: italic;
+}
+
+.aplicaciones {
+  margin-top: 5px;
+  padding: 5px 12px;
+  background: #e8f5e9;
+  border-left: 3px solid #4caf50;
+  font-size: 9pt;
+  color: #2e7d32;
+}
+
+@media print {
+  /* Permitir que las listas del glosario se dividan entre páginas */
+  .glosario-contenido dl {
+    page-break-inside: auto;
+  }
+}
+
+/* --- SEPARADOR Y FOOTER --- */
+.separador {
+  margin: 30px 0;
+  border: none;
+  border-top: 2px solid #e0e0e0;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  font-size: 9pt;
+  color: #616161;
+}
+
+.footer p {
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+
+/* --- ESTILOS PARA IMPRESIÓN --- */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 15mm 12mm 15mm 12mm;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #000000;
+  }
+
+  /* Portada */
+  .portada-container {
+    width: 100%;
+    min-height: 267mm;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    page-break-after: always;
+  }
+
+  .portada-instituciones {
+    margin: 0 auto 50pt;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .portada-inst {
+    font-size: 16pt;
+    font-weight: 600;
+    color: #424242;
+  }
+
+  .portada-titulo {
+    font-size: 42pt;
+    font-weight: 700;
+    color: #212121;
+    margin: 0 auto 25pt;
+    padding: 0;
+    text-align: center;
+    border: none !important;
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+
+  .portada-subtitulo {
+    font-size: 18pt;
+    font-weight: 400;
+    color: #424242;
+    margin: 0 auto 12pt;
+    padding: 0;
+    text-align: center;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+
+  .portada-version {
+    font-size: 12pt;
+    font-weight: 400;
+    color: #616161;
+    margin: 60pt auto 0;
+    padding: 20pt 0 0 0;
+    text-align: center;
+    border-top: 2pt solid #1565c0;
+    max-width: 70%;
+    flex-shrink: 0;
+  }
+
+  /* Forzar saltos de página inteligentes */
+  h1 {
+    page-break-before: always; /* Cada módulo principal empieza en página nueva */
+  }
+
+  h1:first-of-type,
+  #bienvenida {
+    page-break-before: auto; /* El primer h1 no necesita salto extra después de la portada */
+  }
+
+  /* Contenido */
+  .contenido-container {
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 18pt;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: #0d47a1;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    font-size: 13pt;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #1565c0;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 11pt;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    page-break-after: avoid;
+  }
+
+  p,
+  li {
+    font-size: 10pt;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  table {
+    font-size: 9pt;
+    margin: 15px 0;
+  }
+
+  th,
+  td {
+    padding: 8px 10px;
+  }
+
+  /* Eliminar efectos visuales */
+  * {
+    box-shadow: none;
+    text-shadow: none;
+    background-image: none !important;
+  }
+
+  .caja-info {
+    background: #f9f9f9 !important;
+    border: 1px solid #e0e0e0;
+    padding: 10pt;
+    page-break-inside: avoid;
+  }
+
+  ul, ol {
+    page-break-inside: auto; /* Permitir saltos en listas largas */
+  }
+
+  li {
+    page-break-inside: avoid;
+  }
+
+  /* Paginación */
+  .page-footer-print {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    font-size: 9pt;
+    color: #616161;
+    content: counter(page);
+  }
+
+  body::after {
+    /* Algunos generadores prefieren inyectar el contador así */
+  }
+
+  /* Forzar que el pie de página tenga el número */
+  @page {
+    @bottom-right {
+      content: "Página " counter(page);
+    }
+  }
+
+  /* La portada (primera página) no lleva numeración */
+  @page :first {
+    @bottom-right {
+      content: none;
+    }
+    margin-top: 0;
+  }
+
+  /* Fallback para navegadores comunes (Chrome/Edge) */
+  .contenido-container::after {
+    display: none;
+  }
+  
+  h1, h2, h3 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+}

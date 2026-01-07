@@ -200,6 +200,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, watch } from 'vue'
 import { Input, Select, FichaFormulario, InlineForm } from '@components'
 import { useFormularioOrden } from './useFormularioOrden'
 
@@ -221,18 +222,18 @@ const {
 
 // Computed property para calcular total de efectivos automáticamente
 const totalEfectivosCalculado = computed(() => {
-  const ppssMovil = Number(formData.planPpssMovil) || 0
-  const motos = Number(formData.planMotos) || 0
-  const hipos = Number(formData.planHipos) || 0
-  const pieTierra = Number(formData.planPieTierra) || 0
-  const motosBiTri = Number(formData.planMotosBiTripuladas) || 0
+  const ppssMovil = Number(formData.value.planPpssMovil) || 0
+  const motos = Number(formData.value.planMotos) || 0
+  const hipos = Number(formData.value.planHipos) || 0
+  const pieTierra = Number(formData.value.planPieTierra) || 0
+  const motosBiTri = Number(formData.value.planMotosBiTripuladas) || 0
   
   return ppssMovil + motos + hipos + pieTierra + (motosBiTri * 2)
 })
 
 // Sincronizar el valor calculado con el formData para la persistencia
 watch(totalEfectivosCalculado, (newValue) => {
-  formData.planTotalPersonal = newValue
+  formData.value.planTotalPersonal = newValue
 }, { immediate: true })
 </script>
 

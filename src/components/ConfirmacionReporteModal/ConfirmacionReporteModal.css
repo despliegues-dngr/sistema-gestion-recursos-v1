@@ -1,0 +1,44 @@
+.confirmacion-reporte {
+  padding: var(--space-2);
+}
+
+.confirmacion-text {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-gray-700);
+  margin-bottom: var(--space-4);
+}
+
+.recursos-texto {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  background-color: var(--color-gray-50);
+  padding: var(--space-4);
+  border: 2px solid var(--border-color-strong);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+  line-height: var(--line-height-relaxed);
+}
+
+.total-texto {
+  font-size: var(--font-size-base);
+  color: var(--color-gray-700);
+  margin-bottom: var(--space-6);
+}
+
+.cumplimiento-section {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 2px solid var(--border-color);
+}
+
+.confirmacion-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-color);
+}
+

@@ -100,7 +100,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { Info } from 'lucide-vue-next';
 import { Input, Select } from '@components';
-import { useToast } from '@hooks';
+import { useToast, useAuth } from '@hooks';
 import { desplieguesService, type ReporteDespliegueConRelaciones } from '@services/desplieguesService';
 import { esmapoService } from '@services/esmapoService';
 import type { OrdenOperativa } from '@lib/types';
@@ -135,6 +135,7 @@ const emit = defineEmits<{
 }>();
 
 const toast = useToast();
+const { usuario } = useAuth();
 const isEditing = ref(true); // Siempre en modo edición para recursos e info adicional
 const saving = ref(false);
 
@@ -352,7 +353,7 @@ async function saveChanges() {
     } else if (props.reporte?.id) {
       await desplieguesService.update(props.reporte.id, reporteData);
       if (props.reporte.ordenId) {
-        await esmapoService.update(props.reporte.ordenId, ordenData);
+        await esmapoService.update(props.reporte.ordenId, ordenData, usuario.value?.id || 0);
       }
       toast.success('Reporte actualizado correctamente');
       emit('updated');

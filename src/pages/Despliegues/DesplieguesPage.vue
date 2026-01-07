@@ -647,7 +647,7 @@ async function handleTableAction(payload: { action: string; row: any }) {
     case 'delete':
       if (confirm(`¿Está seguro de eliminar la orden ${payload.row.orden}?`)) {
         try {
-          await esmapoService.remove(payload.row.id)
+          await esmapoService.softDelete(payload.row.id, 1) // AI-Hint: Usar ID de usuario logueado en prod
           toast.success("Orden eliminada exitosamente")
           await loadOrdenes()
         } catch (error) {

@@ -5,6 +5,7 @@
     :subtitle="`${displayData.unidad} - ${displayData.orden}`"
     :tabs="reporteTabs"
     submit-text="Guardar Reporte"
+    :submit-disabled="!esEditable"
     default-tab="recursos"
     @update:model-value="$emit('update:modelValue', $event)"
     @submit="handleGuardar"
@@ -12,7 +13,14 @@
     <!-- Tab: Recursos Desplegados (Formulario) -->
     <template #recursos>
       <!-- Banner Informativo Estilo Badge -->
-      <div class="info-banner">
+      <div v-if="!esEditable" class="info-banner info-banner--danger" style="background-color: var(--color-danger-light); border-color: var(--color-danger);">
+        <p class="info-banner-text" style="color: var(--color-danger-dark);">
+          <strong>ATENCIÓN:</strong> El período de gracia para editar este reporte ha expirado. 
+          Solo se pueden editar reportes el mismo día de su creación.
+        </p>
+      </div>
+
+      <div v-else class="info-banner">
         <p class="info-banner-text">
           Complete la información referente al despliegue del 
           <strong>"{{ displayData.nombreServicio }}"</strong> 
@@ -186,15 +194,20 @@
               </template>
             </Input>
           </div>
-          
+
           <div class="ficha-dato">
             <span class="ficha-dato-label">Total Efectivos</span>
-            <div class="campo-calculado">
-              <div class="campo-calculado-icon">
+            <Input 
+              :model-value="totalEfectivosCalculado" 
+              type="text"
+              size="sm"
+              disabled
+              class="input-cantidad input-total-efectivos"
+            >
+              <template #icon>
                 <img src="@/assets/images/ppssTotal.svg" alt="Total Efectivos" style="width: 16px; height: 16px;" />
-              </div>
-              <div class="campo-calculado-valor">{{ totalEfectivosCalculado }}</div>
-            </div>
+              </template>
+            </Input>
           </div>
         </FichaFormulario>
       </InlineForm>
@@ -205,12 +218,27 @@
       </div>
     </template>
   </ModalFormularioOrden>
+
+  <!-- Modal de Confirmación -->
+  <ConfirmacionReporteModal
+    :visible="showConfirmacionModal"
+    :orden-nombre="displayData.nombreServicio"
+    :fecha-despliegue="displayData.fechaReporte"
+    :hora-inicio="displayData.horaInicio"
+    :hora-fin="displayData.horaFin"
+    :recursos="{ ...formData, realTotalPersonal: totalEfectivosCalculado }"
+    :plan-total-personal="planTotalPersonal"
+    @confirm="handleConfirmarReporte"
+    @cancel="showConfirmacionModal = false"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
-import { ModalFormularioOrden, Select, FichaFormulario, Input, InlineForm } from '@components'
+import { ModalFormularioOrden, Select, FichaFormulario, Input, InlineForm, ConfirmacionReporteModal } from '@components'
 import { db } from '@lib/db'
+import { desplieguesService } from '@services'
+import { useToast } from '@hooks'
 
 interface Props {
   modelValue: boolean
@@ -224,7 +252,16 @@ const emit = defineEmits<{
   'success': []
 }>()
 
+const toast = useToast()
+
 // Estado reactivo
+const showConfirmacionModal = ref(false)
+const esEditable = ref(true)
+const reporteExistenteId = ref<number | null>(null)
+const refPlanTotalPersonal = ref<number>(0)
+
+const planTotalPersonal = computed(() => refPlanTotalPersonal.value)
+
 const displayData = ref({
   orden: '-',
   nombreServicio: '-',
@@ -294,6 +331,9 @@ async function cargarDatos() {
   try {
     let ordenId: number
     let fechaUnix: number | null = null
+    esEditable.value = true
+    reporteExistenteId.value = null
+    refPlanTotalPersonal.value = 0
 
     if (typeof props.diaDespliegueId === 'string' && props.diaDespliegueId.includes('-')) {
       const parts = props.diaDespliegueId.split('-')
@@ -304,6 +344,11 @@ async function cargarDatos() {
       if (reporte) {
         ordenId = reporte.ordenId
         fechaUnix = new Date(reporte.fechaDespliegue).getTime()
+        reporteExistenteId.value = reporte.id || null
+        refPlanTotalPersonal.value = reporte.refPlanTotalPersonal || 0
+        
+        // Verificar período de gracia
+        esEditable.value = desplieguesService.puedeEditarReporte(reporte)
         
         formData.value = {
           tipoDespliegue: 'Despliegue',
@@ -328,6 +373,11 @@ async function cargarDatos() {
     if (orden) {
       const unidad = await db.unidades.get(orden.unidadSolicitadaId)
       
+      // Si es un reporte nuevo, tomamos el plan de la orden actual
+      if (!reporteExistenteId.value) {
+        refPlanTotalPersonal.value = orden.planTotalPersonal || 0
+      }
+
       displayData.value = {
         orden: `${orden.tipoDocumento} ${orden.nroDocumento}`,
         nombreServicio: [
@@ -368,13 +418,55 @@ function resetForm() {
 }
 
 function handleGuardar() {
-  console.log('Datos del reporte a guardar (Fase 1):', {
-    diaDespliegueId: props.diaDespliegueId,
-    ...formData.value,
-    realTotalPersonal: totalEfectivosCalculado.value
-  })
+  if (!esEditable.value) return
   
-  emit('success')
+  showConfirmacionModal.value = true
+}
+
+async function handleConfirmarReporte() {
+  showConfirmacionModal.value = false
+  
+  try {
+    let ordenId: number
+    let fechaDespliegue: Date
+
+    if (typeof props.diaDespliegueId === 'string' && props.diaDespliegueId.includes('-')) {
+      const parts = props.diaDespliegueId.split('-')
+      ordenId = parseInt(parts[0])
+      fechaDespliegue = new Date(parseInt(parts[1]))
+    } else {
+      const reporte = await db.reportes_despliegue.get(Number(props.diaDespliegueId))
+      if (!reporte) throw new Error('Reporte no encontrado')
+      ordenId = reporte.ordenId
+      fechaDespliegue = reporte.fechaDespliegue
+    }
+
+    const orden = await db.ordenes_operativas.get(ordenId)
+    if (!orden) throw new Error('Orden no encontrada')
+
+    const data = {
+      ordenId,
+      unidadReportanteId: orden.unidadSolicitadaId,
+      fechaDespliegue,
+      usuarioReportaId: 1, // AI-Hint: Usar ID de usuario logueado en producción
+      ...formData.value,
+      realTotalPersonal: totalEfectivosCalculado.value,
+      estadoReal: 'Completo' as const // Simplificación inicial
+    }
+
+    if (reporteExistenteId.value) {
+      await desplieguesService.update(reporteExistenteId.value, data)
+      toast.success('Reporte actualizado exitosamente')
+    } else {
+      await desplieguesService.create(data)
+      toast.success('Reporte creado exitosamente')
+    }
+
+    emit('success')
+  } catch (error) {
+    console.error('Error al guardar reporte:', error)
+    toast.error('Error al guardar el reporte')
+  }
 }
 </script>
 
@@ -411,28 +503,13 @@ function handleGuardar() {
   padding-left: 0;
 }
 
-/* Campo calculado (solo lectura) */
-.campo-calculado {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0 var(--space-3);
+/* ✅ ÉNFASIS SUTIL PARA CAMPO CALCULADO (v14 - ARCH-20260107-011) */
+.input-total-efectivos :deep(.input-container) {
+  border-color: var(--color-primary);
   background-color: var(--color-gray-100);
-  border: 2px solid var(--border-color-strong);
-  border-radius: var(--radius-md);
-  min-height: 32px;
-  width: 100%;
-  flex: 1;
 }
 
-.campo-calculado-icon {
-  display: flex;
-  align-items: center;
-  opacity: 0.7;
-}
-
-.campo-calculado-valor {
-  font-size: var(--font-size-sm);
+.input-total-efectivos :deep(.input-field) {
   font-weight: var(--font-weight-bold);
   color: var(--color-primary);
 }

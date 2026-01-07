@@ -79,6 +79,31 @@
 
 ---
 
+## 🏗️ PATRONES DE ARQUITECTURA (Architecture Patterns)
+
+### Patrón 1: Integridad Referencial "Lazy" (Buscar o Crear)
+**Regla:** En importaciones masivas (CSV), **NUNCA** fallar por falta de datos maestros.
+**Implementación:** Usar funciones `buscarOCrearX()` para entidades de referencia.
+- **Flujo:** ¿Existe la entidad? → Devolver ID : Crear nueva → Devolver ID.
+- **Ejemplo:** `buscarOCrearGrado(nombre)`, `buscarOCrearUnidad(nombre)`.
+
+### Patrón 2: Generación Reactiva (Triggers de Servicio)
+**Regla:** La creación de una entidad "Padre" (Plan) debe disparar automáticamente la creación de entidades "Hijo" (Instancias).
+**Implementación:**
+- `OrdenOperativa` (Plan) → Genera automáticamente N registros de `DiaDespliegue` (Hijos virtuales).
+- Evita la creación manual de días y garantiza consistencia temporal.
+
+### Patrón 3: Soft Delete + Versionado (Trazabilidad Gubernamental)
+**Regla:** En sistemas gubernamentales con requisitos de auditoría, **NUNCA** eliminar datos físicamente.
+**Implementación:** 
+- **Soft Delete:** Marcar registros como `eliminada: true` en lugar de `DELETE FROM`.
+- **Versionado:** Cada cambio incrementa `versionActual` y genera snapshot en tabla de historial.
+- **Snapshot Completo:** Almacenar el estado completo del registro en cada versión para comparaciones futuras.
+**Ejemplo:** `OrdenOperativa` + `HistorialOrdenOperativa` con snapshots JSON.
+**Beneficio:** Recuperación de datos históricos, auditoría completa, comparación temporal.
+
+---
+
 ## 🛠️ STACK TECNOLÓGICO
 
 | Categoría | Tecnología | Versión |
@@ -98,7 +123,11 @@
 ```text
 src/
 ├── assets/                     # Recursos estáticos
-│   └── images/                 # Imágenes (logos, iconos)
+│   └── images/                 # Imágenes e Iconos Oficiales
+│       ├── motosBitripuladas.svg (Unidades Móviles)
+│       ├── hipos.svg             (Montada)
+│       ├── choqueEnAlerta.svg    (Fuerza de Choque)
+│       └── logo-gr-dorado.svg    (Branding Oficial)
 │
 ├── styles/                     # Estilos globales (SOLO tokens y reset)
 │   ├── tokens.css              # Design Tokens (variables CSS)
@@ -219,6 +248,25 @@ src/components/Button/          # Estilos colocados con el componente
 | Estilos de Input | `components/Input/Input.css` |
 | Estilos de LoginPage | `pages/Login/LoginPage.css` |
 
+### 🎨 Tokens de Uso Frecuente (Referencia Rápida)
+
+| Categoría | Token | Valor | Uso |
+|-----------|-------|-------|-----|
+| **Colores** | `--color-primary` | `#1e3a5f` | Botones primarios, enlaces |
+| | `--color-danger` | `#dc2626` | Botones eliminar, errores |
+| | `--color-gray-50` | `#f8fafc` | Fondos header |
+| | `--color-gray-900` | `#0f172a` | Texto principal |
+| **Espaciado** | `--space-2` | `0.5rem` (8px) | Gap mínimo |
+| | `--space-4` | `1rem` (16px) | Padding estándar |
+| | `--space-6` | `1.5rem` (24px) | Separación secciones |
+| **Tipografía** | `--font-size-sm` | `0.875rem` (14px) | Texto secundario |
+| | `--font-size-base` | `1rem` (16px) | Texto normal |
+| | `--font-size-xl` | `1.25rem` (20px) | Títulos |
+| **Bordes** | `--border-color-strong` | `#d1d5db` | Bordes visibles 2px |
+| | `--radius-md` | `0.375rem` (6px) | Botones, inputs |
+| **Componentes** | `--button-height-md` | `2rem` (32px) | Altura botón estándar |
+| | `--input-height-md` | `2rem` (32px) | Altura input estándar |
+
 ### ✅ CORRECTO: Estilos colocados
 
 ```
@@ -334,6 +382,94 @@ import { Button, Input } from '@components'
 
 ---
 
+## 🔧 SERVICES LAYER (Capa de Negocio)
+
+### Ubicación y Nomenclatura
+```
+src/services/
+├── personalService.ts      # CRUD funcionarios + CSV import
+├── desplieguesService.ts   # Clasificación temporal 4 secciones
+├── esmapoService.ts        # CRUD órdenes operativas
+└── index.ts                # Barrel export
+```
+
+### Patrón de Service
+```typescript
+// services/personalService.ts
+import { db } from '@lib/db'
+import type { Funcionario, OrdenOperativa, HistorialOrdenOperativa } from '@lib/types'
+
+export const personalService = {
+  async getAll(): Promise<Funcionario[]> {
+    return db.funcionarios.toArray()
+  },
+  
+  async crear(datos: Omit<Funcionario, 'id'>): Promise<number> {
+    return db.funcionarios.add(datos)
+  }
+}
+
+// services/esmapoService.ts
+export const esmapoService = {
+  async getAll(incluirEliminadas = false): Promise<OrdenOperativa[]> {
+    let ordenes = await db.ordenes_operativas.toArray()
+    if (!incluirEliminadas) {
+      ordenes = ordenes.filter(o => !o.eliminada)
+    }
+    return ordenes
+  },
+  
+  async softDelete(id: number, usuarioId: number, motivo?: string): Promise<void> {
+    // Marca como eliminada sin borrar físicamente
+    // Registra snapshot en historial
+  },
+  
+  async getHistorial(ordenId: number): Promise<HistorialOrdenOperativa[]> {
+    // Retorna todas las versiones de una orden
+  }
+}
+```
+
+### ⚠️ REGLA CRÍTICA: Patrón `buscarOCrear*`
+
+**Problema:** Al importar CSV, las referencias (grados, unidades) pueden no existir.
+
+**Solución:** Patrón "buscar o crear" que crea la entidad si no existe.
+```typescript
+async function buscarOCrearGrado(nombre: string): Promise<number> {
+  // 1. Buscar (case-insensitive)
+  const existe = await db.grados
+    .filter(g => g.nombre.toLowerCase() === nombre.toLowerCase())
+    .first()
+  
+  if (existe?.id) return existe.id
+  
+  // 2. Crear con nivel auto-incrementado
+  const grados = await db.grados.toArray()
+  const maxNivel = Math.max(...grados.map(g => g.nivel), 0)
+  
+  return db.grados.add({
+    nombre,
+    nivel: maxNivel + 1,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  })
+}
+```
+
+### Cuándo Usar Services vs Hooks
+
+| Tipo | Ubicación | Cuándo Usar |
+|------|-----------|-------------|
+| **Service** | `src/services/` | CRUD puro, lógica de dominio sin estado reactivo |
+| **Hook** | `src/hooks/` | Estado reactivo, lógica UI, efectos secundarios |
+
+**Ejemplo:**
+- ✅ `personalService.crear()` → Service (CRUD)
+- ✅ `useFuncionarios()` → Hook (ref reactivo + llamadas a service)
+
+---
+
 ## 💾 SISTEMA DE PERSISTENCIA (Dexie.js)
 
 ### Ubicación
@@ -344,7 +480,9 @@ src/lib/db/
 └── seed.ts         # Datos iniciales
 ```
 
-### Patrón de Definición
+### Patrón de Definición (Singleton)
+
+**Regla:** La instancia de la base de datos debe ser un Singleton estricto para evitar conflictos de apertura en IndexedDB.
 
 ```typescript
 // src/lib/db/index.ts
@@ -352,19 +490,32 @@ import Dexie, { Table } from 'dexie'
 import type { Funcionario, Usuario } from '@lib/types'
 
 class AppDatabase extends Dexie {
-  funcionarios!: Table<Funcionario>
-  usuarios!: Table<Usuario>
-
-  constructor() {
-    super('DNGRDatabase')
-    this.version(1).stores({
-      funcionarios: '++id, ci, gradoId, estado',
-      usuarios: '++id, username, rolId, estado'
-    })
-  }
+// ... definiciones ...
 }
 
+// Exportar instancia única (Singleton)
 export const db = new AppDatabase()
+```
+
+### Acceso a Datos en UI
+**Regla:** Preferir el uso de `useTableActions` o hooks específicos para operaciones comunes en tablas, garantizando que se sigan las reglas de negocio y permisos.
+
+### Tablas de Auditoría
+**Regla:** Para entidades críticas que requieren trazabilidad completa, crear tabla de historial paralela.
+**Patrón:**
+- Tabla principal: `ordenes_operativas` (estado actual)
+- Tabla historial: `historial_ordenes_operativas` (snapshots de versiones)
+**Estructura de Historial:**
+```typescript
+interface HistorialOrdenOperativa {
+  id?: number;
+  ordenId: number;           // FK a tabla principal
+  version: number;           // 1, 2, 3...
+  accion: 'CREATE' | 'UPDATE' | 'DELETE';
+  snapshot: OrdenOperativa;  // Estado completo
+  usuarioId: number;         // Auditoría
+  fechaHora: Date;           // Timestamp
+}
 ```
 
 ---
@@ -389,6 +540,20 @@ export const db = new AppDatabase()
 │  └── Persistencia local en IndexedDB                        │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 🧠 LÓGICA DE NEGOCIO (Business Rules)
+
+### Regla de Clasificación Temporal (Despliegues)
+Todo despliegue/reporte debe clasificarse estrictamente en una de estas 4 categorías para evitar ambigüedad en la UI:
+
+| Categoría | Condición Técnica | Significado UI |
+|-----------|-------------------|----------------|
+| **Vencido** | `dia.fecha < hoy && !reporte` | Sin Cargar (Alerta Roja) |
+| **Pendiente** | `dia.fecha == hoy && !reporte` | Para Hoy (Alerta Amarilla) |
+| **Completado** | `reporte.fechaDespliegue == hoy` | Cargados Hoy (Éxito) |
+| **Historial** | `reporte.fechaDespliegue < hoy` | Archivo/Consulta |
 
 ---
 
@@ -522,7 +687,8 @@ Antes de escribir código, verificar:
 - [ ] ¿Sigo la estructura de carpetas del proyecto?
 - [ ] ¿Uso los Design Tokens existentes?
 - [ ] ¿El archivo tendrá < 400 líneas? (ideal: ~300)
-- [ ] ¿La lógica va en composable, no en el componente?
+- [ ] ¿La lógica va en service o composable, no en el componente?
+- [ ] ¿SIEMPRE uso services para CRUD y hooks para estado reactivo?
 
 ---
 

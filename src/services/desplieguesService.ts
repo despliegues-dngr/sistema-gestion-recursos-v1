@@ -58,11 +58,11 @@ async function getSinCargar(unidadId: number): Promise<DiaDespliegue[]> {
   const ayer = new Date(hoy)
   ayer.setDate(ayer.getDate() - 1)
   
-  // Obtener todas las órdenes de la unidad
-  const ordenes = await db.ordenes_operativas
+  // Obtener todas las órdenes activas de la unidad
+  const ordenes = (await db.ordenes_operativas
     .where('unidadSolicitadaId')
     .equals(unidadId)
-    .toArray()
+    .toArray()).filter(o => !o.eliminada)
   
   // Obtener todos los reportes de la unidad
   const reportes = await db.reportes_despliegue
@@ -137,10 +137,10 @@ async function getParaHoy(unidadId: number): Promise<DiaDespliegue[]> {
   const hoy = new Date()
   hoy.setHours(0, 0, 0, 0)
   
-  const ordenes = await db.ordenes_operativas
+  const ordenes = (await db.ordenes_operativas
     .where('unidadSolicitadaId')
     .equals(unidadId)
-    .toArray()
+    .toArray()).filter(o => !o.eliminada)
   
   const reportes = await db.reportes_despliegue
     .where('unidadReportanteId')
@@ -246,8 +246,28 @@ async function getHistorial(unidadId: number): Promise<ReporteDespliegueConRelac
 // ✅ Crear reporte de despliegue
 async function create(data: Omit<ReporteDespliegue, 'id' | 'createdAt' | 'updatedAt'>): Promise<number> {
   const now = new Date()
+  
+  // 1. Obtener la orden operativa para capturar snapshot
+  const orden = await db.ordenes_operativas.get(data.ordenId)
+  
+  if (!orden) {
+    throw new Error('Orden operativa no encontrada')
+  }
+
   return db.reportes_despliegue.add({
     ...data,
+    // Snapshot de planificación (congelado v14)
+    refPlanMoviles: orden.planMoviles,
+    refPlanMotos: orden.planMotos,
+    refPlanSsoo: orden.planSsoo,
+    refPlanPpssMovil: orden.planPpssMovil,
+    refPlanPieTierra: orden.planPieTierra,
+    refPlanMotosBiTripuladas: orden.planMotosBiTripuladas,
+    refPlanHidro: orden.planHidro,
+    refPlanHipos: orden.planHipos,
+    refPlanChoqueApost: orden.planChoqueApost,
+    refPlanChoqueAlerta: orden.planChoqueAlerta,
+    refPlanTotalPersonal: orden.planTotalPersonal,
     fechaHoraCarga: now,
     createdAt: now,
     updatedAt: now
@@ -256,8 +276,24 @@ async function create(data: Omit<ReporteDespliegue, 'id' | 'createdAt' | 'update
 
 // ✅ Actualizar reporte
 async function update(id: number, data: Partial<ReporteDespliegue>): Promise<number> {
+  // Excluir campos refPlan* de la actualización para proteger el snapshot original
+  const { 
+    refPlanMoviles, 
+    refPlanMotos, 
+    refPlanSsoo,
+    refPlanPpssMovil,
+    refPlanPieTierra,
+    refPlanMotosBiTripuladas,
+    refPlanHidro,
+    refPlanHipos,
+    refPlanChoqueApost,
+    refPlanChoqueAlerta,
+    refPlanTotalPersonal,
+    ...datosActualizables 
+  } = data
+
   return db.reportes_despliegue.update(id, {
-    ...data,
+    ...datosActualizables,
     updatedAt: new Date()
   })
 }
@@ -276,6 +312,20 @@ async function remove(id: number): Promise<void> {
   await db.reportes_despliegue.delete(id)
 }
 
+// ✅ Verificar si un reporte se puede editar (Período de gracia: mismo día de carga)
+function puedeEditarReporte(reporte: ReporteDespliegue): boolean {
+  if (!reporte.fechaHoraCarga) return false
+  
+  const hoy = new Date()
+  hoy.setHours(0, 0, 0, 0)
+  
+  const fechaCarga = new Date(reporte.fechaHoraCarga)
+  fechaCarga.setHours(0, 0, 0, 0)
+  
+  // Solo editable el mismo día de creación
+  return fechaCarga.getTime() === hoy.getTime()
+}
+
 export const desplieguesService = {
   getSinCargar,
   getParaHoy,
@@ -284,5 +334,6 @@ export const desplieguesService = {
   create,
   update,
   getById,
-  remove
+  remove,
+  puedeEditarReporte
 }

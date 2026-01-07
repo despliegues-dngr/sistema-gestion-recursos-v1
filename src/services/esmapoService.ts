@@ -4,7 +4,7 @@
  * Responsabilidad: CRUD de órdenes operativas y planificación de despliegues
  */
 import { db } from '@lib/db'
-import type { OrdenOperativa, Unidad } from '@lib/types'
+import type { OrdenOperativa, Unidad, HistorialOrdenOperativa } from '@lib/types'
 
 export interface OrdenOperativaConRelaciones extends OrdenOperativa {
   unidad?: Unidad
@@ -17,8 +17,14 @@ export interface ImportResult {
 }
 
 // ✅ Obtener todas las órdenes operativas
-async function getAll(): Promise<OrdenOperativaConRelaciones[]> {
-  const ordenes = await db.ordenes_operativas.toArray()
+async function getAll(incluirEliminadas = false): Promise<OrdenOperativaConRelaciones[]> {
+  let ordenes = await db.ordenes_operativas.toArray()
+  
+  // Por defecto, excluir eliminadas
+  if (!incluirEliminadas) {
+    ordenes = ordenes.filter(o => !o.eliminada)
+  }
+
   const unidades = await db.unidades.toArray()
   return ordenes.map(o => ({
     ...o,
@@ -37,26 +43,144 @@ async function getById(id: number): Promise<OrdenOperativaConRelaciones | undefi
 }
 
 // ✅ Crear orden
-async function create(data: Omit<OrdenOperativa, 'id' | 'createdAt' | 'updatedAt'>): Promise<number> {
+async function create(data: Omit<OrdenOperativa, 'id' | 'createdAt' | 'updatedAt' | 'eliminada' | 'versionActual'>): Promise<number> {
   const now = new Date()
-  return db.ordenes_operativas.add({
+  
+  // Crear orden con versión inicial
+  const ordenId = await db.ordenes_operativas.add({
     ...data,
+    eliminada: false,
+    versionActual: 1,
     createdAt: now,
     updatedAt: now
   } as OrdenOperativa)
+  
+  // Registrar en historial
+  await db.historial_ordenes_operativas.add({
+    ordenId,
+    version: 1,
+    accion: 'CREATE',
+    snapshot: extraerSnapshot({ ...data, estado: data.estado || 'Pendiente' } as OrdenOperativa),
+    usuarioId: data.creadoPor || 0,
+    fechaHora: now
+  })
+  
+  return ordenId
 }
 
 // ✅ Actualizar orden
-async function update(id: number, data: Partial<OrdenOperativa>): Promise<number> {
-  return db.ordenes_operativas.update(id, {
+async function update(id: number, data: Partial<OrdenOperativa>, usuarioId: number, motivoCambio?: string): Promise<number> {
+  const ordenActual = await db.ordenes_operativas.get(id)
+  if (!ordenActual) throw new Error('Orden no encontrada')
+  
+  const nuevaVersion = (ordenActual.versionActual || 1) + 1
+  const now = new Date()
+  
+  // Actualizar orden
+  await db.ordenes_operativas.update(id, {
     ...data,
-    updatedAt: new Date()
+    versionActual: nuevaVersion,
+    updatedAt: now
+  })
+  
+  // Obtener orden actualizada para snapshot
+  const ordenActualizada = await db.ordenes_operativas.get(id)
+  
+  // Registrar en historial
+  await db.historial_ordenes_operativas.add({
+    ordenId: id,
+    version: nuevaVersion,
+    accion: 'UPDATE',
+    snapshot: extraerSnapshot(ordenActualizada!),
+    usuarioId,
+    fechaHora: now,
+    motivoCambio
+  })
+  
+  return nuevaVersion
+}
+
+// ✅ Eliminar orden (Hard Delete - solo interno)
+async function hardDelete(id: number): Promise<void> {
+  await db.ordenes_operativas.delete(id)
+}
+
+// ✅ Soft Delete orden (Principal)
+async function softDelete(id: number, usuarioId: number, motivoCambio?: string): Promise<void> {
+  const ordenActual = await db.ordenes_operativas.get(id)
+  if (!ordenActual) throw new Error('Orden no encontrada')
+  
+  const nuevaVersion = (ordenActual.versionActual || 1) + 1
+  const now = new Date()
+  
+  // Marcar como eliminada
+  await db.ordenes_operativas.update(id, {
+    eliminada: true,
+    eliminadaAt: now,
+    eliminadaPor: usuarioId,
+    versionActual: nuevaVersion,
+    updatedAt: now
+  })
+  
+  // Registrar en historial
+  await db.historial_ordenes_operativas.add({
+    ordenId: id,
+    version: nuevaVersion,
+    accion: 'DELETE',
+    snapshot: extraerSnapshot(ordenActual),
+    usuarioId,
+    fechaHora: now,
+    motivoCambio
   })
 }
 
-// ✅ Eliminar orden
-async function remove(id: number): Promise<void> {
-  await db.ordenes_operativas.delete(id)
+// ✅ Obtener historial de una orden
+async function getHistorial(ordenId: number): Promise<HistorialOrdenOperativa[]> {
+  return db.historial_ordenes_operativas
+    .where('ordenId')
+    .equals(ordenId)
+    .reverse()
+    .sortBy('version')
+}
+
+// ✅ Obtener versión específica de una orden
+async function getVersionEspecifica(ordenId: number, version: number): Promise<HistorialOrdenOperativa | undefined> {
+  return db.historial_ordenes_operativas
+    .where(['ordenId', 'version'])
+    .equals([ordenId, version])
+    .first()
+}
+
+// ✅ Auxiliar: Extraer snapshot de una orden
+function extraerSnapshot(orden: OrdenOperativa): HistorialOrdenOperativa['snapshot'] {
+  return {
+    nroDocumento: orden.nroDocumento,
+    tipoDocumento: orden.tipoDocumento,
+    tipoServicio: orden.tipoServicio,
+    nombreDocumento: orden.nombreDocumento,
+    nombreServicio: orden.nombreServicio,
+    unidadSolicitadaId: orden.unidadSolicitadaId,
+    fechaInicioPlan: orden.fechaInicioPlan,
+    fechaFinPlan: orden.fechaFinPlan,
+    horaInicioPlan: orden.horaInicioPlan,
+    horaFinPlan: orden.horaFinPlan,
+    planMoviles: orden.planMoviles,
+    planMotos: orden.planMotos,
+    planSsoo: orden.planSsoo,
+    planPpssMovil: orden.planPpssMovil,
+    planPieTierra: orden.planPieTierra,
+    planMotosBiTripuladas: orden.planMotosBiTripuladas,
+    planHidro: orden.planHidro,
+    planHipos: orden.planHipos,
+    planChoqueApost: orden.planChoqueApost,
+    planChoqueAlerta: orden.planChoqueAlerta,
+    planTotalPersonal: orden.planTotalPersonal,
+    estado: orden.estado || 'Pendiente',
+    departamento: orden.departamento,
+    seccional: orden.seccional,
+    tiempoServicio: orden.tiempoServicio,
+    observaciones: orden.observaciones
+  }
 }
 
 // ✅ Buscar o crear unidad
@@ -73,7 +197,7 @@ async function buscarOCrearUnidad(nombre: string): Promise<number> {
   } as Unidad)
 }
 
-// ✅ Crear orden desde CSV (siempre crea un nuevo registro)
+// ✅ Crear orden desde CSV (siempre crea un nuevo registro con versión inicial)
 async function crearOrden(
   nroDocumento: string, 
   unidadId: number,
@@ -98,11 +222,12 @@ async function crearOrden(
   planHidro?: number,
   departamento?: string,
   seccional?: string,
-  tiempoServicio?: string
+  tiempoServicio?: string,
+  creadoPor?: number
 ): Promise<number> {
   const now = new Date()
   const tipo = tipoDocumento || 'Orden de Servicio'
-  return db.ordenes_operativas.add({
+  const nuevaOrden: Omit<OrdenOperativa, 'id' | 'createdAt' | 'updatedAt' | 'eliminada' | 'versionActual'> = {
     nroDocumento,
     tipoDocumento: tipo as any,
     tipoServicio,
@@ -128,9 +253,10 @@ async function crearOrden(
     seccional,
     tiempoServicio,
     estado: 'Pendiente',
-    createdAt: now,
-    updatedAt: now
-  } as OrdenOperativa)
+    creadoPor
+  }
+
+  return create(nuevaOrden)
 }
 
 // ✅ Parsear fecha/hora desde CSV
@@ -267,7 +393,10 @@ export const esmapoService = {
   getById,
   create,
   update,
-  remove,
+  softDelete,
+  hardDelete,
+  getHistorial,
+  getVersionEspecifica,
   importFromCSV,
   buscarOCrearUnidad,
   crearOrden

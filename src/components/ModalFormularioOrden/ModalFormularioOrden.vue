@@ -46,6 +46,7 @@
         size="sm"
         @click="$emit('submit')"
         :loading="loading"
+        :disabled="submitDisabled"
       >
         {{ submitText }}
       </Button>
@@ -76,6 +77,7 @@ interface Props {
   submitText?: string
   cancelText?: string
   loading?: boolean
+  submitDisabled?: boolean
   defaultTab?: string
 }
 
@@ -84,6 +86,7 @@ const props = withDefaults(defineProps<Props>(), {
   submitText: 'Guardar',
   cancelText: 'Cancelar',
   loading: false,
+  submitDisabled: false,
   defaultTab: ''
 })
 

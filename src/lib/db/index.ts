@@ -22,6 +22,7 @@ import type {
   Curso,
   HistorialMovimiento,
   OrdenOperativa,
+  HistorialOrdenOperativa,
   ReporteDespliegue,
   LogAuditoria
 } from '@lib/types';
@@ -45,6 +46,7 @@ class SistemaGestionDB extends Dexie {
   cursos!: Table<Curso, number>;
   historial_movimientos!: Table<HistorialMovimiento, number>;
   ordenes_operativas!: Table<OrdenOperativa, number>;
+  historial_ordenes_operativas!: Table<HistorialOrdenOperativa, number>;
   reportes_despliegue!: Table<ReporteDespliegue, number>;
   log_auditoria!: Table<LogAuditoria, number>;
 
@@ -308,6 +310,47 @@ class SistemaGestionDB extends Dexie {
         // Si no tiene usuarioReportaId, usar reportadoPor como fallback
         if (!reporte.usuarioReportaId && reporte.reportadoPor) {
           reporte.usuarioReportaId = reporte.reportadoPor;
+        }
+      });
+    });
+
+    // AI-Hint: Migración a version(13) para implementar Soft Delete y Versionado de Órdenes Operativas
+    this.version(13).stores({
+      ordenes_operativas: '++id, nroDocumento, unidadSolicitadaId, fechaInicioPlan, estado, tipoOperativo, departamento, seccional, eliminada, versionActual',
+      historial_ordenes_operativas: '++id, ordenId, version, accion, usuarioId, fechaHora, [ordenId+version]'
+    }).upgrade(tx => {
+      // Migrar órdenes existentes para asegurar que tienen los nuevos campos
+      return tx.table('ordenes_operativas').toCollection().modify(orden => {
+        if (orden.eliminada === undefined) {
+          orden.eliminada = false;
+        }
+        if (orden.versionActual === undefined) {
+          orden.versionActual = 1;
+        }
+      });
+    });
+
+    // AI-Hint: Migración a version(14) para capturar snapshot de planificación en reportes
+    this.version(14).stores({
+      reportes_despliegue: '++id, ordenId, unidadReportanteId, fechaDespliegue, fechaHoraCarga, usuarioReportaId, departamento, seccional'
+    }).upgrade(tx => {
+      // Migrar reportes existentes: capturar snapshot de la orden actual
+      return tx.table('reportes_despliegue').toCollection().modify(async (reporte) => {
+        if (reporte.refPlanTotalPersonal === undefined) {
+          const orden = await tx.table('ordenes_operativas').get(reporte.ordenId);
+          if (orden) {
+            reporte.refPlanMoviles = orden.planMoviles;
+            reporte.refPlanMotos = orden.planMotos;
+            reporte.refPlanSsoo = orden.planSsoo;
+            reporte.refPlanPpssMovil = orden.planPpssMovil;
+            reporte.refPlanPieTierra = orden.planPieTierra;
+            reporte.refPlanMotosBiTripuladas = orden.planMotosBiTripuladas;
+            reporte.refPlanHidro = orden.planHidro;
+            reporte.refPlanHipos = orden.planHipos;
+            reporte.refPlanChoqueApost = orden.planChoqueApost;
+            reporte.refPlanChoqueAlerta = orden.planChoqueAlerta;
+            reporte.refPlanTotalPersonal = orden.planTotalPersonal;
+          }
         }
       });
     });
