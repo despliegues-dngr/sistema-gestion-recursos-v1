@@ -62,6 +62,22 @@
   background-color: var(--color-gray-100);
 }
 
+.table-th--center {
+  text-align: center;
+}
+
+.table-th--center .table-th-content {
+  justify-content: center;
+}
+
+.table-th--right {
+  text-align: right;
+}
+
+.table-th--right .table-th-content {
+  justify-content: right;
+}
+
 .table-th--actions {
   width: 120px;
   text-align: center;

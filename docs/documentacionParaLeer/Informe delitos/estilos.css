@@ -1,0 +1,784 @@
+/* ========================================
+   INFORMES DIAC - ESTILOS MEMORÁNDUM
+   Evaluación Mensual Operativo Atenea
+   Diseño Formal Gubernamental - Estándar Administración Pública Uruguaya
+   Versión: 1.0
+   ======================================== */
+
+/* AI-Hint: Estilo gubernamental uruguayo real | Paleta mínima (1 azul + negro + grises) | Espaciado generoso | Tablas sobrias */
+
+/* --- VARIABLES DE COLOR (Paleta mínima gubernamental) --- */
+:root {
+  --color-institucional: #1a3a5c; /* ÚNICO azul institucional */
+  --color-texto: #1a1a1a; /* Negro formal */
+  --color-secundario: #666666; /* Gris medio */
+  --color-borde: #cccccc; /* Gris claro para bordes */
+  --color-fondo-tabla: #f5f5f5; /* Gris neutro para tablas */
+}
+
+/* --- RESET Y FUENTES --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", "Helvetica", sans-serif; /* Legibilidad en pantalla */
+  font-size: 11pt;
+  line-height: 1.85; /* Mayor interlineado para documentos formales */
+  color: var(--color-texto);
+  background: #ffffff;
+  max-width: 210mm; /* A4 width */
+  margin: 0 auto;
+  padding: 25mm 20mm;
+}
+
+/* --- HEADER MEMORÁNDUM --- */
+.header-memorandum {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+}
+
+.header-institucional-memo {
+  text-align: center;
+  font-family: "Times New Roman", "Georgia", serif;
+  font-size: 11pt;
+  font-weight: bold;
+  color: var(--color-institucional);
+  line-height: 1.8;
+  margin-bottom: 15px;
+}
+
+.memo-separador {
+  width: 80%;
+  height: 2px;
+  background: var(--color-institucional);
+  margin: 15px auto;
+}
+
+.memo-titulo {
+  font-family: "Times New Roman", "Georgia", serif;
+  font-size: 24pt;
+  font-weight: 700;
+  color: var(--color-institucional);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-bottom: none;
+  margin-top: 0;
+}
+
+.memo-subtitulo {
+  font-family: "Times New Roman", "Georgia", serif;
+  font-size: 14pt;
+  font-weight: 600;
+  color: var(--color-texto);
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+  border-bottom: none;
+  margin-top: 0;
+}
+
+/* --- TABLA DE INFORMACIÓN DEL MEMORÁNDUM --- */
+.memo-info {
+  margin-bottom: 25px;
+  border: 1px solid var(--color-borde);
+}
+
+.memo-info th {
+  width: 25%;
+  background: var(--color-fondo-tabla);
+  color: var(--color-texto);
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 15px;
+  border: 1px solid var(--color-borde);
+  font-size: 10pt;
+  text-transform: uppercase;
+}
+
+.memo-info td {
+  background: #ffffff;
+  padding: 10px 15px;
+  border: 1px solid var(--color-borde);
+  font-size: 11pt;
+}
+
+/* --- TIPOGRAFÍA FORMAL GUBERNAMENTAL --- */
+h1 {
+  font-family: "Times New Roman", "Georgia", serif;
+  font-size: 20pt;
+  font-weight: 700;
+  color: var(--color-institucional);
+  margin-top: 2.5em;
+  margin-bottom: 1em;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--color-institucional);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  page-break-after: avoid;
+}
+
+h2 {
+  font-family: "Times New Roman", "Georgia", serif;
+  font-size: 15pt;
+  font-weight: 600;
+  color: var(--color-institucional);
+  margin-top: 2em;
+  margin-bottom: 1em;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--color-institucional);
+  letter-spacing: 0.3px;
+  page-break-after: avoid;
+}
+
+h3 {
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--color-texto);
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  letter-spacing: 0.2px;
+  page-break-after: avoid;
+}
+
+h4 {
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--color-institucional);
+  margin-top: 1.2em;
+  margin-bottom: 0.6em;
+  page-break-after: avoid;
+}
+
+p {
+  margin-bottom: 1.2em;
+  text-align: justify;
+  line-height: 1.85;
+}
+
+/* --- LISTAS FORMALES --- */
+ul,
+ol {
+  margin-left: 30px;
+  margin-bottom: 18px;
+  line-height: 1.8;
+}
+
+li {
+  margin-bottom: 10px;
+  line-height: 1.8;
+}
+
+li strong {
+  color: var(--color-institucional);
+  font-weight: 600;
+}
+
+/* --- TABLAS SOBRIAS GUBERNAMENTALES --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 10pt;
+  border: 1px solid var(--color-borde);
+  box-shadow: none;
+  page-break-inside: avoid;
+}
+
+thead {
+  background: var(--color-fondo-tabla);
+  color: var(--color-texto);
+  border-bottom: 2px solid var(--color-institucional);
+}
+
+th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid var(--color-borde);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  font-size: 9.5pt;
+  font-family: "Arial", "Helvetica", sans-serif;
+}
+
+td {
+  padding: 12px 16px;
+  border: 1px solid var(--color-borde);
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+
+tbody tr:nth-child(even) {
+  background: var(--color-fondo-tabla);
+}
+
+/* Tablas de información (header lateral gris) */
+.info-tabla {
+  margin-bottom: 20pt;
+}
+
+.info-tabla th {
+  width: 30%;
+  background: var(--color-fondo-tabla);
+  color: var(--color-texto);
+  font-weight: 600;
+  border: 1px solid var(--color-borde);
+}
+
+.info-tabla td {
+  background: #ffffff;
+  border: 1px solid var(--color-borde);
+}
+
+/* --- CONTENEDOR DE IMÁGENES --- */
+.imagen-container {
+  margin: 25px 0;
+  text-align: center;
+  page-break-inside: avoid;
+}
+
+.imagen-container img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-borde);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imagen-pie {
+  font-size: 10pt;
+  color: var(--color-secundario);
+  font-style: italic;
+  margin-top: 10px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* --- GRILLA DE IMÁGENES (2x2) --- */
+.imagenes-grilla {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin: 20px 0;
+  page-break-inside: avoid;
+}
+
+.imagenes-grilla .imagen-item {
+  text-align: center;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  padding: 10px;
+  background: #fafafa;
+}
+
+.imagenes-grilla .imagen-item img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-borde);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.imagenes-grilla .imagen-item .imagen-titulo {
+  font-size: 10pt;
+  font-weight: 600;
+  color: var(--color-institucional);
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.imagenes-grilla .imagen-item .imagen-pie {
+  font-size: 9pt;
+  margin-top: 2px;
+  color: var(--color-secundario);
+}
+
+/* --- CUADRO DE ADVERTENCIA (Zonas sin cobertura) --- */
+.alerta-cobertura {
+  background: #fff8e6;
+  border-left: 4px solid #f0ad4e;
+  padding: 8px 10px;
+  margin-top: 10px;
+  border-radius: 0 4px 4px 0;
+  text-align: left;
+}
+
+.alerta-cobertura .alerta-titulo {
+  font-size: 9pt;
+  font-weight: 600;
+  color: #8a6d3b;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.alerta-cobertura .alerta-titulo::before {
+  content: "⚠️";
+}
+
+.alerta-cobertura ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 8pt;
+  color: #5a4a2a;
+  line-height: 1.4;
+}
+
+.alerta-cobertura ul li {
+  margin-bottom: 2px;
+}
+
+/* --- GRÁFICAS CSS --- */
+.grafica-container {
+  margin: 20px 0;
+  padding: 15px;
+  background: #fafafa;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+}
+
+.grafica-titulo {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--color-institucional);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Gráfica de barras verticales */
+.grafica-barras {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 180px;
+  padding: 10px 0;
+  border-bottom: 2px solid var(--color-borde);
+}
+
+.grafica-barras .barra-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 22%;
+}
+
+.grafica-barras .barra {
+  width: 60px;
+  background: linear-gradient(
+    180deg,
+    var(--color-institucional) 0%,
+    #1a3a5c 100%
+  );
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+  color: white;
+  font-size: 9pt;
+  font-weight: 600;
+  min-height: 30px;
+}
+
+.grafica-barras .barra-label {
+  margin-top: 8px;
+  font-size: 8pt;
+  color: var(--color-secundario);
+  text-align: center;
+}
+
+/* Gráfica de barras horizontales */
+.grafica-barras-h {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.grafica-barras-h .barra-h-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.grafica-barras-h .barra-h-label {
+  width: 70px;
+  font-size: 9pt;
+  color: var(--color-texto);
+  text-align: right;
+}
+
+.grafica-barras-h .barra-h-container {
+  flex: 1;
+  height: 22px;
+  background: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.grafica-barras-h .barra-h {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-institucional) 0%,
+    #3a6a9c 100%
+  );
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  color: white;
+  font-size: 8pt;
+  font-weight: 600;
+}
+
+.grafica-barras-h .barra-h.bajo {
+  background: linear-gradient(90deg, #dc3545 0%, #c82333 100%);
+}
+
+.grafica-leyenda {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+  font-size: 8pt;
+  color: var(--color-secundario);
+}
+
+.grafica-conclusion {
+  background: #f0f4f8;
+  border-left: 3px solid var(--color-institucional);
+  padding: 10px 12px;
+  margin-top: 12px;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--color-texto);
+}
+
+.grafica-conclusion strong {
+  color: var(--color-institucional);
+}
+
+/* --- SECCIONES DE ANÁLISIS ESTRATÉGICO --- */
+.analisis-seccion {
+  margin: 20px 0;
+  padding: 15px 20px;
+  border-radius: 6px;
+}
+
+.analisis-seccion.positivo {
+  background: #e8f5e9;
+  border-left: 5px solid #4caf50;
+}
+
+.analisis-seccion.mejorar {
+  background: #fff3e0;
+  border-left: 5px solid #ff9800;
+}
+
+.analisis-seccion.conclusion-final {
+  background: #e3f2fd;
+  border-left: 5px solid var(--color-institucional);
+}
+
+.analisis-titulo {
+  font-size: 12pt;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.analisis-seccion.positivo .analisis-titulo {
+  color: #2e7d32;
+}
+
+.analisis-seccion.mejorar .analisis-titulo {
+  color: #e65100;
+}
+
+.analisis-seccion.conclusion-final .analisis-titulo {
+  color: var(--color-institucional);
+}
+
+.analisis-item {
+  margin-bottom: 12px;
+  padding-left: 10px;
+}
+
+.analisis-item strong {
+  display: block;
+  font-size: 10pt;
+  margin-bottom: 4px;
+}
+
+.analisis-item p {
+  font-size: 10pt;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.analisis-item ul {
+  margin: 5px 0 0 15px;
+  font-size: 9pt;
+}
+
+.analisis-item ul li {
+  margin-bottom: 3px;
+}
+
+.acciones-inmediatas {
+  margin-top: 15px;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+}
+
+.acciones-inmediatas h4 {
+  font-size: 10pt;
+  margin: 0 0 10px 0;
+  color: var(--color-institucional);
+}
+
+.acciones-inmediatas ol {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 10pt;
+}
+
+.acciones-inmediatas ol li {
+  margin-bottom: 8px;
+}
+
+.dato-destacado {
+  font-weight: 600;
+  color: #c62828;
+}
+
+/* Contenedor de 2 gráficas lado a lado */
+.graficas-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+/* --- SEPARADOR --- */
+.separador {
+  border: 0;
+  height: 2px;
+  background: var(--color-borde);
+  margin: 25px 0;
+}
+
+/* --- FOOTER INSTITUCIONAL --- */
+.footer-final-manual {
+  margin-top: 40pt;
+  padding-top: 20pt;
+  border-top: 2pt solid var(--color-institucional);
+  text-align: center;
+  font-size: 9pt;
+  color: var(--color-secundario);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  page-break-inside: avoid;
+  font-family: "Arial", "Helvetica", sans-serif;
+}
+
+.footer-final-manual p {
+  margin-bottom: 6pt;
+  text-align: center;
+  color: var(--color-secundario);
+  font-size: 9pt;
+}
+
+.footer-final-manual .membrete {
+  font-weight: 600;
+  color: var(--color-institucional);
+  margin-bottom: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- IMPRESIÓN OPTIMIZADA --- */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 15mm 12mm 15mm 12mm;
+    orphans: 3;
+    widows: 3;
+  }
+
+  * {
+    box-shadow: none;
+    text-shadow: none;
+  }
+
+  body {
+    padding: 0;
+    margin: 0;
+    background: #ffffff;
+    color: #000000;
+    font-size: 11pt;
+    line-height: 1.85;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .header-institucional-memo {
+    color: #000000;
+  }
+
+  .memo-separador {
+    background: #000000;
+  }
+
+  .memo-titulo {
+    color: #000000;
+  }
+
+  h1,
+  h2 {
+    color: #000000;
+    border-bottom-color: #000000;
+  }
+
+  h3,
+  h4 {
+    color: #000000;
+  }
+
+  li strong {
+    color: #000000;
+  }
+
+  .imagen-container img {
+    box-shadow: none;
+    border: 1px solid #000000;
+  }
+
+  .imagen-pie {
+    color: #333333;
+  }
+
+  .footer-final-manual {
+    border-top-color: #000000;
+  }
+
+  .footer-final-manual p {
+    color: #000000;
+  }
+
+  .footer-final-manual .membrete {
+    color: #000000;
+  }
+
+  table {
+    page-break-inside: auto;
+    margin: 6pt 0;
+    font-size: 9.5pt;
+    border: 1pt solid #000000;
+  }
+
+  thead {
+    display: table-header-group;
+    background: var(--color-fondo-tabla);
+    color: var(--color-texto);
+    border-bottom: 2pt solid #000000;
+  }
+
+  th,
+  td {
+    padding: 6pt 8pt;
+    border: 0.5pt solid #000000;
+  }
+
+  a {
+    color: #000000;
+    text-decoration: none;
+  }
+}
+
+/* --- SECCIÓN DE FIRMAS --- */
+.firma-section {
+  margin-top: 40px;
+  page-break-inside: avoid;
+}
+
+.firma-tabla {
+  width: 100%;
+  border: none;
+  margin: 30px 0 20px 0;
+}
+
+.firma-tabla td {
+  border: none;
+  background: transparent;
+}
+
+.firma-celda {
+  width: 45%;
+  text-align: center;
+  padding: 20px 30px;
+  vertical-align: bottom;
+}
+
+.firma-linea {
+  width: 200px;
+  border-bottom: 1px solid #000000;
+  margin: 0 auto 10px auto;
+}
+
+.firma-nombre {
+  font-weight: 600;
+  font-size: 11pt;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.firma-cargo {
+  font-size: 10pt;
+  color: var(--color-secundario);
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.fecha-emision {
+  text-align: center;
+  font-size: 10pt;
+  color: var(--color-secundario);
+  margin-top: 20px;
+  font-style: italic;
+}
+
+/* --- ESTILOS DE PANTALLA --- */
+@media screen {
+  body {
+    padding: 20mm;
+    background: #f5f5f5;
+  }
+
+  /* Contenedor visual para pantalla */
+  body::before {
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f5f5f5;
+    z-index: -1;
+  }
+}

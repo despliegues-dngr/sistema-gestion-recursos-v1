@@ -8,7 +8,10 @@
             :key="column.field"
             class="table-th"
             :style="{ width: column.width, minWidth: column.width }"
-            :class="{ 'table-th--sortable': column.sortable }"
+            :class="{ 
+              'table-th--sortable': column.sortable,
+              [`table-th--${column.align}`]: column.align
+            }"
             @click="column.sortable && handleSort(column.field)"
           >
             <div class="table-th-content">

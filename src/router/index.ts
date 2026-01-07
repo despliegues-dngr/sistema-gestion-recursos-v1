@@ -63,6 +63,22 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
+    path: '/:unidad/reporte-personal',
+    name: 'reporte-personal',
+    component: () => import('@pages/ReportePersonal/ReportePersonalPage.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/:unidad/reporte-operativo',
+    name: 'reporte-operativo',
+    component: () => import('@pages/ReporteOperativo/ReporteOperativoPage.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/:unidad/admin',
     name: 'admin',
     component: () => import('@pages/Admin/AdminPage.vue'),
