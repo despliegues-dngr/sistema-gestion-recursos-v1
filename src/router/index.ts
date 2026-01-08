@@ -85,6 +85,14 @@ const routes: RouteRecordRaw[] = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/:unidad/admin/catalogos',
+    name: 'catalogos',
+    component: () => import('@pages/Catalogos/CatalogosPage.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ];
 

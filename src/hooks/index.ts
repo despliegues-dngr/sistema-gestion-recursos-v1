@@ -2,8 +2,9 @@
  * Hooks Barrel Export
  */
 
-export { useAuth, isAuthenticated } from './useAuth'
-export { useDatabase } from './useDatabase'
-export { useToast } from './useToast'
-export { usePagination } from './usePagination'
-export { useTableActions } from './useTableActions'
+export * from './useAuth';
+export * from './useDatabase';
+export * from './useToast';
+export * from './usePagination';
+export * from './useTableActions';
+export * from './useCatalogos';

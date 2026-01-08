@@ -470,12 +470,8 @@ import {
   Badge, Input, Select, Button, Tabs, Accordion, MiniCalendario, FichaFormulario,
   InlineForm, DataTable, SectionHeader
 } from '@components'
-import { 
-  User, UserCircle, Building, Pencil, FileText, 
-  History, Briefcase, Clock, Calendar, Settings, ChevronLeft, 
-  ChevronRight, RefreshCw, Trash, X, GraduationCap
-} from 'lucide-vue-next'
-import { useToast } from '@hooks'
+import { RefreshCw, Trash, X, GraduationCap } from 'lucide-vue-next'
+import { useToast, useTiposTarea } from '@hooks'
 import { personalService, licenciasService, cursosService } from '@services'
 import { calcularTurnosMes } from '@lib/services/turnosService'
 import type { FuncionarioConRelaciones } from '@services/personalService'
@@ -655,14 +651,10 @@ const diasTurnoCalculados = computed(() => {
 })
 
 // AI-Hint: Opciones predefinidas para Tarea Asignada | Mejora UX con valores consistentes | Evita errores de tipeo
+const { opciones: tareaOptionsFromDB } = useTiposTarea()
 const tareaOptions = computed(() => [
   { value: '', label: 'Sin tarea asignada' },
-  { value: 'Administrativa', label: 'Administrativa' },
-  { value: 'Operativa', label: 'Operativa' },
-  { value: 'Supervisión', label: 'Supervisión' },
-  { value: 'Coordinación', label: 'Coordinación' },
-  { value: 'Técnica', label: 'Técnica' },
-  { value: 'Logística', label: 'Logística' }
+  ...tareaOptionsFromDB.value
 ])
 
 // AI-Hint: Cargar opciones de selects para modo edición | Reutiliza personalService.getFormData() | Necesario para selects editables

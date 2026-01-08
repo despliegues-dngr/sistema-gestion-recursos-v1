@@ -70,30 +70,10 @@ async function getSinCargar(unidadId: number): Promise<DiaDespliegue[]> {
     .equals(unidadId)
     .toArray()
   
-  // 🔍 LOG 1
-  console.log('🔍 [getSinCargar] Inicio', {
-    unidadId,
-    hoy: hoy.toISOString(),
-    ayer: ayer.toISOString(),
-    totalOrdenes: ordenes.length,
-    totalReportes: reportes.length
-  })
-  
   const resultado: DiaDespliegue[] = []
   
   for (const orden of ordenes) {
     const dias = generarDiasDespliegue(orden, ayer)
-    
-    // 🔍 LOG 2
-    console.log(`📅 [Orden ${orden.id}] Generando días`, {
-      ordenId: orden.id,
-      nombreServicio: orden.nombreServicio,
-      fechaInicioPlan: orden.fechaInicioPlan,
-      fechaFinPlan: orden.fechaFinPlan,
-      diasGenerados: dias.length,
-      primeraFecha: dias[0]?.toISOString(),
-      ultimaFecha: dias[dias.length - 1]?.toISOString()
-    })
     
     for (const dia of dias) {
       // Verificar si existe reporte para este día
@@ -111,22 +91,7 @@ async function getSinCargar(unidadId: number): Promise<DiaDespliegue[]> {
         })
       }
     }
-
-    // 🔍 LOG 4
-    console.log(`✅ [Orden ${orden.id}] Días sin reporte`, {
-      ordenId: orden.id,
-      diasProcesados: dias.length,
-      diasSinReporte: resultado.filter(r => r.ordenId === orden.id).length
-    })
   }
-  
-  // 🔍 LOG 5
-  console.log('✨ [getSinCargar] Resultado final', {
-    totalRegistros: resultado.length,
-    primeraFecha: resultado[0]?.fecha.toISOString(),
-    ultimaFecha: resultado[resultado.length - 1]?.fecha.toISOString(),
-    ordenesUnicas: new Set(resultado.map(r => r.ordenId)).size
-  })
   
   // Ordenar por fecha ascendente (más antiguos primero)
   return resultado.sort((a, b) => a.fecha.getTime() - b.fecha.getTime())

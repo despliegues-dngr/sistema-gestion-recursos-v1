@@ -213,6 +213,49 @@ Importación masiva de reportes. El sistema asocia automáticamente cada informe
 
 Completado
 
+### 🆕 Gestión de Catálogos del Sistema (Enero 2026)
+**Estado:** ✅ COMPLETADO (08/01/2026)
+#### Módulo de Administración de Catálogos
+**Propósito:** Centralizar la gestión de valores de catálogos (listas de opciones) utilizados en formularios de todo el sistema, eliminando dependencia de valores hardcodeados y permitiendo adaptación institucional.
+**Ubicación:** Página `/catalogos` (acceso restringido a roles administrativos)
+**Arquitectura:**
+- **Tabla IndexedDB:** `catalogos_valores` (id, catalogo, nombre, activo, orden, createdAt, updatedAt)
+- **Servicio:** [catalogosService.ts](cci:7://file:///c:/Proyectos/sistema-gestion-recursos-v1/src/services/catalogosService.ts:0:0-0:0) con métodos CRUD completos
+- **Composables:** [useCatalogos.ts](cci:7://file:///c:/Proyectos/sistema-gestion-recursos-v1/src/hooks/useCatalogos.ts:0:0-0:0) para acceso reactivo desde componentes
+**Catálogos Gestionables:**
+**Sección Despliegues:**
+- `tipo_documento`: Clasificación de documentos operativos (Orden de Operaciones, Circular, etc.)
+- `tipo_servicio`: Naturaleza táctica del despliegue (Operativo, Patrullaje, Apoyo, etc.)
+- `tiempo_servicio`: Duración prevista (Permanente, Transitorio, Estático)
+- `departamento`: Departamentos de Uruguay (19 opciones)
+- `seccional`: Seccionales policiales (20 opciones)
+- `motivo_sin_efecto`: Causas de despliegues sin efecto (6 opciones)
+**Sección Personal:**
+- `tipo_licencia`: Tipos de licencias de funcionarios
+- `tipo_curso`: Tipos de capacitaciones
+- `regimen`: Regímenes de servicio especiales
+**Funcionalidades Implementadas:**
+| Operación | Descripción | Validación |
+|-----------|-------------|------------|
+| **Crear** | Agregar nuevo valor al catálogo | Previene duplicados (case-insensitive) |
+| **Editar** | Modificar nombre de valor existente | Validación de unicidad |
+| **Activar/Desactivar** | Soft delete - oculta de formularios sin eliminar | Preserva integridad de datos históricos |
+| **Eliminar** | Eliminación física permanente | Confirmación obligatoria |
+| **Reordenar** | Cambiar orden de visualización | Gestión automática de índices |
+**Decisiones Arquitectónicas:**
+1. **Almacenamiento como Strings:** Los valores se guardan como texto en registros (ej: `tipoDocumento: "Orden de Servicio"`), NO como IDs. Esto garantiza que eliminar un valor del catálogo no afecta datos históricos.
+2. **Eliminación Física Permitida:** A diferencia de otros módulos que usan soft delete exclusivamente, los catálogos permiten eliminación física para corregir errores de ingreso. Los datos históricos que usan esos valores permanecen intactos.
+3. **Diseño Visual Estructurado:** Siguiendo el patrón de diseño estructurado del sistema (bordes 2px, iconos Lucide, estilos consistentes con Table.vue).
+**Impacto Operativo:**
+- ✅ Flexibilidad institucional para adaptar opciones sin modificar código
+- ✅ Corrección inmediata de errores de ingreso
+- ✅ Trazabilidad: cada cambio registra timestamp y usuario
+- ✅ Consistencia: un solo lugar para gestionar todas las opciones del sistema
+**Referencia Técnica:**
+- Servicio: [src/services/catalogosService.ts](cci:7://file:///c:/Proyectos/sistema-gestion-recursos-v1/src/services/catalogosService.ts:0:0-0:0)
+- Componentes: [src/pages/Catalogos/CatalogosPage.vue](cci:7://file:///c:/Proyectos/sistema-gestion-recursos-v1/src/pages/Catalogos/CatalogosPage.vue:0:0-0:0), [ModalGestionCatalogo.vue](cci:7://file:///c:/Proyectos/sistema-gestion-recursos-v1/src/pages/Catalogos/components/ModalGestionCatalogo.vue:0:0-0:0)
+- Tipos: [TipoCatalogo](cci:2://file:///c:/Proyectos/sistema-gestion-recursos-v1/src/lib/types/index.ts:389:0-403:12) en [src/lib/types/index.ts](cci:7://file:///c:/Proyectos/sistema-gestion-recursos-v1/src/lib/types/index.ts:0:0-0:0)
+
 Módulo 3: Control y Seguridad del Sistema Núcleo de Confianza
 
 5
@@ -842,6 +885,15 @@ Migración v12 - Reportes Diarios
 **Clasificación:** Los reportes se clasifican automáticamente en 4 secciones según su estado temporal.
 
 Catálogos de Opciones (Select/MultiSelect)
+
+### 🆕 Gestión Dinámica de Catálogos
+**Cambio Arquitectónico (Enero 2026):** Los catálogos ya no están hardcodeados en el código fuente. Ahora se gestionan dinámicamente desde la página `/catalogos`, permitiendo a administradores:
+- Agregar nuevos valores sin modificar código
+- Editar nombres de valores existentes
+- Activar/desactivar opciones según necesidad operativa
+- Eliminar valores ingresados por error
+**Tabla de Persistencia:** `catalogos_valores` (IndexedDB)
+**A continuación se listan los valores por defecto precargados en el sistema:**
 
 tipoDocumento (Select)
 

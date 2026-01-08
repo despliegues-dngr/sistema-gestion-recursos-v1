@@ -316,7 +316,7 @@ import {
 } from '@components'
 import { db } from '@lib/db'
 import { desplieguesService } from '@services'
-import { useToast } from '@hooks'
+import { useToast, useMotivosSinEfecto } from '@hooks'
 
 interface Props {
   modelValue: boolean
@@ -392,14 +392,7 @@ const tipoDespliegueOptions = [
   { value: 'Sin efecto', label: 'Sin efecto' }
 ]
 
-const motivoSinEfectoOptions = [
-  { value: 'Por falta de personal', label: 'Por falta de personal' },
-  { value: 'Por orden de superior', label: 'Por orden de superior' },
-  { value: 'Por cubrir otro Operativo', label: 'Por cubrir otro Operativo' },
-  { value: 'Por cubrir Espectáculo público', label: 'Por cubrir Espectáculo público' },
-  { value: 'Por inclemencias de tiempo', label: 'Por inclemencias de tiempo' },
-  { value: 'Otro motivo', label: 'Otro motivo' }
-]
+const { opciones: motivoSinEfectoOptions } = useMotivosSinEfecto()
 
 const mensajeInformativo = computed(() => {
   return formData.value.tipoDespliegue === 'Franco'

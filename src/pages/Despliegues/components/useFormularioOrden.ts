@@ -7,7 +7,15 @@
 import { ref, watch, onMounted } from 'vue'
 import { esmapoService } from '@services'
 import type { OrdenOperativaConRelaciones } from '@services/esmapoService'
-import { useToast, useAuth } from '@hooks'
+import { 
+  useToast, 
+  useAuth, 
+  useTiposDocumento, 
+  useTiposServicio, 
+  useTiemposServicio, 
+  useDepartamentos, 
+  useSeccionales 
+} from '@hooks'
 
 // Estado global dentro del módulo para que sea compartido entre los componentes que usen el hook
 // si se invoca en el mismo contexto de ciclo de vida (el modal)
@@ -47,60 +55,12 @@ export function useFormularioOrden(props: { mode?: 'create' | 'edit', ordenId?: 
   const toast = useToast()
   const { usuario } = useAuth()
 
-  // Opciones (se pueden mover a constantes si no cambian)
-  const tipoDocumentoOptions = [
-    { value: 'Orden de Operaciones', label: 'Orden de Operaciones' },
-    { value: 'Circular', label: 'Circular' },
-    { value: 'Orden de Servicio', label: 'Orden de Servicio' },
-    { value: 'Comunicado', label: 'Comunicado' },
-    { value: 'Otro', label: 'Otro' }
-  ]
-
-  const tipoServicioOptions = [
-    { value: 'Operativo', label: 'Operativo' },
-    { value: 'Patrullaje', label: 'Patrullaje' },
-    { value: 'Apoyo', label: 'Apoyo' },
-    { value: 'Incursión', label: 'Incursión' },
-    { value: 'Allanamiento perimetral', label: 'Allanamiento perimetral' }
-  ]
-
-  const tiempoServicioOptions = [
-    { value: 'Permanente', label: 'Permanente' },
-    { value: 'Transitorio', label: 'Transitorio' },
-    { value: 'Estático', label: 'Estático' }
-  ]
-
-  const departamentoOptions = [
-    { value: 'Artigas', label: 'Artigas' },
-    { value: 'Canelones', label: 'Canelones' },
-    { value: 'Cerro Largo', label: 'Cerro Largo' },
-    { value: 'Colonia', label: 'Colonia' },
-    { value: 'Durazno', label: 'Durazno' },
-    { value: 'Flores', label: 'Flores' },
-    { value: 'Florida', label: 'Florida' },
-    { value: 'Lavalleja', label: 'Lavalleja' },
-    { value: 'Maldonado', label: 'Maldonado' },
-    { value: 'Montevideo', label: 'Montevideo' },
-    { value: 'Paysandú', label: 'Paysandú' },
-    { value: 'Río Negro', label: 'Río Negro' },
-    { value: 'Rivera', label: 'Rivera' },
-    { value: 'Rocha', label: 'Rocha' },
-    { value: 'Salto', label: 'Salto' },
-    { value: 'San José', label: 'San José' },
-    { value: 'Soriano', label: 'Soriano' },
-    { value: 'Tacuarembó', label: 'Tacuarembó' },
-    { value: 'Treinta y Tres', label: 'Treinta y Tres' }
-  ]
-
-  const seccionalOptions = [
-    { value: '1ra', label: '1ra' }, { value: '2da', label: '2da' }, { value: '3ra', label: '3ra' },
-    { value: '4ta', label: '4ta' }, { value: '5ta', label: '5ta' }, { value: '6ta', label: '6ta' },
-    { value: '7ma', label: '7ma' }, { value: '8va', label: '8va' }, { value: '9na', label: '9na' },
-    { value: '10ma', label: '10ma' }, { value: '11ra', label: '11ra' }, { value: '12da', label: '12da' },
-    { value: '13ra', label: '13ra' }, { value: '14ta', label: '14ta' }, { value: '15ta', label: '15ta' },
-    { value: '16ta', label: '16ta' }, { value: '17ma', label: '17ma' }, { value: '18va', label: '18va' },
-    { value: '19na', label: '19na' },     { value: '20ma', label: '20ma' }
-  ]
+  // AI-Hint: Catálogos dinámicos desde BD (v16)
+  const { opciones: tipoDocumentoOptions } = useTiposDocumento()
+  const { opciones: tipoServicioOptions } = useTiposServicio()
+  const { opciones: tiempoServicioOptions } = useTiemposServicio()
+  const { opciones: departamentoOptions } = useDepartamentos()
+  const { opciones: seccionalOptions } = useSeccionales()
 
   const unidadOptions = [
     { value: 'Dirección I', label: 'Dirección I' },

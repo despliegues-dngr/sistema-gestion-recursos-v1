@@ -363,3 +363,42 @@ export interface LogAuditoria {
   fechaHora: Date;
   ipAddress?: string;
 }
+
+// Módulo Catálogos
+export interface CatalogoValor {
+  id?: number;
+  catalogo: TipoCatalogo;
+  nombre: string;
+  activo: boolean;
+  orden?: number;
+  descripcion?: string;
+  creadoPor?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface HistorialCatalogo {
+  id?: number;
+  catalogoValorId: number;
+  accion: 'CREATE' | 'UPDATE' | 'DELETE';
+  valorAnterior?: string;
+  valorNuevo?: string;
+  usuarioId: number;
+  fechaHora: Date;
+}
+
+export type TipoCatalogo = 
+  | 'tipo_documento' 
+  | 'tipo_servicio' 
+  | 'tiempo_servicio'
+  | 'departamento' 
+  | 'seccional' 
+  | 'motivo_sin_efecto' 
+  | 'tipo_tarea'
+  | 'grado'
+  | 'unidad'
+  | 'escalafon'
+  | 'regimen'
+  | 'tipo_licencia'
+  | 'tipo_curso'
+  | 'turno';

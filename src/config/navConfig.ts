@@ -86,6 +86,13 @@ export const navConfigs: Record<string, NavConfig> = {
         route: "reporte-operativo",
         exact: true,
       },
+      {
+        id: "catalogos",
+        label: "Gestión de Catálogos",
+        icon: "Settings",
+        route: "admin/catalogos",
+        exact: true,
+      },
     ],
   },
 
@@ -214,6 +221,13 @@ export const navConfigs: Record<string, NavConfig> = {
         label: "Administración",
         icon: "Settings",
         route: "admin",
+        exact: true,
+      },
+      {
+        id: "catalogos",
+        label: "Gestión de Catálogos",
+        icon: "Settings2",
+        route: "admin/catalogos",
         exact: true,
       },
     ],

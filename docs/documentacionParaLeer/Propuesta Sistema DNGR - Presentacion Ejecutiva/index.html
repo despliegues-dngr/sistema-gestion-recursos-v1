@@ -306,6 +306,51 @@
       </table>
       <p><strong>Próximos pasos:</strong> Implementar dashboard ejecutivo con métricas agregadas de cumplimiento temporal, alertas automáticas para operativos con desviación >30%, y reportes mensuales de optimización de recursos.</p>
 
+      <h2>3.6 🆕 Gestión Administrativa de Catálogos (Enero 2026)</h2>
+      <p><strong>Capacidad implementada:</strong> Módulo de administración centralizada de catálogos del sistema, eliminando dependencia de valores hardcodeados y permitiendo adaptación institucional sin intervención técnica.</p>
+      <h3>¿Qué problema resuelve?</h3>
+      <p>Anteriormente, agregar una nueva opción a un formulario (ej: nuevo "Tipo de Servicio") requería modificar el código fuente y redesplegar el sistema. Ahora, los administradores pueden gestionar estas opciones directamente desde la interfaz.</p>
+      <h3>Funcionalidades</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Operación</th>
+            <th>Descripción</th>
+            <th>Caso de Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Crear Valores</strong></td>
+            <td>Agregar nuevas opciones a catálogos existentes</td>
+            <td>Nuevo tipo de documento operativo surge por normativa</td>
+          </tr>
+          <tr>
+            <td><strong>Editar Valores</strong></td>
+            <td>Modificar nombres de opciones existentes</td>
+            <td>Corrección de terminología oficial</td>
+          </tr>
+          <tr>
+            <td><strong>Activar/Desactivar</strong></td>
+            <td>Ocultar opciones obsoletas sin eliminar datos históricos</td>
+            <td>Tipo de servicio ya no se utiliza pero existe en órdenes antiguas</td>
+          </tr>
+          <tr>
+            <td><strong>Eliminar</strong></td>
+            <td>Eliminación permanente de valores ingresados por error</td>
+            <td>Corrección inmediata de errores de carga</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Catálogos Gestionables</h3>
+      <ul>
+        <li><strong>Despliegues:</strong> Tipos de documento, tipos de servicio, tiempos de servicio, departamentos, seccionales, motivos sin efecto</li>
+        <li><strong>Personal:</strong> Tipos de licencia, tipos de curso, regímenes de servicio</li>
+      </ul>
+      <h3>Valor Estratégico</h3>
+      <p><strong>Flexibilidad Institucional:</strong> El sistema se adapta a cambios normativos y operativos sin requerir intervención de desarrolladores, reduciendo tiempos de respuesta de semanas a minutos.</p>
+      <p><strong>Integridad de Datos:</strong> La arquitectura garantiza que eliminar una opción del catálogo no afecta registros históricos que la utilizan, preservando la trazabilidad completa.</p>
+
       <p><strong>Ejemplo concreto:</strong> Entre el 1/12/2025 y 6/01/2026 se realizaron ~90 pases de personal. Hoy esa información se pierde en correos y planillas; con DNGR estará centralizada.</p>
 
       <h2>3.4 Métricas e Informes Automatizados</h2>

@@ -3,6 +3,7 @@
  */
 
 import { db } from './index';
+import { precargaCatalogosDesdeHardcode } from './migrations/precargaCatalogos';
 
 export async function seedDatabase(): Promise<boolean> {
   try {
@@ -81,6 +82,9 @@ export async function seedDatabase(): Promise<boolean> {
         estado: 'activo'
       });
     }
+
+    // Precarga de catálogos desde valores hardcodeados
+    await precargaCatalogosDesdeHardcode();
 
     // Seed independiente para TIPOS_CURSO (si está vacío)
     const cursosCount = await db.tipos_curso.count();

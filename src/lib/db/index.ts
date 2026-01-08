@@ -49,6 +49,7 @@ class SistemaGestionDB extends Dexie {
   historial_ordenes_operativas!: Table<HistorialOrdenOperativa, number>;
   reportes_despliegue!: Table<ReporteDespliegue, number>;
   log_auditoria!: Table<LogAuditoria, number>;
+  catalogos_valores!: Table<CatalogoValor, number>;
 
   constructor() {
     super('SistemaGestionDB');
@@ -368,6 +369,30 @@ class SistemaGestionDB extends Dexie {
           reporte.motivoSinEfecto = null;
         }
       });
+    });
+
+    // AI-Hint: Migración a version(16) para tabla de catálogos gestionables
+    this.version(16).stores({
+      funcionarios: '++id, ci, nombre_completo, gradoId, unidadId, subUnidadId, turnoId, regimenId, tarea, fechaInicioTurno',
+      grados: '++id, nivel',
+      unidades: '++id, tipo, codigo',
+      sub_unidades: '++id, nombre, unidadId, activa',
+      escalafones: '++id, nivel',
+      asignaciones: '++id, funcionarioId, servicioId, fecha, estado',
+      usuarios: '++id, username, rolId, unidadId, estado',
+      roles: '++id, nombre',
+      turnos: '++id, nombre, horaInicio, horaFin',
+      tipos_regimen: '++id, nombre, activo',
+      tipos_licencia: '++id, nombre, activo',
+      tipos_curso: '++id, nombre, activo',
+      licencias_funcionarios: '++id, funcionarioId, tipoLicenciaId, fechaInicio, fechaFin, estado',
+      cursos: '++id, funcionarioId, tipoCursoId, estado',
+      historial_movimientos: '++id, funcionarioId, unidadOrigenId, unidadDestinoId, fechaCambio',
+      ordenes_operativas: '++id, nroDocumento, unidadSolicitadaId, fechaInicioPlan, estado, tipoOperativo, departamento, seccional, eliminada, versionActual',
+      historial_ordenes_operativas: '++id, ordenId, version, accion, usuarioId, fechaHora, [ordenId+version]',
+      reportes_despliegue: '++id, ordenId, unidadReportanteId, fechaDespliegue, fechaHoraCarga, usuarioReportaId, departamento, seccional',
+      log_auditoria: '++id, usuarioId, accion, tablaAfectada, fechaHora',
+      catalogos_valores: '++id, catalogo, nombre, activo, orden'
     });
   }
 }
