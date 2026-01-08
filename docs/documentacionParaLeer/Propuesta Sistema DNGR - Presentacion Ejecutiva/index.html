@@ -182,12 +182,129 @@
             <td>Por horario (nocturno/matutino) y por unidad (sobrecarga vs disponibilidad)</td>
           </tr>
           <tr>
-            <td><strong>Análisis de Cumplimiento</strong></td>
-            <td>Detecta cumplimiento de despliegues y motivos de incumplimiento</td>
-            <td>Causas: falta de personal, cobertura de otro despliegue, orden superior</td>
+            <td><strong>Análisis de Cumplimiento 🆕</strong></td>
+            <td>Detecta cumplimiento de despliegues en tiempo y forma</td>
+            <td><strong>Temporal:</strong> Desviación de horarios (inicio/fin). <strong>Cuantitativo:</strong> % de recursos desplegados vs. planificados. <strong>Causas:</strong> falta de personal, cobertura de otro despliegue, orden superior</td>
           </tr>
         </tbody>
       </table>
+
+      <h2>3.5 🆕 Análisis de Cumplimiento Temporal (Enero 2026)</h2>
+      <p><strong>Capacidad estratégica implementada:</strong> El sistema ahora captura y analiza el cumplimiento de despliegues en <strong>tiempo y forma</strong>, permitiendo por primera vez medir objetivamente la brecha entre lo planificado y lo ejecutado.</p>
+      <h3>¿Qué se mide?</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Dimensión</th>
+            <th>Métrica</th>
+            <th>Valor para el Comando</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Temporal</strong></td>
+            <td>Desviación de horarios (inicio/fin real vs. planificado)</td>
+            <td>Identificar operativos que sistemáticamente se retrasan o adelantan</td>
+          </tr>
+          <tr>
+            <td><strong>Cuantitativa</strong></td>
+            <td>Cumplimiento de recursos (% personal desplegado vs. planificado)</td>
+            <td>Detectar unidades con déficit crónico de personal</td>
+          </tr>
+          <tr>
+            <td><strong>Frecuencia</strong></td>
+            <td>Tasa de incumplimiento mensual por operativo</td>
+            <td>Priorizar ajustes en planificación de operativos problemáticos</td>
+          </tr>
+          <tr>
+            <td><strong>Patrón</strong></td>
+            <td>Operativos recurrentes con desviación</td>
+            <td>Optimizar asignación de recursos basada en histórico real</td>
+          </tr>
+          <tr>
+            <td><strong>Nocturno</strong></td>
+            <td>Despliegues que cruzan medianoche (18:00 a 06:00)</td>
+            <td>Análisis específico de turnos nocturnos y su cumplimiento</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Casos de Uso Estratégicos</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Escenario</th>
+            <th>Pregunta que responde</th>
+            <th>Acción resultante</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Detección de Patrones</strong></td>
+            <td>"El Patrullaje X nunca se despliega a la hora planificada"</td>
+            <td>Ajustar horario de planificación a realidad operativa</td>
+          </tr>
+          <tr>
+            <td><strong>Déficit de Recursos</strong></td>
+            <td>"La Dirección Y siempre reporta 70% del personal planificado"</td>
+            <td>Reasignar recursos o reducir planificación a niveles realistas</td>
+          </tr>
+          <tr>
+            <td><strong>Análisis Nocturno</strong></td>
+            <td>"Los operativos nocturnos tienen 30% más desviación temporal"</td>
+            <td>Revisar logística y disponibilidad de personal nocturno</td>
+          </tr>
+          <tr>
+            <td><strong>Optimización Operativa</strong></td>
+            <td>"Operativo Z tiene 80% de cumplimiento en 6 meses"</td>
+            <td>Reducir planificación a recursos reales históricos</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Ejemplo Concreto</h3>
+      <p><strong>Situación:</strong> ESMAPO planifica un patrullaje para las 14:00 con 25 efectivos.</p>
+      <p><strong>Realidad capturada por el sistema:</strong></p>
+      <ul>
+        <li>Hora real de inicio: 14:45 (45 minutos de retraso)</li>
+        <li>Hora real de fin: 05:30 (vs. 05:00 planificado)</li>
+        <li>Personal desplegado: 18 efectivos (72% de cumplimiento)</li>
+        <li>Cruce de medianoche: Sí (operativo nocturno)</li>
+      </ul>
+      <p><strong>Análisis histórico (6 meses):</strong></p>
+      <ul>
+        <li>Este operativo tiene retraso promedio de 40 minutos</li>
+        <li>Cumplimiento de personal promedio: 70%</li>
+        <li>Motivo recurrente: "Falta de personal disponible"</li>
+      </ul>
+      <p><strong>Decisión basada en datos:</strong> Ajustar planificación a 14:45 con 18 efectivos (realidad operativa), liberando 7 efectivos para otros despliegues.</p>
+      <h3>Impacto Estratégico</h3>
+      <p>Esta capacidad transforma la gestión operativa de <strong>reactiva a predictiva</strong>:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Antes (sin análisis temporal)</th>
+            <th>Ahora (con análisis v16)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Planificación basada en intuición</td>
+            <td><strong>Planificación basada en histórico real</strong></td>
+          </tr>
+          <tr>
+            <td>Desconocimiento de patrones de incumplimiento</td>
+            <td><strong>Identificación automática de desviaciones sistemáticas</strong></td>
+          </tr>
+          <tr>
+            <td>Ajustes reactivos ante problemas</td>
+            <td><strong>Optimización proactiva de recursos</strong></td>
+          </tr>
+          <tr>
+            <td>Sin métricas de cumplimiento temporal</td>
+            <td><strong>KPIs de cumplimiento por operativo, unidad y horario</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p><strong>Próximos pasos:</strong> Implementar dashboard ejecutivo con métricas agregadas de cumplimiento temporal, alertas automáticas para operativos con desviación >30%, y reportes mensuales de optimización de recursos.</p>
 
       <p><strong>Ejemplo concreto:</strong> Entre el 1/12/2025 y 6/01/2026 se realizaron ~90 pases de personal. Hoy esa información se pierde en correos y planillas; con DNGR estará centralizada.</p>
 

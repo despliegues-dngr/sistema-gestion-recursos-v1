@@ -51,9 +51,10 @@
         </p>
       </div>
 
-      <!-- Selectores en línea: Tipo + Motivo condicional -->
+      <!-- Selectores en línea: Tipo + Horas Reales (condicional) -->
       <div style="margin-bottom: var(--space-3);">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+        <!-- Primera fila: Tipo de Despliegue + Horas (si aplica) -->
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--space-3);">
           <!-- Tipo de Despliegue -->
           <div class="ficha-dato">
             <span class="ficha-dato-label ficha-dato-label--required">Tipo de Despliegue</span>
@@ -64,8 +65,32 @@
             />
           </div>
           
-          <!-- Motivo (condicional) -->
-          <div v-if="formData.tipoDespliegue === 'Sin efecto'" class="ficha-dato">
+          <!-- Hora Inicio Real (condicional) -->
+          <div v-if="formData.tipoDespliegue === 'Despliegue'" class="ficha-dato">
+            <span class="ficha-dato-label">Hora Inicio</span>
+            <Input
+              v-model="formData.realHoraInicio"
+              type="time"
+              size="sm"
+              :placeholder="displayData.horaInicio"
+            />
+          </div>
+          
+          <!-- Hora Fin Real (condicional) -->
+          <div v-if="formData.tipoDespliegue === 'Despliegue'" class="ficha-dato">
+            <span class="ficha-dato-label">Hora Fin</span>
+            <Input
+              v-model="formData.realHoraFin"
+              type="time"
+              size="sm"
+              :placeholder="displayData.horaFin !== 'fin' ? displayData.horaFin : ''"
+            />
+          </div>
+        </div>
+        
+        <!-- Segunda fila: Motivo (solo si Sin efecto) -->
+        <div v-if="formData.tipoDespliegue === 'Sin efecto'" style="margin-top: var(--space-3);">
+          <div class="ficha-dato">
             <span class="ficha-dato-label ficha-dato-label--required">Motivo</span>
             <Select
               v-model="formData.motivoSinEfecto"
@@ -331,6 +356,8 @@ const displayData = ref({
 const formData = ref({
   tipoDespliegue: 'Despliegue' as 'Despliegue' | 'Franco' | 'Sin efecto',
   motivoSinEfecto: '',
+  realHoraInicio: '',  // ✅ NUEVO v16
+  realHoraFin: '',     // ✅ NUEVO v16
   realMoviles: 0,
   realMotos: 0,
   realMotosBiTripuladas: 0,
@@ -389,6 +416,40 @@ const formatearFechaHora = (fecha: Date | null) => {
     hour: '2-digit',
     minute: '2-digit'
   })
+}
+
+// ✅ NUEVO v16: Validar formato de horarios y detectar cruce de medianoche
+function validarHorarios(horaInicio: string, horaFin: string): { 
+  valido: boolean; 
+  cruzaMedianoche: boolean;
+  mensaje?: string;
+} {
+  // Campos opcionales: si están vacíos, son válidos
+  if (!horaInicio || !horaFin) {
+    return { valido: true, cruzaMedianoche: false }
+  }
+  
+  // Validar formato HH:MM
+  const regexHora = /^([01]\d|2[0-3]):([0-5]\d)$/
+  
+  if (!regexHora.test(horaInicio) || !regexHora.test(horaFin)) {
+    return { 
+      valido: false, 
+      cruzaMedianoche: false,
+      mensaje: 'Formato de hora inválido. Use HH:MM (ej: 18:00)' 
+    }
+  }
+  
+  // Convertir a minutos desde medianoche para comparar
+  const [hI, mI] = horaInicio.split(':').map(Number)
+  const [hF, mF] = horaFin.split(':').map(Number)
+  const minutosInicio = hI * 60 + mI
+  const minutosFin = hF * 60 + mF
+  
+  // Detectar cruce de medianoche (ej: 18:00 a 06:00)
+  const cruzaMedianoche = minutosFin < minutosInicio
+  
+  return { valido: true, cruzaMedianoche }
 }
 
 // Limpiar motivo si se cambia a otro tipo que no sea "Sin efecto"
@@ -450,6 +511,8 @@ async function cargarDatos() {
         formData.value = {
           tipoDespliegue: reporte.tipoDespliegue || 'Despliegue',
           motivoSinEfecto: reporte.motivoSinEfecto || '',
+          realHoraInicio: reporte.realHoraInicio || '',  // ✅ NUEVO v16
+          realHoraFin: reporte.realHoraFin || '',        // ✅ NUEVO v16
           realMoviles: reporte.realMoviles || 0,
           realMotos: reporte.realMotos || 0,
           realMotosBiTripuladas: reporte.realMotosBiTripuladas || 0,
@@ -492,6 +555,16 @@ async function cargarDatos() {
         horario: `${orden.horaInicioPlan || '00:00'} a ${orden.horaFinPlan || 'Fin'}`,
         seccional: orden.seccional ? orden.seccional.split(', ') : []
       }
+
+      // ✅ NUEVO v16: Inicializar horas reales con valores planificados (solo para reportes nuevos)
+      if (!reporteExistenteId.value) {
+        formData.value.realHoraInicio = orden.horaInicioPlan && orden.horaInicioPlan !== 'fin' 
+          ? orden.horaInicioPlan 
+          : ''
+        formData.value.realHoraFin = orden.horaFinPlan && orden.horaFinPlan !== 'fin' 
+          ? orden.horaFinPlan 
+          : ''
+      }
     }
   } catch (error) {
     console.error('Error al cargar datos para el reporte:', error)
@@ -502,6 +575,8 @@ function resetForm() {
   formData.value = {
     tipoDespliegue: 'Despliegue',
     motivoSinEfecto: '',
+    realHoraInicio: '',  // ✅ NUEVO v16
+    realHoraFin: '',     // ✅ NUEVO v16
     realMoviles: 0,
     realMotos: 0,
     realMotosBiTripuladas: 0,
@@ -525,6 +600,20 @@ function handleGuardar() {
   if (formData.value.tipoDespliegue === 'Sin efecto' && !formData.value.motivoSinEfecto) {
     toast.error('Debe seleccionar un motivo para "Sin efecto"')
     return
+  }
+  
+  // ✅ NUEVO v16: Validar horarios si están presentes
+  if (formData.value.tipoDespliegue === 'Despliegue' && 
+      (formData.value.realHoraInicio || formData.value.realHoraFin)) {
+    const validacion = validarHorarios(
+      formData.value.realHoraInicio, 
+      formData.value.realHoraFin
+    )
+    
+    if (!validacion.valido) {
+      toast.error(validacion.mensaje || 'Horarios inválidos')
+      return
+    }
   }
   
   showConfirmacionModal.value = true
@@ -558,7 +647,11 @@ async function handleConfirmarReporte() {
       usuarioReportaId: 1, // AI-Hint: Usar ID de usuario logueado en producción
       ...formData.value,
       realTotalPersonal: totalEfectivosCalculado.value,
-      estadoReal: 'Completo' as const // Simplificación inicial
+      estadoReal: 'Completo' as const, // Simplificación inicial
+      // ✅ NUEVO v16: Calcular cruzaMedianoche automáticamente
+      cruzaMedianoche: formData.value.realHoraInicio && formData.value.realHoraFin
+        ? validarHorarios(formData.value.realHoraInicio, formData.value.realHoraFin).cruzaMedianoche
+        : undefined
     }
 
     if (reporteExistenteId.value) {

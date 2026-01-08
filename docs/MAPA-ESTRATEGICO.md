@@ -14,7 +14,7 @@ Hoja de ruta y seguimiento de implementación para el Comando
 📊 Resumen Ejecutivo de Progreso
 --------------------------------
 
-25
+26
 
 Hitos Completados
 
@@ -34,8 +34,14 @@ Auditoría arquitectónica completada. Todos los servicios y flujos de datos han
 
 📅 Historial de Versiones y Cambios
 
+8 Ene 2026, 16:00
+**Análisis de Cumplimiento Temporal v16 - Horarios Reales y Cruce de Medianoche:** Implementación de capacidad estratégica para medir cumplimiento de despliegues en **tiempo y forma**. **Campos nuevos en ReporteDespliegue:** `realHoraInicio` (string HH:MM), `realHoraFin` (string HH:MM), `cruzaMedianoche` (boolean calculado automáticamente). **Lógica de negocio:** Validación de formato HH:MM con soporte para despliegues nocturnos (ej: 18:00 a 06:00 → cruzaMedianoche=true). **UX:** Inputs de hora condicionales en modal de reporte (visibles solo si tipoDespliegue='Despliegue'), valores por defecto desde planificación, grid optimizado (2fr 1fr 1fr para balance visual). **Valor estratégico:** Permite análisis histórico de desviaciones temporales, identificación de patrones de incumplimiento, y optimización de planificación basada en datos reales. **Casos de uso:** (1) Detectar operativos que sistemáticamente se retrasan, (2) Identificar unidades con déficit crónico de recursos, (3) Análisis específico de turnos nocturnos, (4) Ajustar planificación a realidad operativa histórica. **Migración:** Campos opcionales, compatibles con reportes existentes. **Próximos pasos:** Implementar dashboard de análisis de cumplimiento temporal con métricas agregadas (tasa de desviación mensual, operativos recurrentes con incumplimiento, distribución de desviaciones por horario).
+
 7 Ene 2026, 14:00
 **Módulo Reporte Personal v1.0 - Parte de Fuerza:** Implementación del componente visual para el reporte "Parte de Fuerza" en la página `/esmapo/reporte-personal`. **Diseño Comparativo:** Sistema de tabla multi-columna que permite comparar la disponibilidad de personal entre múltiples Direcciones simultáneamente mediante selección dinámica con checkboxes. **Integración con Sistema de Diseño:** Uso del componente `<Table>` oficial del sistema para garantizar consistencia visual total con el resto de la aplicación. **Cálculos Automáticos:** Implementación de lógica para calcular "Se deduce" (suma de francos, licencias y cursos) y "Fuerza Efectiva" (trabajando menos deducciones) con totales por fila y columna. **Categorización:** Separación en dos tablas independientes (SS.OO. y Personal Subalterno) con estados de personal (Trabajando, Francos, Licencia anual, Licencia médica, Curso). **Datos Mock:** Implementación con 5 direcciones de ejemplo (Dir I, Dir II, Reg Norte, Reg Este, GEO) preparado para integración futura con datos reales de IndexedDB. **UX:** Scroll interno en Card, filas de resumen destacadas visualmente, columna TOTAL con color primario, fila "FUERZA EFECTIVA" con fondo azul. Pendiente: Integración con servicios de personal y cálculo dinámico basado en estados reales de funcionarios.
+
+7 Ene 2026, 17:00
+**Módulo Reporte Operativo v1.0 - Dashboard de Cumplimiento:** Implementación del dashboard ejecutivo para ESMAPO en la página `/esmapo/reporte-operativo`. **Vista Panorámica:** Sistema de tabla comparativa que permite auditar el estado de reportes de despliegue de todas las direcciones operativas simultáneamente. **Métricas Clave:** Tres indicadores por dirección: (1) Reportes Vencidos (despliegues sin cargar fuera de plazo), (2) Pendientes del Día (formato fracción X/Y mostrando reportados vs. total esperado), (3) Cumplimiento % (promedio de cumplimiento de personal desplegado vs. planificado del día). **Filtrado Dinámico:** Sistema de detección automática de unidades con órdenes operativas activas, eliminando dependencia de campo `tipo` estático. Filtros laterales para selección de fecha (histórico) y unidades específicas. **Componente ProgressBar Mejorado:** Rediseño con porcentaje alineado a la derecha de la barra, colores contextuales según nivel de cumplimiento (rojo crítico ≤50%, amarillo reducido ≤80%, verde completo ≤100%, azul excedido >100%), y prop `showLabel` para ocultar etiqueta en contextos compactos. **Cálculo de Cumplimiento:** Promedio de todos los reportes cargados en el día usando fórmula `(realTotalPersonal / refPlanTotalPersonal) * 100`, alineado con snapshot inmutable de planificación (v14). **UX Ejecutiva:** Etiquetas formales ("Reportes Vencidos", "Pendientes del Día") apropiadas para audiencia directiva, badges con emojis para identificación visual rápida (🔴 vencidos, 🟡 pendientes, ✅ sin atrasos). Pendiente: Parametrización de servicios de despliegue para soporte completo de consultas históricas por fecha.
 
 7 Ene 2026, 12:00
 **Rediseño Modal Historial v18 - Estilo Narrativo y Cumplimiento:** Transformación total del modo solo lectura para reportes históricos. **Diseño Narrativo:** Implementación de un formato de "informe oficial" que describe el despliegue en lenguaje natural, eliminando la rigidez de las cajas de texto y grillas. **Filtrado Inteligente:** Visualización exclusiva de recursos desplegados (cantidad > 0), optimizando el espacio vertical y eliminando ruido visual. **Métricas de Cumplimiento:** Integración de barra de progreso con cálculo automático de porcentaje basado en el snapshot de planificación (`refPlanTotalPersonal`). **Lógica de Permisos Estricta:** Forzado de modo solo lectura para cualquier reporte con `fechaDespliegue < hoy`, independientemente de su fecha de carga, garantizando la integridad de la sección Historial. **Refinamiento UI:** Eliminación de botones redundantes ("Cancelar") y pestañas innecesarias en modo consulta, dejando un botón único de "Cerrar". Limpieza de componentes obsoletos (`FichaVisualizacion`, `DatoReadonly`) reemplazados por el nuevo componente `ReporteDocumento`.
@@ -168,6 +174,14 @@ Planificación Operativa (Estado Mayor / ESMAPO)
 Registro de Órdenes de Servicio (Motor de Generación)
 
 Repositorio oficial para registrar operativos. **Hallazgo Técnico:** La creación de días es automática. Al crear una `OrdenOperativa` con un rango de fechas, el sistema genera N registros de `DiaDespliegue` en el `esmapoService`.
+
+Completado
+
+☑
+
+Dashboard de Cumplimiento Operativo (Auditoría ESMAPO)
+
+Panel ejecutivo que permite auditar en tiempo real el cumplimiento de todas las direcciones, identificando reportes vencidos y niveles de despliegue vs. planificación.
 
 Completado
 
@@ -656,7 +670,7 @@ planTotalPersonalEfectivos Pedidos
 
 🆕 versionActualVersión
 
-Reportes de Despliegue (reportes_despliegue) - v14
+Reportes de Despliegue (reportes_despliegue) - v16
 
 P *id                    Número
 
@@ -670,9 +684,9 @@ F *usuarioReportaId      Usuario (ID)
 
 *fechaHoraCarga          Timestamp
 
-realHoraInicio           Inicio Real
+🆕 realHoraInicio        Hora Inicio Real (HH:MM)
 
-realHoraFin              Fin Real
+🆕 realHoraFin           Hora Fin Real (HH:MM)
 
 realMoviles              Móviles
 
@@ -706,6 +720,8 @@ tipoDespliegue           Tipo Despliegue
 
 motivoSinEfecto          Motivo (condicional)
 
+🆕 cruzaMedianoche       Indicador Nocturno
+
 🆕 refPlanMoviles        Snapshot Plan Móviles
 
 🆕 refPlanMotos          Snapshot Plan Motos
@@ -735,6 +751,8 @@ motivoSinEfecto          Motivo (condicional)
 👤 Auditoría por usuario y fecha
 
 📸 Snapshot inmutable de planificación
+
+⏰ Análisis de cumplimiento temporal habilitado
 
 Historial de Órdenes (historial_ordenes_operativas) - v13
 
@@ -781,6 +799,23 @@ El sistema genera automáticamente un registro `DiaDespliegue` por cada día en 
 **ID Compuesto:** `${ordenId}-${fecha.getTime()}`
 
 Notas Técnicas de Migración
+
+Migración v16 - Análisis de Cumplimiento Temporal
+
+**Fecha:** 8 Ene 2026  
+**Cambio:** Campos de horarios reales y detección de cruce de medianoche en ReporteDespliegue.  
+**Propósito:** Habilitar análisis estratégico de cumplimiento temporal de despliegues. Permite comparar horarios planificados vs. ejecutados para detectar patrones de desviación y optimizar planificación futura.  
+**Lógica:** 
+- `realHoraInicio` y `realHoraFin` son strings en formato HH:MM (ej: "18:00", "06:00")
+- `cruzaMedianoche` se calcula automáticamente: `true` si horaFin < horaInicio (ej: 18:00 a 06:00)
+- Validación de formato con regex: `/^([01]\d|2[0-3]):([0-5]\d)$/`
+- Valores por defecto desde `horaInicioPlan` y `horaFinPlan` de la orden operativa
+**UX:** Inputs condicionales (solo visibles si tipoDespliegue='Despliegue'), grid optimizado 2fr 1fr 1fr para balance visual.  
+**Valor estratégico:** Primera vez que el sistema captura desviaciones temporales. Permite responder:
+- ¿Qué operativos nunca se despliegan a la hora planificada?
+- ¿Cuál es la tasa de cumplimiento temporal mensual?
+- ¿Los despliegues nocturnos tienen más desviación que los diurnos?
+- ¿Qué unidades tienen mayor desviación temporal sistemática?
 
 Migración v14 - Snapshot de Planificación
 
@@ -1024,12 +1059,13 @@ Motivo específico cuando el despliegue queda sin efecto
 - `label` (string): Etiqueta descriptiva
 - `showPercentage` (boolean): Mostrar porcentaje
 - `showValues` (boolean): Mostrar "X de Y"
+- `showLabel` (boolean): Mostrar/ocultar etiqueta "Cumplimiento:" (default: true)
 
 **Rangos de Color:**
 - 0-50%: Rojo (crítico)
-- 51-80%: Naranja (reducido)
+- 51-80%: Amarillo (reducido)
 - 81-100%: Verde (cumplido)
-- >100%: Azul (ampliado)
+- >100%: Azul (excedido/ampliado)
 
 **Uso:** Modal de confirmación de reporte de despliegue.
 

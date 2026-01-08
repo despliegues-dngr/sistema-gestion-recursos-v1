@@ -1,27 +1,5 @@
 <template>
   <div class="parte-fuerza">
-    <!-- Selector de Direcciones -->
-    <div class="direcciones-selector">
-      <label
-        v-for="dir in direccionesDisponibles"
-        :key="dir.id"
-        class="direccion-checkbox"
-      >
-        <input
-          type="checkbox"
-          :value="dir.id"
-          v-model="direccionesSeleccionadas"
-        />
-        <span>{{ dir.nombre }}</span>
-      </label>
-      <button 
-        class="btn-seleccionar-todas"
-        @click="toggleTodas"
-      >
-        {{ todasSeleccionadas ? 'Deseleccionar Todas' : 'Seleccionar Todas' }}
-      </button>
-    </div>
-
     <!-- Tabla SS.OO. -->
     <div class="categoria-section">
       <h3 class="categoria-titulo">SS.OO.</h3>
@@ -127,8 +105,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { Table } from '@components'
+
+interface Props {
+  direccionesSeleccionadas: string[]
+}
+
+const props = defineProps<Props>()
 
 // Estados del personal
 const estadosPersonal = [
@@ -233,28 +217,12 @@ const direccionesDisponibles = [
   }
 ]
 
-// Direcciones seleccionadas (por defecto: Dir I y Dir II)
-const direccionesSeleccionadas = ref(['dir-i', 'dir-ii'])
-
 // Direcciones a mostrar en la tabla
 const direccionesMostradas = computed(() => {
   return direccionesDisponibles.filter(d => 
-    direccionesSeleccionadas.value.includes(d.id)
+    props.direccionesSeleccionadas.includes(d.id)
   )
 })
-
-// Todas seleccionadas
-const todasSeleccionadas = computed(() => {
-  return direccionesSeleccionadas.value.length === direccionesDisponibles.length
-})
-
-function toggleTodas() {
-  if (todasSeleccionadas.value) {
-    direccionesSeleccionadas.value = []
-  } else {
-    direccionesSeleccionadas.value = direccionesDisponibles.map(d => d.id)
-  }
-}
 
 // Calcular "Se deduce" para una categoría
 function calcularDeduce(categoria: any) {
@@ -416,63 +384,6 @@ const datosTablaSubalterno = computed(() => {
 }
 
 /* ========================================
-   SELECTOR DE DIRECCIONES
-   ======================================== */
-.direcciones-selector {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-4);
-  background-color: var(--color-gray-50);
-  border: 2px solid var(--border-color-strong);
-  border-radius: var(--radius-md);
-}
-
-.direccion-checkbox {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  cursor: pointer;
-  user-select: none;
-}
-
-.direccion-checkbox input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  accent-color: var(--color-primary);
-}
-
-.direccion-checkbox span {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-gray-900);
-}
-
-.direccion-checkbox:hover span {
-  color: var(--color-primary);
-}
-
-.btn-seleccionar-todas {
-  margin-left: auto;
-  padding: var(--space-2) var(--space-3);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-primary);
-  background-color: var(--color-white);
-  border: 2px solid var(--color-primary);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.btn-seleccionar-todas:hover {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-}
-
-/* ========================================
    SECCIONES DE CATEGORÍA
    ======================================== */
 .categoria-section {
@@ -581,15 +492,8 @@ const datosTablaSubalterno = computed(() => {
    RESPONSIVE
    ======================================== */
 @media (max-width: 768px) {
-  .direcciones-selector {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-2);
-  }
-  
-  .btn-seleccionar-todas {
-    margin-left: 0;
-    width: 100%;
+  .categoria-titulo {
+    font-size: var(--font-size-md);
   }
 }
 </style>

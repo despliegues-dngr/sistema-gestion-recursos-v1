@@ -294,8 +294,8 @@ export interface ReporteDespliegue {
   usuarioReportaId: number;        // Usuario que crea el reporte
   
   fechaHoraCarga: Date;            // Timestamp de cuándo se reportó
-  realHoraInicio?: Date;
-  realHoraFin?: Date;
+  realHoraInicio?: string;      // ✅ MODIFICADO v16
+  realHoraFin?: string;         // ✅ MODIFICADO v16
   realMoviles: number;
   realMotos: number;
   realSsoo: number;
@@ -334,6 +334,7 @@ export interface ReporteDespliegue {
   // ✅ NUEVOS CAMPOS v15: Tipo de Despliegue
   tipoDespliegue?: 'Despliegue' | 'Franco' | 'Sin efecto';
   motivoSinEfecto?: string;  // Requerido solo si tipoDespliegue === 'Sin efecto'
+  cruzaMedianoche?: boolean;    // ✅ NUEVO v16: true si horaFin < horaInicio (ej: 18:00 a 06:00)
 }
 
 export interface RecursosReporte {
