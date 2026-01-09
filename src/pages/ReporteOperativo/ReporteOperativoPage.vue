@@ -55,7 +55,12 @@
       
       <template #sidebar>
         <FilterPanel>
-          <Accordion title="FILTROS DE FECHA" default-open>
+          <Accordion title="UNIDAD ACTUAL">
+            <div class="filter-group">
+              <UnitSelector />
+            </div>
+          </Accordion>
+          <Accordion title="FILTROS DE FECHA">
             <div class="filter-group">
               <Input 
                 label="Fecha de Consulta" 
@@ -70,7 +75,7 @@
             </div>
           </Accordion>
           
-          <Accordion title="FILTROS DE UNIDAD" default-open>
+          <Accordion title="FILTROS DE UNIDAD">
             <div class="filter-group">
               <label 
                 v-for="dir in direccionesDisponibles" 
@@ -95,7 +100,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { MainLayout, PageLayout } from '@layouts'
-import { Card, FilterPanel, Accordion, Input, Table, Badge, ProgressBar } from '@components'
+import { Card, FilterPanel, Accordion, Input, Table, Badge, ProgressBar, UnitSelector } from '@components'
 import { desplieguesService } from '@services'
 import { db } from '@lib/db'
 import './ReporteOperativoPage.css'

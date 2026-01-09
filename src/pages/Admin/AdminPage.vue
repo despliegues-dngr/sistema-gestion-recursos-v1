@@ -37,7 +37,12 @@
 
       <template #sidebar>
         <FilterPanel>
-          <Accordion title="OPCIONES" default-open>
+          <Accordion title="UNIDAD ACTUAL">
+            <div class="filter-group">
+              <UnitSelector />
+            </div>
+          </Accordion>
+          <Accordion title="OPCIONES">
             <div class="filter-group">
               <p class="sidebar-info">Seleccione una sección de administración para gestionar.</p>
             </div>
@@ -50,7 +55,7 @@
 
 <script setup lang="ts">
 import { MainLayout, PageLayout } from "@layouts";
-import { Card, Accordion, FilterPanel } from "@components";
+import { Card, Accordion, FilterPanel, UnitSelector } from "@components";
 </script>
 
 <style scoped>

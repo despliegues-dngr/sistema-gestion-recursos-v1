@@ -2,7 +2,18 @@
   <div class="parte-fuerza">
     <!-- Tabla SS.OO. -->
     <div class="categoria-section">
-      <h3 class="categoria-titulo">SS.OO.</h3>
+      <div class="categoria-header">
+        <h3 class="categoria-titulo">SS.OO.</h3>
+        <button 
+          type="button" 
+          class="btn-export-csv"
+          @click="exportarCSV('ssoo')"
+          title="Exportar a CSV"
+        >
+          <Download :size="16" />
+          Exportar CSV
+        </button>
+      </div>
       <Table 
         :columns="columnasTabla" 
         :data="datosTablaSSOO"
@@ -55,7 +66,18 @@
 
     <!-- Tabla Personal Subalterno -->
     <div class="categoria-section">
-      <h3 class="categoria-titulo">Personal Subalterno</h3>
+      <div class="categoria-header">
+        <h3 class="categoria-titulo">Personal Subalterno</h3>
+        <button 
+          type="button" 
+          class="btn-export-csv"
+          @click="exportarCSV('subalterno')"
+          title="Exportar a CSV"
+        >
+          <Download :size="16" />
+          Exportar CSV
+        </button>
+      </div>
       <Table 
         :columns="columnasTabla" 
         :data="datosTablaSubalterno"
@@ -107,9 +129,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Table } from '@components'
+import { Download } from 'lucide-vue-next'
 
 interface Props {
   direccionesSeleccionadas: string[]
+  conceptosSeleccionados: string[]
 }
 
 const props = defineProps<Props>()
@@ -120,7 +144,8 @@ const estadosPersonal = [
   { key: 'francos', label: 'Francos' },
   { key: 'licenciaAnual', label: 'Licencia anual' },
   { key: 'licenciaMedica', label: 'Licencia médica' },
-  { key: 'curso', label: 'Curso' }
+  { key: 'curso', label: 'Curso' },
+  { key: 'serv222', label: 'Realiza Serv. 222' }
 ]
 
 // Datos mockeados de direcciones
@@ -133,14 +158,16 @@ const direccionesDisponibles = [
       francos: 5,
       licenciaAnual: 3,
       licenciaMedica: 2,
-      curso: 1
+      curso: 1,
+      serv222: 2
     },
     subalterno: {
       trabajando: 45,
       francos: 8,
       licenciaAnual: 5,
       licenciaMedica: 3,
-      curso: 2
+      curso: 2,
+      serv222: 4
     }
   },
   {
@@ -151,14 +178,16 @@ const direccionesDisponibles = [
       francos: 4,
       licenciaAnual: 2,
       licenciaMedica: 1,
-      curso: 0
+      curso: 0,
+      serv222: 1
     },
     subalterno: {
       trabajando: 40,
       francos: 7,
       licenciaAnual: 4,
       licenciaMedica: 2,
-      curso: 1
+      curso: 1,
+      serv222: 3
     }
   },
   {
@@ -169,14 +198,16 @@ const direccionesDisponibles = [
       francos: 3,
       licenciaAnual: 2,
       licenciaMedica: 1,
-      curso: 1
+      curso: 1,
+      serv222: 1
     },
     subalterno: {
       trabajando: 35,
       francos: 6,
       licenciaAnual: 3,
       licenciaMedica: 2,
-      curso: 1
+      curso: 1,
+      serv222: 2
     }
   },
   {
@@ -187,14 +218,16 @@ const direccionesDisponibles = [
       francos: 3,
       licenciaAnual: 1,
       licenciaMedica: 1,
-      curso: 0
+      curso: 0,
+      serv222: 0
     },
     subalterno: {
       trabajando: 38,
       francos: 5,
       licenciaAnual: 3,
       licenciaMedica: 1,
-      curso: 1
+      curso: 1,
+      serv222: 2
     }
   },
   {
@@ -205,14 +238,16 @@ const direccionesDisponibles = [
       francos: 2,
       licenciaAnual: 1,
       licenciaMedica: 0,
-      curso: 0
+      curso: 0,
+      serv222: 0
     },
     subalterno: {
       trabajando: 25,
       francos: 4,
       licenciaAnual: 2,
       licenciaMedica: 1,
-      curso: 0
+      curso: 0,
+      serv222: 1
     }
   }
 ]
@@ -226,13 +261,31 @@ const direccionesMostradas = computed(() => {
 
 // Calcular "Se deduce" para una categoría
 function calcularDeduce(categoria: any) {
-  return categoria.francos + categoria.licenciaAnual + categoria.licenciaMedica + categoria.curso
+  return (
+    categoria.francos +
+    categoria.licenciaAnual +
+    categoria.licenciaMedica +
+    categoria.curso +
+    (categoria.serv222 || 0)
+  )
 }
 
 // Calcular "Fuerza Efectiva" para una categoría
 function calcularEfectiva(categoria: any) {
   return categoria.trabajando - calcularDeduce(categoria)
 }
+
+// Computed para estados a mostrar según filtro
+const estadosFiltrados = computed(() => {
+  // Si no hay filtros seleccionados, mostrar todos
+  if (props.conceptosSeleccionados.length === 0) {
+    return estadosPersonal
+  }
+  // Filtrar según selección
+  return estadosPersonal.filter(estado => 
+    props.conceptosSeleccionados.includes(estado.key)
+  )
+})
 
 // Generar columnas dinámicas según direcciones seleccionadas
 const columnasTabla = computed(() => {
@@ -266,7 +319,7 @@ const datosTablaSSOO = computed(() => {
   const filas: any[] = []
   
   // Filas de estados normales
-  estadosPersonal.forEach(estado => {
+  estadosFiltrados.value.forEach(estado => {
     const fila: any = {
       concepto: estado.label,
       esResumen: false,
@@ -322,7 +375,7 @@ const datosTablaSubalterno = computed(() => {
   const filas: any[] = []
   
   // Filas de estados normales
-  estadosPersonal.forEach(estado => {
+  estadosFiltrados.value.forEach(estado => {
     const fila: any = {
       concepto: estado.label,
       esResumen: false,
@@ -370,6 +423,12 @@ const datosTablaSubalterno = computed(() => {
   
   return filas
 })
+
+// Función placeholder para exportación CSV
+function exportarCSV(tipo: 'ssoo' | 'subalterno') {
+  console.log(`Exportar CSV: ${tipo}`)
+  // TODO: Implementar lógica de exportación
+}
 </script>
 
 <style scoped>
@@ -392,13 +451,50 @@ const datosTablaSubalterno = computed(() => {
   gap: var(--space-3);
 }
 
+/* ========================================
+   HEADER DE CATEGORÍA CON BOTÓN EXPORT
+   ======================================== */
+.categoria-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 2px solid var(--border-color-strong);
+}
+
 .categoria-titulo {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-gray-900);
   margin: 0;
-  padding-bottom: var(--space-2);
-  border-bottom: 2px solid var(--border-color-strong);
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.btn-export-csv {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-white);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-export-csv:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-export-csv:active {
+  transform: scale(0.98);
 }
 
 /* ========================================

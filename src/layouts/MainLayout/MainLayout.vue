@@ -27,15 +27,6 @@
 
         <div class="topbar-actions">
           <div class="topbar-user-info">
-            <div class="topbar-unit-selector">
-              <Select
-                :model-value="currentUnitSlug"
-                :options="unitOptions"
-                size="sm"
-                @update:model-value="handleUnitChange"
-                class="topbar-unit-select"
-              />
-            </div>
             <div class="topbar-user-details">
               <span class="topbar-user-name">{{ userDisplayName }}</span>
             </div>
@@ -58,9 +49,8 @@
 import "./MainLayout.css";
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useAuth } from "@hooks";
-import { getUnitDisplayName, getNavConfig, unitOptions } from "@config";
-import { Select } from "@components";
+import { useAuth, useUnitNavigation } from "@hooks";
+import { getNavConfig } from "@config";
 import logoUrl from "@/assets/images/logo-gr-dorado.svg";
 import {
   LayoutDashboard,
@@ -78,43 +68,7 @@ import type { NavItem } from "@config";
 const route = useRoute();
 const router = useRouter();
 const { logout, usuario } = useAuth();
-
-const currentUnitSlug = computed(() => {
-  // AI-Hint: Priorizar parámetro unidad | Fallback a extracción de path para rutas legacy o sin params | Default a direccion
-  const paramUnidad = route.params.unidad as string;
-  if (paramUnidad) return paramUnidad;
-
-  const pathSegments = route.path.split('/').filter(Boolean);
-  return pathSegments[0] || "direccion";
-});
-
-const currentUnitName = computed(() => {
-  return getUnitDisplayName(currentUnitSlug.value);
-});
-
-// AI-Hint: Cambiar unidad con redirección inteligente | Dir VI va a dashboard, resto a personal | Mantiene contexto de módulo actual
-function handleUnitChange(value: string | number) {
-  const unidad = String(value);
-  const currentModule = route.name as string;
-  
-  // Si estamos en dashboard y cambiamos a otra unidad, ir a personal
-  if (currentModule === 'dashboard' && unidad !== 'direccion-vi') {
-    router.push({ name: 'personal', params: { unidad } });
-  } else if (unidad === 'direccion-vi' && currentModule !== 'dashboard') {
-    // Si cambiamos a Dir VI desde otra página, ir a dashboard
-    router.push({ name: 'dashboard', params: { unidad } });
-  } else if (unidad === 'direccion-vi') {
-    // Si ya estamos en Dir VI y cambiamos a Dir VI, mantener dashboard
-    router.push({ name: 'dashboard', params: { unidad } });
-  } else {
-    // Para otras unidades, mantener el módulo actual o ir a personal
-    if (currentModule && currentModule !== 'dashboard') {
-      router.push({ name: currentModule, params: { unidad } });
-    } else {
-      router.push({ name: 'personal', params: { unidad } });
-    }
-  }
-}
+const { currentUnitSlug, handleUnitChange } = useUnitNavigation();
 
 const userDisplayName = computed(() => {
   // Demo: Usuario fijo para entorno policial

@@ -71,6 +71,11 @@
 
       <template #sidebar>
         <FilterPanel>
+          <Accordion title="UNIDAD ACTUAL">
+            <div class="filter-group">
+              <UnitSelector />
+            </div>
+          </Accordion>
         <!-- Acordeones dinámicos según rol -->
         <Accordion
           v-for="accordion in dashboardConfig.accordions"
@@ -210,6 +215,7 @@ import {
   FileUpload,
   FichaModalHeader,
   FormActions,
+  UnitSelector,
 } from "@components";
 import FichaFuncionario from "./components/FichaFuncionario.vue";
 import TransferirModal from "./components/TransferirModal.vue";

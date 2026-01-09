@@ -92,6 +92,14 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@pages/Catalogos/CatalogosPage.vue'),
     meta: {
       requiresAuth: true
+    },
+    // AI-Hint: Restricción de seguridad | Solo ESMAPO puede gestionar catálogos | Resto redirige a personal
+    beforeEnter: (to, _from, next) => {
+      if (to.params.unidad !== 'esmapo') {
+        next({ name: 'personal', params: { unidad: to.params.unidad } });
+      } else {
+        next();
+      }
     }
   }
 ];

@@ -52,7 +52,12 @@
 
       <template #sidebar>
         <FilterPanel>
-          <Accordion title="FILTROS DE BÚSQUEDA" default-open>
+          <Accordion title="UNIDAD ACTUAL">
+            <div class="filter-group">
+              <UnitSelector />
+            </div>
+          </Accordion>
+          <Accordion title="FILTROS DE BÚSQUEDA">
             <div class="filter-group">
               <Input
                 v-model="searchQuery"
@@ -126,6 +131,7 @@ import {
   Modal,
   Button,
   FichaModalHeader,
+  UnitSelector,
 } from "@components";
 import FichaFuncionario from "../Home/components/FichaFuncionario.vue";
 import TransferirModal from "../Home/components/TransferirModal.vue";

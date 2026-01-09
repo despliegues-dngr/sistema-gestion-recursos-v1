@@ -216,14 +216,24 @@
       <!-- SIDEBAR DE FILTROS -->
       <template #sidebar>
         <FilterPanel v-if="isESMAPO">
-          <Accordion title="FILTROS" default-open>
+          <Accordion title="UNIDAD ACTUAL">
+            <div class="filter-group">
+              <UnitSelector />
+            </div>
+          </Accordion>
+          <Accordion title="FILTROS">
             <div class="filter-group">
               <p class="text-muted">Sin filtros activos</p>
             </div>
           </Accordion>
         </FilterPanel>
         <FilterPanel v-else>
-          <Accordion title="FILTROS" default-open>
+          <Accordion title="UNIDAD ACTUAL">
+            <div class="filter-group">
+              <UnitSelector />
+            </div>
+          </Accordion>
+          <Accordion title="FILTROS">
             <div class="filter-group">
               <p class="text-muted">Sin filtros activos para esta unidad</p>
             </div>
@@ -292,6 +302,7 @@ import {
   ModalFormularioOrden,
   Tabs,
   Badge,
+  UnitSelector,
 } from "@components";
 import {
   AlertCircle as AlertCircleIcon,

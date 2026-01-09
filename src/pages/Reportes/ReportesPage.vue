@@ -43,7 +43,12 @@
 
       <template #sidebar>
         <FilterPanel>
-          <Accordion title="FILTROS DE REPORTE" default-open>
+          <Accordion title="UNIDAD ACTUAL">
+            <div class="filter-group">
+              <UnitSelector />
+            </div>
+          </Accordion>
+          <Accordion title="FILTROS DE REPORTE">
             <div class="filter-group">
               <Select label="Tipo de Reporte" placeholder="Seleccionar reporte" size="sm" />
               <Input label="Período Desde" placeholder="Fecha inicio" size="sm" />
@@ -59,7 +64,7 @@
 
 <script setup lang="ts">
 import { MainLayout, PageLayout } from "@layouts";
-import { Card, Input, Select, Accordion, FilterPanel } from "@components";
+import { Card, Input, Select, Accordion, FilterPanel, UnitSelector } from "@components";
 </script>
 
 <style scoped>

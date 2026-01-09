@@ -68,7 +68,6 @@ export const dashboardConfigs: Record<string, DashboardConfig> = {
         id: "personal",
         title: "DATOS PERSONALES",
         icon: "User",
-        defaultOpen: true,
         filters: [
           {
             id: "nombre",
@@ -175,7 +174,6 @@ export const dashboardConfigs: Record<string, DashboardConfig> = {
         id: "personal",
         title: "PERSONAL",
         icon: "Users",
-        defaultOpen: true,
         filters: [
           {
             id: "nombre",
@@ -262,7 +260,6 @@ export const dashboardConfigs: Record<string, DashboardConfig> = {
         id: "reportes",
         title: "REPORTES",
         icon: "BarChart3",
-        defaultOpen: true,
         filters: [
           {
             id: "tipo_reporte",

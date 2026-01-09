@@ -1,10 +1,10 @@
-  Sistema DNGR - Mapa de Desarrollo v1.7     
+  Sistema DNGR - Mapa de Desarrollo v1.8     
 
 Mapa del Proyecto
 
 [📊 Estado General](#progreso) [📋 Gestión de Personal](#modulo-1) [📦 Gestión Operativa](#modulo-2) [🔐 Control y Seguridad](#modulo-3) [💡 Visión y Futuro](#ideas-proyecto) [🏗️ Estructura del Sistema](#arquitectura) [🗄️ Base de Datos](#modelo-datos) [⚙️ Configuración AI](#config-agentes)
 
-Versión 1.7 (Sincronizada)
+Versión 1.8 (Sincronizada)
 
 Mapa Estratégico de Recursos (DNGR)
 ===================================
@@ -33,6 +33,76 @@ Auditoría Técnica
 Auditoría arquitectónica completada. Todos los servicios y flujos de datos han sido verificados.
 
 📅 Historial de Versiones y Cambios
+
+9 Ene 2026, 12:00
+**Refactorización UX y Mejoras ESMAPO (v1.8):**
+### 🔄 Reubicación del Selector de Unidades
+**Cambio arquitectural:** El selector de unidades (módulos) ha sido movido del navbar superior al panel lateral de filtros (`FilterPanel`) en todas las páginas.
+- **Nuevo Componente:** `UnitSelector.vue` centraliza la lógica de selección.
+- **Nuevo Hook:** `useUnitNavigation.ts` extrae la lógica de redirección determinista.
+- **UX:** Integración dentro de un `Accordion` ("UNIDAD ACTUAL") para consistencia visual con otros filtros.
+- **Impacto:** Navbar más limpio y controles de navegación agrupados con filtros contextuales.
+
+### 📊 Mejoras en Reporte Personal (ESMAPO)
+- **Título Actualizado:** Acordeón renombrado a "PARTES DE UNIDADES" para mayor claridad operativa.
+- **Selección Inteligente:** Todas las unidades se marcan por defecto al cargar, agilizando la vista comparativa total.
+- **Filtros de Concepto:** Nuevo sistema de filtrado dinámico por estados de personal.
+- **Nuevo Concepto:** Incorporación de "Realiza Serv. 222" en el parte de fuerza y mock data.
+- **Exportación:** Agregados botones de "Exportar CSV" (placeholder) en los headers de las tablas de SS.OO. y Subalterno.
+
+### 🎨 Estándar Global de Interfaz
+- **Acordeones:** Implementación de estándar global de **estado colapsado por defecto** en todos los paneles de filtros del sistema.
+- **Objetivo:** Reducción de ruido visual y carga cognitiva inicial; el usuario expande solo lo que necesita.
+- **Alcance:** Afecta a 7 páginas core y configuraciones dinámicas en `dashboardConfig.ts`.
+
+### 🧭 Navegación Simplificada - Dirección VI
+- **Navbar:** Eliminado el acceso directo a "Administración" para el rol de Dirección VI.
+- **Enfoque:** Interfaz simplificada centrada exclusivamente en "Dashboard" y "Personal".
+
+9 Ene 2026, 10:00
+**Mejoras de Navegación y Seguridad:**
+### 🔄 Navegación entre Unidades (v1.1)
+**Cambio arquitectural:** Simplificación de lógica de cambio de unidad en `MainLayout.vue`
+**Comportamiento anterior:**
+- Intentaba mantener el módulo actual al cambiar de unidad
+- Causaba bugs cuando el módulo no existía en unidad destino
+- Contenido no se actualizaba (solo URL y navbar)
+**Comportamiento nuevo:**
+- **Regla determinista:** Al cambiar de unidad → siempre redirige a `/personal`
+- **Excepción única:** Dirección VI → siempre redirige a `/dashboard`
+- Elimina casos edge de navegación inconsistente
+**Impacto:**
+- ✅ UX más predecible y consistente
+- ✅ Reducción de código (-65% en función `handleUnitChange`)
+- ✅ Sin bugs de contenido no actualizado
+**Archivos modificados:**
+- `src/layouts/MainLayout/MainLayout.vue` (líneas 95-117 → 95-103)
+---
+### 🔐 Gestión de Opciones - Restricción ESMAPO (v1.0)
+**Cambio de seguridad:** Implementación de defensa en profundidad para módulo administrativo
+**Módulo:** "Gestión de Catálogos" → renombrado a "Gestión de Opciones"
+**Restricciones implementadas:**
+1. **Nivel UI (navbar):**
+   - Solo ESMAPO muestra el item en navegación
+   - Dirección VI: item eliminado del navbar
+2. **Nivel Router (seguridad real):**
+   - Router guard en ruta `/admin/catalogos`
+   - Validación: `if (unidad !== 'esmapo') → redirect to /personal`
+   - Cumplimiento: OWASP A01:2021 - Broken Access Control
+**Justificación:**
+- Módulo de configuración crítica del sistema
+- Requiere conocimiento técnico especializado
+- ESMAPO es unidad de administración central
+**Archivos modificados:**
+- `src/config/navConfig.ts` (línea 91: renombrado, líneas 227-232: eliminado)
+- `src/router/index.ts` (líneas 90-96: agregado `beforeEnter` guard)
+**Cumplimiento normativo:**
+- ✅ OWASP Top 10 2021 - A01
+- ✅ Defensa en profundidad (UI + Router)
+- ✅ Alineado con `docs/REGLAS-DE-ORO.md` - Seguridad Gubernamental
+---
+### 🐛 Bugfixes Menores
+- **FichaFuncionario.vue:** Corrección de imports faltantes de iconos Lucide (FileText, Clock, Calendar, History, ChevronLeft, ChevronRight)
 
 8 Ene 2026, 16:00
 **Análisis de Cumplimiento Temporal v16 - Horarios Reales y Cruce de Medianoche:** Implementación de capacidad estratégica para medir cumplimiento de despliegues en **tiempo y forma**. **Campos nuevos en ReporteDespliegue:** `realHoraInicio` (string HH:MM), `realHoraFin` (string HH:MM), `cruzaMedianoche` (boolean calculado automáticamente). **Lógica de negocio:** Validación de formato HH:MM con soporte para despliegues nocturnos (ej: 18:00 a 06:00 → cruzaMedianoche=true). **UX:** Inputs de hora condicionales en modal de reporte (visibles solo si tipoDespliegue='Despliegue'), valores por defecto desde planificación, grid optimizado (2fr 1fr 1fr para balance visual). **Valor estratégico:** Permite análisis histórico de desviaciones temporales, identificación de patrones de incumplimiento, y optimización de planificación basada en datos reales. **Casos de uso:** (1) Detectar operativos que sistemáticamente se retrasan, (2) Identificar unidades con déficit crónico de recursos, (3) Análisis específico de turnos nocturnos, (4) Ajustar planificación a realidad operativa histórica. **Migración:** Campos opcionales, compatibles con reportes existentes. **Próximos pasos:** Implementar dashboard de análisis de cumplimiento temporal con métricas agregadas (tasa de desviación mensual, operativos recurrentes con incumplimiento, distribución de desviaciones por horario).
@@ -213,9 +283,9 @@ Importación masiva de reportes. El sistema asocia automáticamente cada informe
 
 Completado
 
-### 🆕 Gestión de Catálogos del Sistema (Enero 2026)
+### 🆕 Gestión de Opciones del Sistema (Enero 2026)
 **Estado:** ✅ COMPLETADO (08/01/2026)
-#### Módulo de Administración de Catálogos
+#### Módulo de Gestión de Opciones
 **Propósito:** Centralizar la gestión de valores de catálogos (listas de opciones) utilizados en formularios de todo el sistema, eliminando dependencia de valores hardcodeados y permitiendo adaptación institucional.
 **Ubicación:** Página `/catalogos` (acceso restringido a roles administrativos)
 **Arquitectura:**
@@ -461,6 +531,8 @@ Detalle de cómo se organiza el código del sistema para asegurar que sea fácil
 
 📄 MiniCalendario.vue Componente especializado para la gestión visual de turnos operativos.
 
+📄 UnitSelector.vue Selector de unidades/módulos integrado en FilterPanel.
+
 📄 index.ts Barrel global: centraliza todas las exportaciones para importar desde '@components'.
 
 📁 config/
@@ -478,6 +550,8 @@ Detalle de cómo se organiza el código del sistema para asegurar que sea fácil
 📄 useTableActions.tsGestor centralizado de acciones (ver, transferir, borrar) según roles.
 
 📄 useToast.tsSistema global de notificaciones push de UI.
+
+📄 useUnitNavigation.tsLógica centralizada de navegación y cambio de unidad.
 
 📁 layouts/
 

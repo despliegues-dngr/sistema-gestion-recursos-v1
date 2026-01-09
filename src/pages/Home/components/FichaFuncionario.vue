@@ -470,7 +470,11 @@ import {
   Badge, Input, Select, Button, Tabs, Accordion, MiniCalendario, FichaFormulario,
   InlineForm, DataTable, SectionHeader
 } from '@components'
-import { RefreshCw, Trash, X, GraduationCap } from 'lucide-vue-next'
+import { 
+  RefreshCw, Trash, X, GraduationCap,
+  FileText, Clock, Calendar, History,
+  ChevronLeft, ChevronRight
+} from 'lucide-vue-next'
 import { useToast, useTiposTarea } from '@hooks'
 import { personalService, licenciasService, cursosService } from '@services'
 import { calcularTurnosMes } from '@lib/services/turnosService'

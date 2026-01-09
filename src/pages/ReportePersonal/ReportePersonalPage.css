@@ -11,6 +11,21 @@
   padding: 0; /* Sin padding para que Table ocupe todo */
 }
 
+/* Dashboard Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.dashboard-fecha {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  font-weight: var(--font-weight-normal);
+  text-transform: capitalize;
+}
+
 /* Filtros en sidebar */
 .filter-group {
   display: flex;

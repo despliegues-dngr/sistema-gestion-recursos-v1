@@ -129,46 +129,6 @@
   font-size: var(--font-size-sm);
 }
 
-.topbar-unit-selector {
-  min-width: 180px;
-}
-
-.topbar-unit-select :deep(.select-wrapper) {
-  margin: 0;
-}
-
-.topbar-unit-select :deep(.select-container) {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  height: 32px;
-}
-
-.topbar-unit-select :deep(.select-container:hover) {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.topbar-unit-select :deep(.select-container:focus-within) {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.topbar-unit-select :deep(.select-field) {
-  color: var(--color-white);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  padding-right: var(--space-8);
-}
-
-.topbar-unit-select :deep(.select-field option) {
-  color: var(--color-gray-900);
-  background-color: var(--color-white);
-}
-
-.topbar-unit-select :deep(.select-icon) {
-  color: rgba(255, 255, 255, 0.8);
-}
-
 .topbar-user-details {
   display: flex;
   flex-direction: column;

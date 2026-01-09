@@ -62,7 +62,12 @@
 
       <template #sidebar>
         <FilterPanel>
-          <Accordion title="INFORMACIÓN" default-open>
+          <Accordion title="UNIDAD ACTUAL">
+            <div class="filter-group">
+              <UnitSelector />
+            </div>
+          </Accordion>
+          <Accordion title="INFORMACIÓN">
             <div class="info-content">
               <p class="info-text">
                 Gestione los valores disponibles para los campos de selección del sistema.
@@ -90,7 +95,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { MainLayout, PageLayout } from '@layouts';
-import { Card, Accordion, FilterPanel } from '@components';
+import { Card, Accordion, FilterPanel, UnitSelector } from '@components';
 import CardCatalogo from './components/CardCatalogo.vue';
 import ModalGestionCatalogo from './components/ModalGestionCatalogo.vue';
 import type { TipoCatalogo } from '@lib/types';
